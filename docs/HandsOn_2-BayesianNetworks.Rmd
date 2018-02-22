@@ -9,19 +9,6 @@ output:
       smooth_scroll: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_knit$set(root.dir = '..')
-library(magrittr)
-```
-
-
-```{r,echo=FALSE,out.width='.49\\linewidth', fig.width=3, fig.height=3}
-
-barplot(1:4)
-barplot(4:7)
-
-```
-
 # Plan of work
 
 important reference 
@@ -29,7 +16,7 @@ https://arxiv.org/pdf/0908.3817.pdf
 
 Bayesian Networks
 
-- Dataset coronary / asia
+- Dataset asia
 - Définir le BN a priori (avis d'expert, manuel)
 Entrer la structure dans R et plot le
 - Définir un petit BN vide
@@ -47,6 +34,11 @@ Entrer la structure dans R et plot le
 
 
 # Install R package `bnlearn`
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '..')
+library(magrittr)
+```
 
 ## Methode 1 : Graphic User Interfaces
 
@@ -69,9 +61,9 @@ Entrer la structure dans R et plot le
 - click on "install Selected" buttom
 - close the "Package Installer" window
 - load the package `bnlearn`
-- copy and past following code to console prompt after `>`
+- copy and past following code to console prompt: after `>`
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 if(require(bnlearn)){
   print("Congratulations")
 }else{
@@ -86,6 +78,8 @@ if(require(bnlearn)){
 ```
 
 ## Methode 2 : console prompt `>`
+
+- copy and past following code to console prompt: after `>`
 
 ```{r eval=FALSE}
 if(require(bnlearn)){
@@ -107,14 +101,14 @@ if(require(bnlearn)){
 
 # Exercise
 
-## What is data ?
+## data
 
 The hands-on workshop is based on the `asia`, a small synthetic data set from Lauritzen and Spiegelhalter (1988) about lung diseases (tuberculosis, lung cancer or bronchitis) and visits to Asia.
 
 **Source**
 Lauritzen S, Spiegelhalter D (1988). "Local Computation with Probabilities on Graphical Structures and their Application to Expert Systems (with discussion)". Journal of the Royal Statistical Society: Series B (Statistical Methodology), 50(2), 157-224.
 
-## Explore the `asia`  (synthetic) dataset
+### Explore the `asia`  (synthetic) dataset
 
 ```{r}
 # check declared variables in the memory
@@ -124,7 +118,6 @@ data(asia)
 # Verify if dataset "asia"" appears in the memory ?
 ls()
 ```
-
 
 **Format**
 The asia data set contains the following variables:
@@ -173,7 +166,7 @@ Standard learning algorithms are not able to recover the true structure of the n
 
 ----
 
-## What is the Bayesian Network structure ?
+## Learning Bayesian Network structure ?
 
 ### Expert-driven approach
 #### Example
@@ -185,8 +178,6 @@ dag.example = model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthq
 # Plot the graph associated with a Bayesian network
 graphviz.plot(dag.example)
 ```
-
-
 
 #### Excercise 1
 
@@ -237,10 +228,17 @@ Consider the following piece of medical knowledge taken from [Lauritzen and Spie
 
 **Create again a DAG representing the causal relationships among these variables based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]**
 
+----
+
 
 ### Data-driven approach
 
 `inter.iamb(asia)` and `hc(asia)`
+
+```{r include=FALSE}
+dag = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
+```
+
 
 ```{r fig.show = 'hold', out.width = '33%'}
 graphviz.plot(dag)
@@ -250,7 +248,9 @@ graphviz.plot(hc(asia))
 
 
 
-======================
+----
+
+----
 
 
 
