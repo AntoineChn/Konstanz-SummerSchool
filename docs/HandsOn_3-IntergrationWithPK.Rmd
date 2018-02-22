@@ -1,0 +1,19 @@
+---
+title: "Hands-on workshop: integration with PK"
+output: 
+  html_notebook:
+    toc: true
+    number_sections: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '..')
+```
+
+# Section title
+
+## Subsection title 
+

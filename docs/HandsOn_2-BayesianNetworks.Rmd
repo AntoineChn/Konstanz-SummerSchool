@@ -1,0 +1,409 @@
+---
+title: "Hands-on workshop: Bayesian networks"
+output: 
+  html_notebook:
+    toc: true
+    number_sections: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '..')
+library(magrittr)
+```
+
+
+```{r,echo=FALSE,out.width='.49\\linewidth', fig.width=3, fig.height=3}
+
+barplot(1:4)
+barplot(4:7)
+
+```
+
+# Plan of work
+
+important reference 
+https://arxiv.org/pdf/0908.3817.pdf
+
+Bayesian Networks
+
+- Dataset coronary / asia
+- Définir le BN a priori (avis d'expert, manuel)
+Entrer la structure dans R et plot le
+- Définir un petit BN vide
+    - Apprentissage de la structure par logiciel
+    - Differentes méthodes (algo)
+- Comparer les BNs
+    - Calculer les vraisemblance de la structure
+    - On va fixer la structure (la meilleure)
+    - Apprentissage de paramètre
+    - Prédiction
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+# Install R package `bnlearn`
+
+## Methode 1 : Graphic User Interfaces
+
+- Open R
+    - ![Open R](imgs/R_logo.png){ width=10% }
+- Open Package Installer
+    - Menu / Packages & Data / Package Installer
+    - ![](imgs/PackageInstallerMenu.png){ width=70% }
+- install package `bnlearn`
+
+![](imgs/PackageInstallerInterface.png){ width=49% } ![](imgs/PackageInstallerMenuSearchBnlearn.png){ width=49% }
+
+- Click on "Get List"
+    - Choose an CRAN mirrors (you are free to choose)
+- search `bnlearn`
+    <!-- - ![](imgs/PackageInstallerMenuSearchBnlearn.png){ width=50% } -->
+- select `bnlearn` 
+    - the selected line turns to blue
+    - the "install Selected" buttom turns to blue
+- click on "install Selected" buttom
+- close the "Package Installer" window
+- load the package `bnlearn`
+- copy and past following code to console prompt after `>`
+
+```{r}
+if(require(bnlearn)){
+  print("Congratulations")
+}else{
+  source('http://bioconductor.org/biocLite.R')
+  biocLite('Rgraphviz')
+  biocLite("RBGL")
+  install.packages("bnlearn")
+  if(require(bnlearn)){
+    print("Congratulations")
+  }else print("Contact us !!!")
+}
+```
+
+## Methode 2 : console prompt `>`
+
+```{r eval=FALSE}
+if(require(bnlearn)){
+  print("Congratulations")
+}else{
+  source('http://bioconductor.org/biocLite.R')
+  biocLite('Rgraphviz')
+  biocLite("RBGL")
+  install.packages("bnlearn")
+  if(require(bnlearn)){
+    print("Congratulations")
+  }else print("Contact us !!!")
+}
+```
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+# Exercise
+
+## What is data ?
+
+The hands-on workshop is based on the `asia`, a small synthetic data set from Lauritzen and Spiegelhalter (1988) about lung diseases (tuberculosis, lung cancer or bronchitis) and visits to Asia.
+
+**Source**
+Lauritzen S, Spiegelhalter D (1988). "Local Computation with Probabilities on Graphical Structures and their Application to Expert Systems (with discussion)". Journal of the Royal Statistical Society: Series B (Statistical Methodology), 50(2), 157-224.
+
+## Explore the `asia`  (synthetic) dataset
+
+```{r}
+# check declared variables in the memory
+ls()
+# import the dataset called asia
+data(asia)
+# Verify if dataset "asia"" appears in the memory ?
+ls()
+```
+
+
+**Format**
+The asia data set contains the following variables:
+
+- `D` (dyspnoea),       
+    - a two-level factor with levels `yes` and `no`.
+- `T` (tuberculosis),   
+    - a two-level factor with levels `yes` and `no`.
+- `L` (lung cancer),    
+    - a two-level factor with levels `yes` and `no`.
+- `B` (bronchitis),     
+    - a two-level factor with levels `yes` and `no`.
+- `A` (visit to Asia),  
+    - a two-level factor with levels `yes` and `no`.
+- `S` (smoking),        
+    - a two-level factor with levels `yes` and `no`.
+- `X` (chest X-ray),    
+    - a two-level factor with levels `yes` and `no`.
+- `E` (tuberculosis versus lung cancer/bronchitis), 
+    - a two-level factor with levels `yes` and `no`.
+
+**Usage**
+
+```{r}
+# what's the class of "asia" ?
+class(asia)
+
+# what is data in this dataset ?
+# asia
+# first five lines should be enough to get a very first idea of the dataset
+head(asia, N = 5)
+
+# how many individuals ?
+dim(asia)
+
+# summarise the database use a build-in funtion summary()
+summary(asia)
+```
+
+**Note**
+Lauritzen and Spiegelhalter (1988) motivate this example as follows:
+
+“Shortness-of-breath (dyspnoea) may be due to tuberculosis, lung cancer or bronchitis, or none of them, or more than one of them. A recent visit to Asia increases the chances of tuberculosis, while smoking is known to be a risk factor for both lung cancer and bronchitis. The results of a single chest X-ray do not discriminate between lung cancer and tuberculosis, as neither does the presence or absence of dyspnoea.”
+
+Standard learning algorithms are not able to recover the true structure of the network because of the presence of a node (E) with conditional probabilities equal to both 0 and 1. Monte Carlo tests seems to behave better than their parametric counterparts.
+
+----
+
+## What is the Bayesian Network structure ?
+
+### Expert-driven approach
+#### Example
+
+<!-- # ```{r echo=FALSE} -->
+```{r}
+# manually define a BN structure
+dag.example = model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthquake]")
+# Plot the graph associated with a Bayesian network
+graphviz.plot(dag.example)
+```
+
+
+
+#### Excercise 1
+
+Now, it's your turn : 
+
+**Suppose** we use the following variable names:
+
+- A : Visit to Asia
+- B : Bronchitis
+- D : Dyspnea
+- L : Lung Cancer
+- T : Tuberculosis
+- S : Smoking History
+- X : Chest X-ray
+
+**Define a DAG representing the causal relationships among these variables based on your knowledge**
+
+- What are the causal relationships ?
+- Use a DAG to represent the causal relationships.
+- Enter your BN structure with `model2network()`.
+- Plot your BN structure with `graphviz.plot()`.
+
+```{r eval=FALSE, fig.align = 'center', fig.show='hold', out.width = '33%' }
+# create and plot the network structure.
+dag = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
+class(dag)
+## Plot
+graphviz.plot(dag)
+```
+
+
+<!-- ```{r} -->
+<!-- bn -->
+<!-- graphviz.plot(bn) -->
+<!-- ``` -->
+
+
+#### Excercise 2
+
+Exercises from http://www.cs.technion.ac.il/~dang/books/Learning%20Bayesian%20Networks(Neapolitan,%20Richard).pdf
+
+Consider the following piece of medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]: 
+
+- Tuberculosis and lung cancer can each cause shortness of breath (dyspnea) and a positive chest X-ray. 
+- Bronchitis is another cause of dyspnea. 
+- A recent visit to Asia can increase the probability of tuberculosis. 
+- Smoking can cause both lung cancer and bronchitis. 
+
+**Create again a DAG representing the causal relationships among these variables based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]**
+
+
+### Data-driven approach
+
+`inter.iamb(asia)` and `hc(asia)`
+
+```{r fig.show = 'hold', out.width = '33%'}
+graphviz.plot(dag)
+graphviz.plot(inter.iamb(asia))
+graphviz.plot(hc(asia))
+```
+
+
+
+======================
+
+
+
+
+<!-- Questions : -->
+
+<!-- - Complete the construction of a Bayesian network by determining values for the conditional probability distributions in this DAG `either` based on your own subjective judgement or from data. -->
+
+<!-- ## Exercise 2 -->
+<!-- Construct again a DAG representing the causal relationships described in Exercise 1, but this time include auxiliary parent variables representing the possible values of the parameters in the conditional distributions. Suppose we use the following variable names: -->
+
+<!-- A : Visit to Asia -->
+<!-- B : Bronchitis -->
+<!-- D : Dyspnea -->
+<!-- L : Lung Cancer -->
+<!-- T : Tuberculosis. -->
+<!-- S : Smoking History -->
+<!-- X : Chest X-ray -->
+
+<!-- - Identify the auxiliary parent variables, whose values we need to ascertain, for each of the following calculations: -->
+
+<!-- 1. P({B}|{S,D}). -->
+<!-- 2. P({L}|{S, D}). -->
+<!-- 3. P({T}|{S,D}). -->
+
+
+<!-- ---- -->
+
+<!-- # Structure learning -->
+
+<!-- The first step in learning a Bayesian network is structure learning, that is, using the data to determine which arcs are present in the graph that underlies the model. Normally, we would like for that to be a purely data-driven process — for the purposes of exploring the data, in benchmarking learning algorithms, or just because we do not know much about the phenomenon we are trying to model. However, in some contexts we have prior knowledge on what the structure of the network should look like and we would like to incorporate such knowledge in the structure learning process. One way to do that is to use whitelists and blacklists. Both are implemented as follows in bnlearn. -->
+
+<!-- - Arcs in the whitelist are always included in the network. -->
+<!-- - Arcs in the blacklist are never included in the network. -->
+<!-- - Any arc whitelisted and blacklisted at the same time is assumed to be whitelisted, and is thus removed from the blacklist. In other words, the whitelist has precedence over the blacklist. -->
+
+<!-- These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs. -->
+
+<!-- Both whitelists and blacklist can be specified using: -->
+
+
+<!-- ----  -->
+<!-- http://www.ucdenver.edu/academics/colleges/PublicHealth/Academics/departments/Biostatistics/WorkingGroups/Documents/Networks%20Presentation%20With%20Sachs%20-%20032317.pdf -->
+
+<!-- https://arxiv.org/pdf/0908.3817.pdf -->
+
+
+<!-- ----  -->
+
+<!-- All structure learning methods boil down to three approaches: -->
+
+<!-- 1. Constraint-based -->
+<!-- 1. Score-based -->
+<!-- 1. Hybrid-based -->
+
+
+<!-- ## Constraint-based -->
+
+<!-- Functions in bnlearn include gs, iamb, fast.iamb, inter.iamb, mmpc, and -->
+<!-- si.hiton.pc -->
+
+<!-- ```{r} -->
+<!-- plot(inter.iamb(learning.test)) -->
+<!-- plot(inter.iamb(learning.test, blacklist = c("A", "B"))) -->
+
+<!-- graphviz.plot(inter.iamb(asia)) -->
+<!-- graphviz.plot(hc(asia)) -->
+<!-- ``` -->
+
+
+<!-- ## Score-based -->
+<!-- Functions in bnlearn include hc and tabu -->
+
+<!-- ## Hybrid-based -->
+<!-- Functions in `bnlearn` include `mmhc` and `rsmax2` where for `rsmax2` you can specify your own combinations of restrict and maximize algorithms -->
+
+<!-- ## Compute the likelihood -->
+
+
+
+<!-- ```{r} -->
+<!-- learn.net = empty.graph(names(asia)) -->
+<!-- graphviz.plot(learn.net) -->
+
+<!-- modelstring(learn.net) = "[A][S][B|S][L|S][T|A][E|L:T][D|B:E][X|E]" -->
+<!-- graphviz.plot(learn.net) -->
+
+<!-- # We can compute the network score of a particular graph for a particular data set with the score() function (manual); if the score function is not specified, the BIC score is returned for both continuous and discrete data. -->
+<!-- # Other score functions can be used by changing the type, as documented in the manual page of the function. -->
+<!-- score(learn.net, asia, type = "bic") -->
+<!-- score(learn.net, asia, type = "aic") -->
+<!-- score(learn.net, asia, type = "bde") -->
+
+<!-- ``` -->
+
+<!-- **Remarks** -->
+
+<!-- - the number of variables in the network and in the data must be the same, although the order is not important. -->
+<!-- - the names of the variables must match as well. -->
+
+<!-- # Parameter learning -->
+
+<!-- Once the structure of a DAG has been determined, the parameters can be determined as well -->
+
+<!-- Two most common approaches are maximum likelihood estimation and Bayesian estimation (not available for GBNs in bnlearn) -->
+
+<!-- Parameter estimates are based only on the subset of data spanning the considered variable and its parents -->
+
+<!-- The `bn.fit` function from bnlearn will automatically determine the type of data and fit parameters -->
+
+<!-- ```{r} -->
+<!-- dag = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]") -->
+<!-- graphviz.plot(dag) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- fitted = bn.fit(dag, asia) -->
+<!-- fitted$T -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- fitted$D -->
+<!-- ``` -->
+
+<!-- Creating custom fitted Bayesian networks using both data and expert knowledge -->
+
+<!-- - For discrete Bayesian networks (or discrete nodes in conditional Gaussian networks) we can extract the conditional probability table stored in the bn.fit object with coef(), modify it, and re-save it. -->
+
+<!-- ## Notes on learning -->
+
+<!--  The arguments blacklist and whitelist can be specified in structure learning -->
+<!-- functions to force the absence and presence of specific edges, respectively -->
+
+
+<!-- # Using BNs : inference (Prediction) -->
+
+<!-- ## Types of queries -->
+
+<!-- - Conditional probability -->
+<!--     - Interested in the marginal posterior probability distribution of variables given -->
+<!-- evidence on other variables -->
+<!-- - Most likely outcome (a.k.a. maximum a posteriori) -->
+<!--     - Interested in finding the configuration of the variables that have the highest -->
+<!-- posterior probability (discre -->
+<!-- ```{r} -->
+<!-- dag = model2network("[A][C][F][B|A][D|A:C][E|B:F]") -->
+<!-- fitted = bn.fit(dag, learning.test) -->
+
+<!-- fitted %>% class() -->
+<!-- fitted$C -->
+<!-- cpt = coef(fitted$C) -->
+<!-- cpt[1:3] = c(0.50, 0.25, 0.25) -->
+<!-- fitted$C = cpt -->
+<!-- fitted$C -->
+<!-- ``` -->
+

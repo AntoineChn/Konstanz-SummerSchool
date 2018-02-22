@@ -1,0 +1,32 @@
+---
+title: "Hands-on workshop: dose-response modeling for AOPs"
+output: 
+  html_notebook:
+    toc: true
+    number_sections: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '..')
+```
+
+# The Plan of Work
+
+- Installing R: and package BN learn, test if the package is well 
+- Dose-response modelling
+    - KBrO3 -> GSH dataset
+    - Préparer un script (html) :
+    - 45 min de formation de R
+        - Vecteur c()
+        - Assignement x = 
+        - Concept
+        - Fonction (demo)
+        - Packages
+    - Faire ajuster à la main un modèle de Hill avec quatre parametre à jouer
+Top Bottom 
+
+
+
