@@ -1,7 +1,7 @@
 ---
 title: "Hands-on workshop: Bayesian networks"
 output: 
-  html_notebook:
+  html_document:
     code_folding: show
     toc: true
     number_sections: true
@@ -103,9 +103,7 @@ if(require(bnlearn)){
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
-# Exercise
-
-## Data
+# Data
 
 The hands-on workshop is based on the `asia`, a small synthetic data set from Lauritzen and Spiegelhalter (1988) about lung diseases (tuberculosis, lung cancer or bronchitis) and visits to Asia.
 
@@ -174,10 +172,12 @@ Standard learning algorithms are not able to recover the true structure of the n
 
 ----
 
-## Learning Bayesian Network structure
+----
 
-### Expert-driven approach
-#### Example { - }
+
+# Exercises : Structure learning
+## Expert-driven approach
+### Example { - }
 
 ```{r example_dag, fig.align="center", out.width='50%'}
 # manually define a BN structure using model2network() function
@@ -188,7 +188,7 @@ graphviz.plot(dag_example, sub = "Example DAG")
 
 ----
 
-#### Exercise 1 : { - }
+### Exercise 1 { - }
 
 Now, it's your turn : 
 
@@ -202,7 +202,7 @@ Now, it's your turn :
 - S : Smoking History
 - X : Chest X-ray
 
-##### Questions { - }
+#### Questions { - }
 
 **Define a BN structure (a DAG) representing the causal relationships among these variables based on your knowledge**
 
@@ -212,20 +212,20 @@ Now, it's your turn :
 <!-- - What is the class of the output of function `model2network()`? -->
 - Plot your BN structure with `graphviz.plot()`.
 
-##### Solution { - }
+#### Solution { - }
 
 Following code shows one possible solution. Any other BN structure is accaptable.
 
 ```{r eval=TRUE, fig.align = 'center', fig.show='hold', out.width = '33%'}
 # create and plot the network structure.
-dag_mydag = model2network("[A][S][T][L|S][B|S][D|B][X|L:T]")
+dag_mydag = model2network("[A][S][T|S][L][B|S][D|B][X|L:T]")
 # Plot
 graphviz.plot(dag_mydag)
 ```
 
 ----
 
-#### Excercise 2 { - }
+### Excercise 2 { - }
 
 Exercises are from http://www.cs.technion.ac.il/~dang/books/Learning%20Bayesian%20Networks(Neapolitan,%20Richard).pdf
 
@@ -237,14 +237,14 @@ Consider the following piece of medical knowledge taken from [Lauritzen and Spie
 - Smoking can cause both lung cancer and bronchitis. 
 
 
-##### Questions { - }
+#### Questions { - }
 
 **Create again a DAG representing the causal relationships among these variables based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]**
 
 - Encode the BN structure with `model2network()`.
 - Plot your BN structure with `graphviz.plot()`.
 
-##### Solution { - }
+#### Solution { - }
 
 ```{r def_dag_Laur}
 # creat Lauritzen's BN structure
@@ -252,22 +252,43 @@ Consider the following piece of medical knowledge taken from [Lauritzen and Spie
 dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:T:L][X|T:L]")
 dag_Laur
 ```
+
+**Remark** the geenration algorithm is Empty !!
+
 ```{r}
 graphviz.plot(dag_Laur)
 ```
 
-##### Compare BN structures { - }
+#### Compare BN structures { - }
 
-Compare your BN structure and the BN structure based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]
+- Compare your BN structure and the BN structure based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988] : 
+    - to do this use `compare()` function
+    - you can also use `graphviz.compare()` function to visualise the differences (more useful when graphs are small)
 
+The three elements of the list (output of `compare()`) are the counts of:
+
+- the true positive  (tp) arcs, which appear both in target and in current;
+- the false positive (fp) arcs, which appear in current but not in target;
+- the false negative (fn) arcs, which appear in target  but not in current.
+
+```{r}
+compare(target = dag_Laur, current = dag_mydag, arcs = TRUE)
+par(mfrow = c(1,2)) # who two plots side by side
+graphviz.compare(dag_Laur,dag_mydag)
+```
 
 
 ----
 
-### Data-driven approach
+## Data-driven approach
 
-#### learning algorithm 1: Inter-IAMB { - }
-`inter.iamb(asia)`
+### learning algorithm 1: Inter-IAMB { - }
+
+#### Exercise 3 { - }
+
+- learn a BN structure base on `asia` dataset. `inter.iamb(asia)` will allow you to do this
+- plot the BN structure
+- What do you observe ? Is this a DAG ? What is the type of this graph ? (tips : you can type simply )
 
 ```{r}
 # Make sure there is no column named "E" in "asia"" database
@@ -277,7 +298,7 @@ graphviz.plot(dag_learn_ii, sub = "dag_learn_ii")
 ```
 
 
-#### Setting the direction of undirected arcs { - }
+### Setting the direction of undirected arcs { - }
 
 Due to the way Bayesian networks are defined the network structure must be a directed acyclic graph (DAG); otherwise their parameters cannot be estimated because the factorization of the global probability distribution of the data into the local ones (one for each variable in the model) is not completely known.
 
@@ -288,36 +309,32 @@ dag_learn_ii_improved = set.arc(dag_learn_ii, from = "S", to = "B")
 graphviz.plot(dag_learn_ii_improved)
 ```
 
-It's your turn, set S -> L in stead of S - L  
+It's your turn :
 
-```{r}
+- set S -> L in stead of S - L  
+
+```{r eval=FALSE, include=FALSE}
 score(set.arc(dag_learn_ii_improved, from = "S", to = "L"),asia)
 score(set.arc(dag_learn_ii_improved, from = "L", to = "S"),asia)
 # They have same score that is why algo Inter-IAMB can not decide which direction is better.
 # But we know S -> L
+```
+
+
+```{r echo=FALSE}
 dag_learn_ii_improved = set.arc(dag_learn_ii_improved, from = "S", to = "L")
 graphviz.plot(dag_learn_ii_improved)
 ```
 
 
-#### learning algorithm 1: Hill-Climbing { - }
+### learning algorithm 2: Hill-Climbing { - }
 `hc(asia)`
 ```{r}
 dag_learn_hc = hc(asia)
 dag_learn_hc
 ```
 
-```{r fig.show = 'hold', out.width = '33%'}
-# graphviz.plot(dag_Laur, sub = "dag_Laur")
-# graphviz.plot(dag_learn_ii, sub = "dag_learn_ii")
-# graphviz.plot(dag_learn_hc, sub = "dag_learn_hc")
-all.equal(dag_learn_ii_improved, dag_learn_hc)
-par(mfrow = c(1, 3))
-graphviz.compare(dag_Laur, dag_learn_ii_improved, dag_learn_hc)
-```
-
-
-### Mix approach
+## Mix approach
 
 The first step in learning a Bayesian network is structure learning, that is, using the data to determine which arcs are present in the graph that underlies the model. Normally, we would like for that to be a purely data-driven process — for the purposes of exploring the data, in benchmarking learning algorithms, or just because we do not know much about the phenomenon we are trying to model. However, in some contexts we have prior knowledge on what the structure of the network should look like and we would like to incorporate such knowledge in the structure learning process. One way to do that is to use whitelists and blacklists. Both are implemented as follows in bnlearn.
 
@@ -327,11 +344,14 @@ The first step in learning a Bayesian network is structure learning, that is, us
 
 These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs.
 
-
-### Comparing Bayesian network structures
+## Comparing Bayesian network structures
 
 We can compute the network score of a particular graph for a particular data set with the score() function (manual); if the score function is not specified, the BIC score is returned for both continuous and discrete data.
 
+**Remarks:**
+
+- the number of variables in the network and in the data must be the same, although the order is not important.
+- the names of the variables must match as well.
 
 ```{r}
 score(dag_mydag, asia)
@@ -340,14 +360,32 @@ score(dag_Laur, asia)
 score(dag_learn_hc, asia)
 ```
 
-**Remark**
-The scores of `dag_Laur` and `dag_learn_hc` are almost the same.
+**Remark: ** The scores of `dag_Laur` and `dag_learn_hc` are almost the same.
+
+#### Visual comparisons { - }
+
+Another approach to compare network structures is to plot them side by side and highlight differences with different colours. `graphviz.compare()` does that using Rgraphviz while taking care that the nodes have the same position for all networks, to make it easier to spot which arcs are different. As we can see below, and unlike any of the functions we covered above, `graphviz.compare()` can take more than two networks as arguments.
+
+```{r}
+all.equal(dag_learn_ii_improved, dag_learn_hc) # BN structure
+
+# par(mfrow = c(1, 3))
+# graphviz.plot(dag_Laur, sub = "dag_Laur")
+# graphviz.plot(dag_learn_ii, sub = "dag_learn_ii")
+# graphviz.plot(dag_learn_hc, sub = "dag_learn_hc")
+
+# par(mfrow = c(1, 3))
+# graphviz.compare(dag_Laur,dag_learn_ii_improved, dag_learn_hc)
+
+par(mfrow = c(1, 2))
+graphviz.compare(dag_Laur, dag_learn_hc)
+```
 
 ----
 
 ----
 
-## Learning Bayesian Network parameters
+# Exercises: Parameter learning
 
 In general, there are three ways of creating a bn.fit object representing a Bayesian network:
 
@@ -357,7 +395,10 @@ In general, there are three ways of creating a bn.fit object representing a Baye
 
 We will talk about 'the first and the third ways.
 
-### Data-driven approach
+## Data-driven approach
+
+Once the structure of a DAG has been determined, the parameters can be determined as well. Two most common approaches are **maximum likelihood estimation** and **Bayesian estimation**. Parameter estimates are based only on the subset of data spanning the considered variable and its parents. The `bn.fit` function from bnlearn will automatically determine the type of data and fit parameters.
+
 
 ```{r}
 bn_mydag          = bn.fit(x = dag_mydag,     data = asia)
@@ -372,11 +413,15 @@ coef(bn_dag_Laur$L)
 bn.fit.barchart(bn_dag_Laur$L)
 ```
 
-$\frac{\mathbb{P}(L|S = yes)}{\mathbb{P}(L|S = no)} = $ `r bn_dag_Laur$L$prob[2,2]/bn_dag_Laur$L$prob[2,1]`
+$$\frac{\mathbb{P}(L|S = \text{yes})}{\mathbb{P}(L|S = \text{no})} =\frac{0.11769384}{0.01368209} = 8.6020348$$ 
+
+<!-- `r bn_dag_Laur$L$prob[2,2]/bn_dag_Laur$L$prob[2,1]` -->
 
 Specifying all the local distributions can be problematic in a large network. In most cases it can be more convenient to create a bn.fit object from (possibly dummy) data using bn.fit(), and then to modify just the local distributions of the nodes of interest.
 
-- For discrete Bayesian networks (or discrete nodes in conditional Gaussian networks) we can extract the conditional probability table stored in the bn.fit object with coef(), modify it, and re-save it.
+
+- Creating custom fitted Bayesian networks using both data and expert knowledge.
+- For discrete Bayesian networks we can extract the conditional probability table stored in the bn.fit object with `coef()`, modify it, and re-save it.
 
 ```{r}
 dag = dag_Laur
@@ -389,20 +434,16 @@ fitted$S = cpt
 ```
 
 
+
+# Exercises: Prediction
+
+- Conditional probability
+    - Interested in the marginal posterior probability distribution of variables given evidence on other variables
+    - Most likely outcome (a.k.a. maximum a posteriori)
+    - Interested in finding the configuration of the variables that have the highest posterior probability (discre
+
+
 <!-- Questions : -->
-
-<!-- - Complete the construction of a Bayesian network by determining values for the conditional probability distributions in this DAG `either` based on your own subjective judgement or from data. -->
-
-<!-- ## Exercise 2 -->
-<!-- Construct again a DAG representing the causal relationships described in Exercise 1, but this time include auxiliary parent variables representing the possible values of the parameters in the conditional distributions. Suppose we use the following variable names: -->
-
-<!-- A : Visit to Asia -->
-<!-- B : Bronchitis -->
-<!-- D : Dyspnea -->
-<!-- L : Lung Cancer -->
-<!-- T : Tuberculosis. -->
-<!-- S : Smoking History -->
-<!-- X : Chest X-ray -->
 
 <!-- - Identify the auxiliary parent variables, whose values we need to ascertain, for each of the following calculations: -->
 
@@ -410,68 +451,6 @@ fitted$S = cpt
 <!-- 2. P({L}|{S, D}). -->
 <!-- 3. P({T}|{S,D}). -->
 
-
-<!-- ---- -->
-
-<!-- # Structure learning -->
-
-<!-- The first step in learning a Bayesian network is structure learning, that is, using the data to determine which arcs are present in the graph that underlies the model. Normally, we would like for that to be a purely data-driven process — for the purposes of exploring the data, in benchmarking learning algorithms, or just because we do not know much about the phenomenon we are trying to model. However, in some contexts we have prior knowledge on what the structure of the network should look like and we would like to incorporate such knowledge in the structure learning process. One way to do that is to use whitelists and blacklists. Both are implemented as follows in bnlearn. -->
-
-<!-- - Arcs in the whitelist are always included in the network. -->
-<!-- - Arcs in the blacklist are never included in the network. -->
-<!-- - Any arc whitelisted and blacklisted at the same time is assumed to be whitelisted, and is thus removed from the blacklist. In other words, the whitelist has precedence over the blacklist. -->
-
-<!-- These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs. -->
-
-
-
-<!-- ```{r} -->
-<!-- learn.net = empty.graph(names(asia)) -->
-<!-- graphviz.plot(learn.net) -->
-
-<!-- modelstring(learn.net) = "[A][S][B|S][L|S][T|A][E|L:T][D|B:E][X|E]" -->
-<!-- graphviz.plot(learn.net) -->
-
-<!-- # We can compute the network score of a particular graph for a particular data set with the score() function (manual); if the score function is not specified, the BIC score is returned for both continuous and discrete data. -->
-<!-- # Other score functions can be used by changing the type, as documented in the manual page of the function. -->
-<!-- score(learn.net, asia, type = "bic") -->
-<!-- score(learn.net, asia, type = "aic") -->
-<!-- score(learn.net, asia, type = "bde") -->
-
-<!-- ``` -->
-
-<!-- **Remarks** -->
-
-<!-- - the number of variables in the network and in the data must be the same, although the order is not important. -->
-<!-- - the names of the variables must match as well. -->
-
-<!-- # Parameter learning -->
-
-<!-- Once the structure of a DAG has been determined, the parameters can be determined as well -->
-
-<!-- Two most common approaches are maximum likelihood estimation and Bayesian estimation (not available for GBNs in bnlearn) -->
-
-<!-- Parameter estimates are based only on the subset of data spanning the considered variable and its parents -->
-
-<!-- The `bn.fit` function from bnlearn will automatically determine the type of data and fit parameters -->
-
-<!-- ```{r} -->
-<!-- dag = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]") -->
-<!-- graphviz.plot(dag) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- fitted = bn.fit(dag, asia) -->
-<!-- fitted$T -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- fitted$D -->
-<!-- ``` -->
-
-<!-- Creating custom fitted Bayesian networks using both data and expert knowledge -->
-
-<!-- - For discrete Bayesian networks (or discrete nodes in conditional Gaussian networks) we can extract the conditional probability table stored in the bn.fit object with coef(), modify it, and re-save it. -->
 
 <!-- ## Notes on learning -->
 
@@ -483,12 +462,7 @@ fitted$S = cpt
 
 <!-- ## Types of queries -->
 
-<!-- - Conditional probability -->
-<!--     - Interested in the marginal posterior probability distribution of variables given -->
-<!-- evidence on other variables -->
-<!-- - Most likely outcome (a.k.a. maximum a posteriori) -->
-<!--     - Interested in finding the configuration of the variables that have the highest -->
-<!-- posterior probability (discre -->
+
 <!-- ```{r} -->
 <!-- dag = model2network("[A][C][F][B|A][D|A:C][E|B:F]") -->
 <!-- fitted = bn.fit(dag, learning.test) -->
