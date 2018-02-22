@@ -1,7 +1,8 @@
 ---
 title: "Hands-on workshop: Bayesian networks"
 output: 
-  html_document:
+  html_notebook:
+    code_folding: hide
     toc: true
     number_sections: true
     toc_float:
@@ -38,7 +39,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_knit$set(root.dir = '..')
-library(magrittr)
+if(!require(magrittr)) {install.packages("magrittr"); library(magrittr);}
+# rm(list = ls())
 ```
 
 ## Methode 1 : Graphic User Interfaces
@@ -62,36 +64,37 @@ library(magrittr)
 - click on "install Selected" buttom
 - close the "Package Installer" window
 - load the package `bnlearn`
-- copy and past following code to console prompt: after `>`
+- copy and past following code to console prompt: after `>`, then press "enter"
 
-```{r message=FALSE, warning=FALSE}
+```{r echo = T, message=FALSE, warning=FALSE}
 if(require(bnlearn)){
-  print("Congratulations")
+  print("Congratulations, the package bnlearn is correctly installed")
 }else{
   source('http://bioconductor.org/biocLite.R')
   biocLite('Rgraphviz')
   biocLite("RBGL")
   install.packages("bnlearn")
   if(require(bnlearn)){
-    print("Congratulations")
+    print("Congratulations, the package bnlearn is correctly installed")
   }else print("Contact us !!!")
 }
 ```
 
 ## Methode 2 : console prompt `>`
 
-- copy and past following code to console prompt: after `>`
+- copy and past following code to console prompt: after `>`, then press "enter"
+
 
 ```{r eval=FALSE}
 if(require(bnlearn)){
-  print("Congratulations")
+  print("Congratulations, the package bnlearn is correctly installed")
 }else{
   source('http://bioconductor.org/biocLite.R')
   biocLite('Rgraphviz')
   biocLite("RBGL")
   install.packages("bnlearn")
   if(require(bnlearn)){
-    print("Congratulations")
+    print("Congratulations, the package bnlearn is correctly installed")
   }else print("Contact us !!!")
 }
 ```
@@ -107,15 +110,16 @@ if(require(bnlearn)){
 The hands-on workshop is based on the `asia`, a small synthetic data set from Lauritzen and Spiegelhalter (1988) about lung diseases (tuberculosis, lung cancer or bronchitis) and visits to Asia.
 
 **Source**
+
 Lauritzen S, Spiegelhalter D (1988). "Local Computation with Probabilities on Graphical Structures and their Application to Expert Systems (with discussion)". Journal of the Royal Statistical Society: Series B (Statistical Methodology), 50(2), 157-224.
 
 **Load**
 ```{r}
-# check declared variables in the memory
+# Check declared variables in the memory
 ls()
-# import the dataset called asia
+# Import the dataset called asia
 data(asia)
-# Verify if dataset "asia"" appears in the memory ?
+# Verify if the dataset "asia"" appears in the memory ?
 ls()
 ```
 
@@ -144,15 +148,15 @@ The asia data set contains the following variables:
 ```{r}
 # what's the class of "asia" ?
 class(asia)
+# show this dataset ?
 
-# what is data in this dataset ?
-# asia
+# NOT RUN : > asia
+# You may want to run asia, what it gives ?
+
 # first five lines should be enough to get a very first idea of the dataset
 head(asia, N = 5)
-
 # how many individuals ?
-dim(asia)
-
+dim(asia)[1]
 # summarise the database use a build-in funtion summary()
 summary(asia)
 ```
@@ -166,20 +170,21 @@ Standard learning algorithms are not able to recover the true structure of the n
 
 ----
 
-## Learning Bayesian Network structure ?
+## Learning Bayesian Network structure
 
 ### Expert-driven approach
-#### Example
+#### Example { - }
 
-<!-- # ```{r echo=FALSE} -->
-```{r}
-# manually define a BN structure
-dag.example = model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthquake]")
-# Plot the graph associated with a Bayesian network
-graphviz.plot(dag.example)
+```{r example_dag, fig.align="center", out.width='50%'}
+# manually define a BN structure using model2network() function
+dag_example = model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthquake]")
+# Plot the BN structure with graphviz.plot()
+graphviz.plot(dag_example, sub = "Example DAG")
 ```
 
-#### Excercise 1
+----
+
+#### Excercise 1 : { - }
 
 Now, it's your turn : 
 
@@ -193,31 +198,34 @@ Now, it's your turn :
 - S : Smoking History
 - X : Chest X-ray
 
-**Define a DAG representing the causal relationships among these variables based on your knowledge**
+##### Questions { - }
 
-- What are the causal relationships ?
-- Use a DAG to represent the causal relationships.
-- Enter your BN structure with `model2network()`.
+**Define a BN structure (a DAG) representing the causal relationships among these variables based on your knowledge**
+
+- What are causal relationships in your opinion?
+- Use a BN structure (a DAG) to represent your causal relationships.
+- Encode your BN structure with `model2network()` in `R`
+- What is the class of the output of function `model2network()`?
 - Plot your BN structure with `graphviz.plot()`.
 
-```{r eval=FALSE, fig.align = 'center', fig.show='hold', out.width = '33%' }
+##### Solution { - }
+
+Following code shows one possible solution. Any other BN structure  is accaptable.
+
+```{r eval=FALSE, fig.align = 'center', fig.show='hold', out.width = '33%'}
 # create and plot the network structure.
-dag = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
-class(dag)
-## Plot
-graphviz.plot(dag)
+dag_mydag = model2network("[A][S][T][L|S][B|S][D|B][E|T:L][X|E]")
+# Check the class of dag_mydag
+class(dag_mydag)
+# Plot
+graphviz.plot(dag_mydag)
 ```
 
+----
 
-<!-- ```{r} -->
-<!-- bn -->
-<!-- graphviz.plot(bn) -->
-<!-- ``` -->
+#### Excercise 2 { - }
 
-
-#### Excercise 2
-
-Exercises from http://www.cs.technion.ac.il/~dang/books/Learning%20Bayesian%20Networks(Neapolitan,%20Richard).pdf
+Exercises are from http://www.cs.technion.ac.il/~dang/books/Learning%20Bayesian%20Networks(Neapolitan,%20Richard).pdf
 
 Consider the following piece of medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]: 
 
@@ -226,16 +234,43 @@ Consider the following piece of medical knowledge taken from [Lauritzen and Spie
 - A recent visit to Asia can increase the probability of tuberculosis. 
 - Smoking can cause both lung cancer and bronchitis. 
 
+
+##### Questions { - }
+
 **Create again a DAG representing the causal relationships among these variables based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]**
+
+- Encode the BN structure with `model2network()`.
+- Plot your BN structure with `graphviz.plot()`.
+
+##### Solution { - }
+
+```{r include = FALSE}
+# creat Lauritzen's BN structure
+dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
+graphviz.plot(dag_Laur)
+```
 
 ----
 
+### Data-driven approach : Structure learning
 
-### Data-driven approach
+#### learning algorithm 1: Inter-IAMB { - }
+`inter.iamb(asia)`
 
-`inter.iamb(asia)` and `hc(asia)`
+```{r}
+dag_learn_ii  = inter.iamb(asia)
+dag_learn_ii
+```
 
-```{r include=FALSE}
+#### learning algorithm 1: Hill-Climbing { - }
+`hc(asia)`
+```{r}
+dag_learn_hc = hc(asia)
+dag_learn_hc
+```
+
+
+```{r include = FALSE}
 dag = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
 ```
 
