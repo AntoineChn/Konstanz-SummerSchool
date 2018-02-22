@@ -2,7 +2,7 @@
 title: "Hands-on workshop: Bayesian networks"
 output: 
   html_notebook:
-    code_folding: hide
+    code_folding: show
     toc: true
     number_sections: true
     toc_float:
@@ -114,11 +114,14 @@ The hands-on workshop is based on the `asia`, a small synthetic data set from La
 Lauritzen S, Spiegelhalter D (1988). "Local Computation with Probabilities on Graphical Structures and their Application to Expert Systems (with discussion)". Journal of the Royal Statistical Society: Series B (Statistical Methodology), 50(2), 157-224.
 
 **Load**
+Load the data set from the bnlearn package
 ```{r}
 # Check declared variables in the memory
 ls()
 # Import the dataset called asia
 data(asia)
+# Delete the column called "E"
+asia$E = NULL
 # Verify if the dataset "asia"" appears in the memory ?
 ls()
 ```
@@ -140,24 +143,25 @@ The asia data set contains the following variables:
     - a two-level factor with levels `yes` and `no`.
 - `X` (chest X-ray),    
     - a two-level factor with levels `yes` and `no`.
-- `E` (tuberculosis versus lung cancer/bronchitis), 
-    - a two-level factor with levels `yes` and `no`.
+<!-- - `E` (tuberculosis versus lung cancer/bronchitis),  -->
+<!--     - a two-level factor with levels `yes` and `no`. -->
 
 **Usage**
 
-```{r}
-# what's the class of "asia" ?
-class(asia)
-# show this dataset ?
+Investigate the characteristics of `asia` using the exploratory analysis techniques
 
+```{r}
+# show this dataset 
 # NOT RUN : > asia
-# You may want to run asia, what it gives ?
+# You may want to run asia, what it gives?
 
 # first five lines should be enough to get a very first idea of the dataset
 head(asia, N = 5)
+
 # how many individuals ?
-dim(asia)[1]
-# summarise the database use a build-in funtion summary()
+dim(asia)
+
+# summarise the database with a build-in funtion summary()
 summary(asia)
 ```
 
@@ -184,7 +188,7 @@ graphviz.plot(dag_example, sub = "Example DAG")
 
 ----
 
-#### Excercise 1 : { - }
+#### Exercise 1 : { - }
 
 Now, it's your turn : 
 
@@ -202,21 +206,19 @@ Now, it's your turn :
 
 **Define a BN structure (a DAG) representing the causal relationships among these variables based on your knowledge**
 
-- What are causal relationships in your opinion?
+- What are the causal relationships among the variables in `asia` dataset ?
 - Use a BN structure (a DAG) to represent your causal relationships.
-- Encode your BN structure with `model2network()` in `R`
-- What is the class of the output of function `model2network()`?
+- Encode your BN structure with `model2network()` (see example above) in `R`
+<!-- - What is the class of the output of function `model2network()`? -->
 - Plot your BN structure with `graphviz.plot()`.
 
 ##### Solution { - }
 
-Following code shows one possible solution. Any other BN structure  is accaptable.
+Following code shows one possible solution. Any other BN structure is accaptable.
 
-```{r eval=FALSE, fig.align = 'center', fig.show='hold', out.width = '33%'}
+```{r eval=TRUE, fig.align = 'center', fig.show='hold', out.width = '33%'}
 # create and plot the network structure.
-dag_mydag = model2network("[A][S][T][L|S][B|S][D|B][E|T:L][X|E]")
-# Check the class of dag_mydag
-class(dag_mydag)
+dag_mydag = model2network("[A][S][T][L|S][B|S][D|B][X|L:T]")
 # Plot
 graphviz.plot(dag_mydag)
 ```
@@ -244,23 +246,59 @@ Consider the following piece of medical knowledge taken from [Lauritzen and Spie
 
 ##### Solution { - }
 
-```{r include = FALSE}
+```{r def_dag_Laur}
 # creat Lauritzen's BN structure
-dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
+# dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
+dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:T:L][X|T:L]")
+dag_Laur
+```
+```{r}
 graphviz.plot(dag_Laur)
 ```
 
+##### Compare BN structures { - }
+
+Compare your BN structure and the BN structure based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988]
+
+
+
 ----
 
-### Data-driven approach : Structure learning
+### Data-driven approach
 
 #### learning algorithm 1: Inter-IAMB { - }
 `inter.iamb(asia)`
 
 ```{r}
+# Make sure there is no column named "E" in "asia"" database
 dag_learn_ii  = inter.iamb(asia)
 dag_learn_ii
+graphviz.plot(dag_learn_ii, sub = "dag_learn_ii")
 ```
+
+
+#### Setting the direction of undirected arcs { - }
+
+Due to the way Bayesian networks are defined the network structure must be a directed acyclic graph (DAG); otherwise their parameters cannot be estimated because the factorization of the global probability distribution of the data into the local ones (one for each variable in the model) is not completely known.
+
+If a network structure contains one or more undirected arcs, their direction can be set with the `set.arc()` function, if the direction of the arc is known or can be guessed from the experimental setting of the data:
+
+```{r eval = TRUE, include=TRUE}
+dag_learn_ii_improved = set.arc(dag_learn_ii, from = "S", to = "B")
+graphviz.plot(dag_learn_ii_improved)
+```
+
+It's your turn, set S -> L in stead of S - L  
+
+```{r}
+score(set.arc(dag_learn_ii_improved, from = "S", to = "L"),asia)
+score(set.arc(dag_learn_ii_improved, from = "L", to = "S"),asia)
+# They have same score that is why algo Inter-IAMB can not decide which direction is better.
+# But we know S -> L
+dag_learn_ii_improved = set.arc(dag_learn_ii_improved, from = "S", to = "L")
+graphviz.plot(dag_learn_ii_improved)
+```
+
 
 #### learning algorithm 1: Hill-Climbing { - }
 `hc(asia)`
@@ -269,25 +307,86 @@ dag_learn_hc = hc(asia)
 dag_learn_hc
 ```
 
-
-```{r include = FALSE}
-dag = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]")
-```
-
-
 ```{r fig.show = 'hold', out.width = '33%'}
-graphviz.plot(dag)
-graphviz.plot(inter.iamb(asia))
-graphviz.plot(hc(asia))
+# graphviz.plot(dag_Laur, sub = "dag_Laur")
+# graphviz.plot(dag_learn_ii, sub = "dag_learn_ii")
+# graphviz.plot(dag_learn_hc, sub = "dag_learn_hc")
+all.equal(dag_learn_ii_improved, dag_learn_hc)
+par(mfrow = c(1, 3))
+graphviz.compare(dag_Laur, dag_learn_ii_improved, dag_learn_hc)
 ```
 
 
+### Mix approach
+
+The first step in learning a Bayesian network is structure learning, that is, using the data to determine which arcs are present in the graph that underlies the model. Normally, we would like for that to be a purely data-driven process — for the purposes of exploring the data, in benchmarking learning algorithms, or just because we do not know much about the phenomenon we are trying to model. However, in some contexts we have prior knowledge on what the structure of the network should look like and we would like to incorporate such knowledge in the structure learning process. One way to do that is to use whitelists and blacklists. Both are implemented as follows in bnlearn.
+
+1. Arcs in the whitelist are always included in the network.
+1. Arcs in the blacklist are never included in the network.
+1. Any arc whitelisted and blacklisted at the same time is assumed to be whitelisted, and is thus removed from the blacklist. In other words, the whitelist has precedence over the blacklist.
+
+These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs.
+
+
+### Comparing Bayesian network structures
+
+We can compute the network score of a particular graph for a particular data set with the score() function (manual); if the score function is not specified, the BIC score is returned for both continuous and discrete data.
+
+
+```{r}
+score(dag_mydag, asia)
+score(dag_Laur, asia)
+# score(dag_learn_ii, asia) # score cannot use partially dat (pdag) as input.
+score(dag_learn_hc, asia)
+```
+
+**Remark**
+The scores of `dag_Laur` and `dag_learn_hc` are almost the same.
 
 ----
 
 ----
 
+## Learning Bayesian Network parameters
 
+In general, there are three ways of creating a bn.fit object representing a Bayesian network:
+
+1. a data-driven approach, learning it from a data set using bn.fit() and a network structure (in a bn object) as illustrated here;
+1. an expert-driven approach, in which both the network structure and the parameters are specified by the user;
+1. a hybrid approach combining the above.
+
+We will talk about 'the first and the third ways.
+
+### Data-driven approach
+
+```{r}
+bn_mydag          = bn.fit(x = dag_mydag,     data = asia)
+bn_dag_Laur       = bn.fit(x = dag_Laur,      data = asia)
+bn_dag_learn_hc   = bn.fit(x = dag_learn_hc,  data = asia)
+```
+
+
+```{r}
+bn_dag_Laur$L
+coef(bn_dag_Laur$L)
+bn.fit.barchart(bn_dag_Laur$L)
+```
+
+$\frac{\mathbb{P}(L|S = yes)}{\mathbb{P}(L|S = no)} = $ `r bn_dag_Laur$L$prob[2,2]/bn_dag_Laur$L$prob[2,1]`
+
+Specifying all the local distributions can be problematic in a large network. In most cases it can be more convenient to create a bn.fit object from (possibly dummy) data using bn.fit(), and then to modify just the local distributions of the nodes of interest.
+
+- For discrete Bayesian networks (or discrete nodes in conditional Gaussian networks) we can extract the conditional probability table stored in the bn.fit object with coef(), modify it, and re-save it.
+
+```{r}
+dag = dag_Laur
+fitted = bn.fit(dag, asia)
+cpt = coef(fitted$S)
+
+# Imagine the distribution of Smoking in a polulation is no: 70% , and yes : 30%
+cpt[1:2] = c(0.7, 0.3) # The probability distribution of node S must sum to one.
+fitted$S = cpt
+```
 
 
 <!-- Questions : -->
@@ -323,46 +422,6 @@ graphviz.plot(hc(asia))
 <!-- - Any arc whitelisted and blacklisted at the same time is assumed to be whitelisted, and is thus removed from the blacklist. In other words, the whitelist has precedence over the blacklist. -->
 
 <!-- These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs. -->
-
-<!-- Both whitelists and blacklist can be specified using: -->
-
-
-<!-- ----  -->
-<!-- http://www.ucdenver.edu/academics/colleges/PublicHealth/Academics/departments/Biostatistics/WorkingGroups/Documents/Networks%20Presentation%20With%20Sachs%20-%20032317.pdf -->
-
-<!-- https://arxiv.org/pdf/0908.3817.pdf -->
-
-
-<!-- ----  -->
-
-<!-- All structure learning methods boil down to three approaches: -->
-
-<!-- 1. Constraint-based -->
-<!-- 1. Score-based -->
-<!-- 1. Hybrid-based -->
-
-
-<!-- ## Constraint-based -->
-
-<!-- Functions in bnlearn include gs, iamb, fast.iamb, inter.iamb, mmpc, and -->
-<!-- si.hiton.pc -->
-
-<!-- ```{r} -->
-<!-- plot(inter.iamb(learning.test)) -->
-<!-- plot(inter.iamb(learning.test, blacklist = c("A", "B"))) -->
-
-<!-- graphviz.plot(inter.iamb(asia)) -->
-<!-- graphviz.plot(hc(asia)) -->
-<!-- ``` -->
-
-
-<!-- ## Score-based -->
-<!-- Functions in bnlearn include hc and tabu -->
-
-<!-- ## Hybrid-based -->
-<!-- Functions in `bnlearn` include `mmhc` and `rsmax2` where for `rsmax2` you can specify your own combinations of restrict and maximize algorithms -->
-
-<!-- ## Compute the likelihood -->
 
 
 
