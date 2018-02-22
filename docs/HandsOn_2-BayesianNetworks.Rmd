@@ -1,7 +1,7 @@
 ---
 title: "Hands-on workshop: Bayesian networks"
 output: 
-  html_notebook:
+  html_document:
     toc: true
     number_sections: true
     toc_float:
