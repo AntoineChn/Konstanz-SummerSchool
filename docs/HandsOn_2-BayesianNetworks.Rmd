@@ -6,31 +6,32 @@ output:
     number_sections: true
     toc_float:
       collapsed: false
-      smooth_scroll: true
+      smooth_scroll: false
 ---
 
-# Plan of work
 
-important reference 
-https://arxiv.org/pdf/0908.3817.pdf
+<!-- # Plan of work -->
 
-Bayesian Networks
+<!-- important reference  -->
+<!-- https://arxiv.org/pdf/0908.3817.pdf -->
 
-- Dataset asia
-- Définir le BN a priori (avis d'expert, manuel)
-Entrer la structure dans R et plot le
-- Définir un petit BN vide
-    - Apprentissage de la structure par logiciel
-    - Differentes méthodes (algo)
-- Comparer les BNs
-    - Calculer les vraisemblance de la structure
-    - On va fixer la structure (la meilleure)
-    - Apprentissage de paramètre
-    - Prédiction
+<!-- Bayesian Networks -->
 
------------------------------------------------------------------------------------------------------------------------------------
+<!-- - Dataset asia -->
+<!-- - Définir le BN a priori (avis d'expert, manuel) -->
+<!-- Entrer la structure dans R et plot le -->
+<!-- - Définir un petit BN vide -->
+<!--     - Apprentissage de la structure par logiciel -->
+<!--     - Differentes méthodes (algo) -->
+<!-- - Comparer les BNs -->
+<!--     - Calculer les vraisemblance de la structure -->
+<!--     - On va fixer la structure (la meilleure) -->
+<!--     - Apprentissage de paramètre -->
+<!--     - Prédiction -->
 
------------------------------------------------------------------------------------------------------------------------------------
+<!-- ----------------------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------- -->
 
 
 # Install R package `bnlearn`
@@ -101,15 +102,14 @@ if(require(bnlearn)){
 
 # Exercise
 
-## data
+## Data
 
 The hands-on workshop is based on the `asia`, a small synthetic data set from Lauritzen and Spiegelhalter (1988) about lung diseases (tuberculosis, lung cancer or bronchitis) and visits to Asia.
 
 **Source**
 Lauritzen S, Spiegelhalter D (1988). "Local Computation with Probabilities on Graphical Structures and their Application to Expert Systems (with discussion)". Journal of the Royal Statistical Society: Series B (Statistical Methodology), 50(2), 157-224.
 
-### Explore the `asia`  (synthetic) dataset
-
+**Load**
 ```{r}
 # check declared variables in the memory
 ls()
