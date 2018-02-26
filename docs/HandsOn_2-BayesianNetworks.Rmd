@@ -2,12 +2,12 @@
 title: "Hands-on workshop: Bayesian networks"
 output: 
   html_document:
-    code_folding: hide
+    code_folding: show
     number_sections: true
     toc: yes
     toc_depth: 3
     toc_float:
-      collapsed: true
+      collapsed: false
       smooth_scroll: true
 ---
 
@@ -51,8 +51,20 @@ You should check out the documentation that is available online [[Link]](http://
 knitr::opts_knit$set(root.dir = '..')
 if(!require(magrittr)) {install.packages("magrittr"); library(magrittr);}
 # rm(list = ls())
-knitr::opts_chunk$set(fig.align = 'center', fig.show='hold', out.width = '70%',
-                      warning=FALSE, message=FALSE)
+# knitr::opts_chunk$set(fig.align = 'center', fig.show='hold', out.width = '70%',
+                      # warning=FALSE, message=FALSE)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  # collapse = TRUE,
+  cache = TRUE,
+  out.width = "70%",
+  fig.align = 'center',
+  fig.width = 6,
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold",
+  warning=FALSE, message=FALSE
+)
 ```
 
 ### Method 1 : Graphic User Interface { - }
@@ -172,7 +184,7 @@ The asia data set contains the following variables:
     - What is the sample size := how many individuals are there?
     - Summarise the data set with a build-in funtion `summary()`.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # print data set 
 # NOT RUN: asia
 # You may want to run asia. What it gives?
@@ -240,6 +252,9 @@ Now, it's your turn :
 
 #### Solution { - }
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_1"> Show/Hide </button>  
+<div id="Exercise_1" class="collapse">  
+
 Following code shows one possible solution. Other BN structures are also accaptable.
 
 ```{r eval=TRUE, fig.align = 'center', fig.show='hold', out.width = '70%'}
@@ -248,6 +263,10 @@ dag_mydag = model2network("[A][S][T|S][L][B|S][D|B][X|L:T]")
 # Plot
 graphviz.plot(dag_mydag)
 ```
+
+</div>
+
+----
 
 <!-- ```{r} -->
 <!-- summary(asia) -->
@@ -310,12 +329,16 @@ Consider the following piece of medical knowledge taken from [Lauritzen and Spie
 
 - Encode the BN structure with `model2network()`.
 - Plot this BN structure with `graphviz.plot()`.
+- Plot again your BN structure and compare.
 
 #### Solution { - }
 
 <!-- # dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:E][E|T:L][X|E]") -->
 
-```{r def_dag_Laur, results='hide'}
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_2"> Show/Hide </button>  
+<div id="Exercise_2" class="collapse">  
+
+```{r}
 # creat Lauritzen's BN structure
 dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:T:L][X|T:L]")
 dag_Laur
@@ -323,9 +346,15 @@ dag_Laur
 
 **Remark** the generation algorithm is Empty !!
 
-```{r fig.show='hide'}
-graphviz.plot(dag_Laur)
+```{r}
+par(mfrow = c(1,2))
+graphviz.plot(dag_Laur, sub = "Lauritzen's DAG")
+graphviz.plot(dag_mydag, sub = "My DAG")
 ```
+
+</div>
+
+----
 
 ```{r echo=FALSE, include=FALSE}
 library(tidyverse)
@@ -356,32 +385,6 @@ plotD3bn <- function(bn) {
   )
 }
 plotD3bn(dag_Laur)
-```
-
-
-### Compare BN structures { - }
-
-- Compare your BN structure and the BN structure based on medical knowledge taken from [Lauritzen and Spiegelhalter, 1988] : 
-    - to do this, use `compare()` function
-    - you can also use `graphviz.compare()` function to visualise the differences (visual comparison is more feasible when graphs are small)
-
-#### `compare()` function { - }
-
-The three elements of the list (output of `compare()`) are the counts of:
-
-- the true positive  (tp) arcs, which appear both in target and in current;
-- the false positive (fp) arcs, which appear in current but not in target;
-- the false negative (fn) arcs, which appear in target  but not in current.
-
-```{r}
-compare(target = dag_Laur, current = dag_mydag, arcs = TRUE)
-par(mfrow = c(1,2)) # show two plots side by side
-```
-
-#### `graphviz.compare()` function { - }
-
-```{r}
-graphviz.compare(dag_Laur, dag_mydag)
 ```
 
 ----
@@ -436,18 +439,27 @@ Some constraint-based learning algorithms :
 
 #### Solution { - } 
 
-```{r results = "hide", fig.show="hide"}
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_3"> Show/Hide </button>  
+<div id="Exercise_3" class="collapse">  
+
+```{r}
 # Make sure there is no column named "E" in "asia"" database, otherwise RUN : asia$E = NULL
-dag_learn_gs     = gs(asia)
 # dag_learn_iamb   = iamb(asia) # Optional
 # dag_learn_inter  = inter.iamb(asia) # Optional
+dag_learn_gs     = gs(asia)
 
-graphviz.plot(dag_learn_gs    , sub = "Grow-Shrink" )
 # graphviz.plot(dag_learn_iamb  , sub = "IAMB" ) # Optional
 # graphviz.plot(dag_learn_inter , sub = "Inter-IAMB" ) # Optional
+graphviz.plot(dag_learn_gs    , sub = "Grow-Shrink" )
 
 print("This is a partially directed acyclic graph (PDAG)")
 ```
+
+</div>
+
+
+
+----
 
 ### Exercise 4: Setting the direction of undirected arcs { - }
 
@@ -465,7 +477,7 @@ graphviz.plot(dag_learn_gs_corrected)
 #### Question { - }
 It's your turn :
 
-- set S -> L in stead of S - L, then plot the DAG, you should have the following plot:
+- set S -> L in stead of S - L, then plot the DAG, you should have the following figure:
 
 ```{r eval=FALSE, include=FALSE}
 score(set.arc(dag_learn_gs_corrected, from = "S", to = "L"),asia)
@@ -481,13 +493,19 @@ graphviz.plot(dag_learn_gs_corrected)
 
 #### Solution { - }
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_4"> Show/Hide </button>  
+<div id="Exercise_4" class="collapse">  
+
 ```{r echo=TRUE, eval=FALSE}
 dag_learn_gs_corrected = set.arc(dag_learn_gs_corrected, from = "S", to = "L")
 graphviz.plot(dag_learn_gs_corrected)
 ```
 
+</div>
 
-### Exercise 4 : Score-based methods { - }
+----
+
+### Exercise 5 : Score-based methods { - }
 
 #### Questions { - }
 
@@ -496,11 +514,19 @@ graphviz.plot(dag_learn_gs_corrected)
 - What do you observe ? Is this a DAG ?
 
 #### Solution { - }
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_5"> Show/Hide </button>  
+<div id="Exercise_5" class="collapse">  
+
 ```{r}
 dag_learn_hc = hc(asia)
 dag_learn_hc
 graphviz.plot(dag_learn_hc)
 ```
+
+</div>
+
+----
 
 ## Mix approach
 
@@ -514,11 +540,46 @@ The first step in learning a Bayesian network is structure learning, that is, us
 
 These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs.
 
-
+----
 
 ## Comparing Bayesian network structures
 
-### Comparison using `score()` function { - }
+### Qualitative methods
+
+#### - `compare()` function { - }
+
+`compare()` function compares two Bayesian network structures by listing three elements (output of `compare()`) that are the counts of:
+
+- the true positive  (tp) arcs, which appear both in target and in current;
+- the false positive (fp) arcs, which appear in current but not in target;
+- the false negative (fn) arcs, which appear in target  but not in current.
+
+```{r}
+compare(target = dag_Laur, current = dag_mydag, arcs = TRUE)
+```
+
+#### - `graphviz.compare()` function { - }
+
+Another approach to compare network structures is to plot them side by side and highlight differences with different colours. `graphviz.compare()` does that using `Rgraphviz` package while taking care that the nodes have the same position for all networks, to make it easier to spot which arcs are different. As we can see below, and unlike any of the functions we covered above, `graphviz.compare()` can take more than two network structures as arguments.
+
+```{r out.width= '100%'}
+par(mfrow = c(1, 3))
+graphviz.plot(dag_Laur, sub = "dag_Laur")
+graphviz.plot(dag_learn_gs, sub = "dag_learn_gs")
+graphviz.plot(dag_learn_hc, sub = "dag_learn_hc")
+```
+
+```{r out.width= '100%'}
+par(mfrow = c(1, 3))
+graphviz.compare(dag_Laur, dag_learn_gs, dag_learn_hc)
+```
+
+```{r eval = FALSE, include=FALSE}
+par(mfrow = c(1,2)) # show two plots side by side
+graphviz.compare(dag_Laur, dag_mydag)
+```
+
+### `score()` function { - }
 
 We can compute the network score of a particular graph for a particular data set with the `score()` function (manual).
 <!-- if the score function is not specified, the BIC score is returned for both continuous and discrete data. -->
@@ -536,25 +597,6 @@ score(dag_learn_hc, asia)
 ```
 
 **Remark: ** The scores of `dag_Laur` and `dag_learn_hc` are almost the same.
-
-#### Visual comparisons { - }
-
-Another approach to compare network structures is to plot them side by side and highlight differences with different colours. `graphviz.compare()` does that using Rgraphviz while taking care that the nodes have the same position for all networks, to make it easier to spot which arcs are different. As we can see below, and unlike any of the functions we covered above, `graphviz.compare()` can take more than two network structures as arguments.
-
-```{r out.width= '100%'}
-all.equal(dag_learn_gs_corrected, dag_learn_hc) # BN structure
-# par(mfrow = c(1, 3))
-# graphviz.plot(dag_Laur, sub = "dag_Laur")
-# graphviz.plot(dag_learn_inter, sub = "dag_learn_inter")
-# graphviz.plot(dag_learn_hc, sub = "dag_learn_hc")
-
-# par(mfrow = c(1, 3))
-# graphviz.compare(dag_mydag, dag_learn_gs_corrected, dag_learn_hc)
-par(mfrow = c(1, 3))
-graphviz.compare(dag_Laur, dag_learn_gs, dag_learn_hc)
-```
-
-----
 
 ----
 
@@ -574,10 +616,9 @@ Once the structure of a DAG has been determined, the parameters can be determine
 <!-- The `bn.fit` function from bnlearn will automatically determine the type of data and fit parameters. -->
 When using `bnlearn`, parameter learning is performed by the `bn.fit` function, which takes the network structure and the data as parameters.
 
-
-
 ### Exercise 1 { - }
 
+#### Questions { - }
 - Using `asia` data set, learn three sets of parameters based on:
     - your BN structure 
     - Lauritzen's BN structure
@@ -585,6 +626,11 @@ When using `bnlearn`, parameter learning is performed by the `bn.fit` function, 
 - Print the conditional probability table (CPT) of Lung Cancer with respect to (given) Smoking History
 
 $$\Pr(L|S) =  ?$$
+
+#### Solution { - }
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#DontSmoke"> Show/Hide </button>  
+<div id="DontSmoke" class="collapse">  
 
 ```{r}
 # By default bn.fit use mle mthod :  
@@ -599,8 +645,7 @@ bn_dag_learn_hc   = bn.fit(x = dag_learn_hc,  data = asia, method = "mle")
 # bn_dag_learn_hc_bayes   = bn.fit(x = dag_learn_hc,  data = asia, method = "bayes")
 ```
 
-
-```{r results="hide", fig.show="hide"}
+```{r results="show", fig.show="show"}
 # print the CPT of Lung Cancer w.r.t Smoking History
 coef(bn_dag_Laur$L) # or simply run : bn_dag_Laur$L
 # Represent this CPT with barchart.
@@ -613,15 +658,9 @@ $$\frac{\mathbb{P}(L|S = \text{yes})}{\mathbb{P}(L|S = \text{no})} =\frac{0.1176
   <img width="153" height="100" src="http://howhut.com/wp-content/uploads/2013/07/Quit-Smoking-300x268.jpg">
 </p>
 
-<!-- ```{r} -->
-<!-- c(230,150) /1.5 -->
-<!-- ``` -->
+</div>
 
-<!-- ![](http://howhut.com/wp-content/uploads/2013/07/Quit-Smoking-300x268.jpg) -->
-<!-- <center><span style="color:red">**Smoking kills !!**</span></center> -->
-
-
-<!-- `r bn_dag_Laur$L$prob[2,2]/bn_dag_Laur$L$prob[2,1]` -->
+----
 
 ## Hybrid approach
 
@@ -634,7 +673,10 @@ Specifying all the local distributions can be problematic in a large network. In
 
 #### Solution { - }
 
-```{r results = "hide"}
+<button class="btn btn-primary" data-toggle="collapse" data-target="#HybridApproach"> Show/Hide </button>  
+<div id="HybridApproach" class="collapse">  
+
+```{r results = "show"}
 dag = dag_Laur
 fitted = bn.fit(dag, asia)
 cpt = coef(fitted$S)
@@ -644,17 +686,17 @@ fitted$S = cpt
 fitted
 ```
 
+</div>
+
+----
+
 # Exercises: Prediction
 
-Inference and probability queries
+## Inference and probability queries
 
 The inference engine of `bnlearn` is limited, but it can be used to test the networks and to perform basic operations with the models.
 
-By using `cpquery` we can ask for the probability of an `event` given a set of `evidence`. We may ask for a particular combination of configurations in the BN and a set of observed statuses for the variables in the evidence.
-
-For example we could ask, what is the posibility of a positive cancer diagnosis for a person that smokes?, in the `asia` network.
-
-(For cpquery I recommend the most powerfull lw algorithm)
+By using `cpquery` we can ask for the probability of an `event` given a set of `evidence`. We may ask for a particular combination of configurations in the BN and a set of observed statuses for the variables in the evidence. For example we could ask, what is the posibility of a positive cancer diagnosis for a person that smokes?, in the `asia` network.
 
 Reference : http://jarias.es/bayesnetRtutorial/#inference_and_probability_queries
 
@@ -693,7 +735,6 @@ run2 <- replicate(100,
 # hist(run1, xlim = range(run1))
 # hist(run2, xlim = range(run1))
 # par(mfrow = c(1,1))
-
 ```
 
 
@@ -749,7 +790,6 @@ prop.table(
            evidence = (L == "yes"),
            n = 100000))
 )
-bn_dag_Laur$L
 ```
 
 ### Exercise { - }
@@ -761,7 +801,10 @@ bn_dag_Laur$L
 - Cluculate the ratio between $\Pr(L|S = yes)$ and $\Pr(L|S = no)$
 - Compare the ratio with "Exercise 1 in Data-driven approach"
 
-### Solution
+### Solution { - }
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Prediction"> Show/Hide </button>  
+<div id="Prediction" class="collapse">  
 
 ```{r}
 set.seed(20180308)
@@ -784,6 +827,9 @@ L_S_no  = cpquery(fitted = bn_dag_Laur,
 L_ratio = L_S_yes / L_S_no
 L_ratio
 ```
+</div>
+
+
 
 
 
