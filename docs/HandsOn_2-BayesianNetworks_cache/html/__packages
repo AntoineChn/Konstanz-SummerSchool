@@ -12,3 +12,6 @@ stringr
 forcats
 lubridate
 bindrcpp
+BiocGenerics
+graph
+Rgraphviz

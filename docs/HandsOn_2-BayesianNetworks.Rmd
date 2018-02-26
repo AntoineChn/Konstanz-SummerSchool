@@ -37,7 +37,7 @@ output:
 
 
 # The bnlearn package
-The `bnlearn package is the most complete and popular package for Bayesian Networks available to the date in R. We will start our tutorial by reviewing some of its capacities.
+The `bnlearn` package is the most complete and popular package for Bayesian Networks available to the date in R. We will start our tutorial by reviewing some of its capacities.
 
 First we should install and load the package.
 
@@ -78,7 +78,7 @@ knitr::opts_chunk$set(
 
     - ![](imgs/PackageInstallerInterface.png){ width=49% } ![](imgs/PackageInstallerMenuSearchBnlearn.png){ width=49% }
     - Click on "Get List"
-        - Choose an CRAN mirrors (you are free to choose any cran mirror)
+        - Choose a CRAN mirror (you are free to choose any cran mirror)
     - search `bnlearn`
         <!-- - ![](imgs/PackageInstallerMenuSearchBnlearn.png){ width=50% } -->
     - select `bnlearn` 
@@ -87,19 +87,20 @@ knitr::opts_chunk$set(
     - click on "install Selected" buttom
 - close the "Package Installer" window
     - load the package `bnlearn`
-    - copy and past following code (click on the `code` button to show the hiden code) to console prompt: after `>`, then press "enter"
-        - if you see `[1] "Congratulations, the package bnlearn is correctly installed."` then the package `bnlearn` is correctly installed.
-        - if not, please contact us !!
+    - copy and past following code (click on the `code` button to show the hidden code) to console prompt: after `>`, then press "enter".
+        - If you see `Update all/some/none? [a/s/n]: `, reply `n` then press `enter`
+        - If you see `[1] "Congratulations, the package bnlearn is correctly installed."`, the package `bnlearn` is correctly installed.
+        - If not, please contact us !!
 
 ```{r echo = T, message=FALSE, warning=FALSE}
-if(require(bnlearn)){
-  print("Congratulations, the package bnlearn is correctly installed.")
+if(require(bnlearn, quietly = TRUE) && require(Rgraphviz, quietly = TRUE)){
+    print("Congratulations, the package bnlearn is correctly installed.")
 }else{
   source('http://bioconductor.org/biocLite.R')
   biocLite('Rgraphviz')
   biocLite("RBGL")
-  install.packages("bnlearn")
-  if(require(bnlearn)){
+  if(!require(bnlearn)) install.packages("bnlearn")
+  if(require(bnlearn) && require(Rgraphviz)){
     print("Congratulations, the package bnlearn is correctly installed.")
   }else print("Contact us !!!")
 }
@@ -112,14 +113,14 @@ if(require(bnlearn)){
     - if not, please contact us !!
 
 ```{r eval=FALSE}
-if(require(bnlearn)){
-  print("Congratulations, the package bnlearn is correctly installed.")
+if(require(bnlearn, quietly = TRUE) && require(Rgraphviz, quietly = TRUE)){
+    print("Congratulations, the package bnlearn is correctly installed.")
 }else{
   source('http://bioconductor.org/biocLite.R')
   biocLite('Rgraphviz')
   biocLite("RBGL")
-  install.packages("bnlearn")
-  if(require(bnlearn)){
+  if(!require(bnlearn)) install.packages("bnlearn")
+  if(require(bnlearn) && require(Rgraphviz)){
     print("Congratulations, the package bnlearn is correctly installed.")
   }else print("Contact us !!!")
 }
@@ -140,7 +141,7 @@ Lauritzen S, Spiegelhalter D (1988). "Local Computation with Probabilities on Gr
 **Load**
 
 - Load the data set from the `bnlearn` package
-    - show the R commands then type them in R console prompt: after `>`, then press "enter" (we strongly advice you to type the code than to copy-paste them)
+    - show the R commands then type them in R console prompt: after `>`, then press "enter" (we strongly advise you to type the code than to copy paste them)
 
 ```{r include=TRUE}
 # list objects in the working environment
@@ -151,11 +152,15 @@ data(asia)
 # NOT RUN : colnames(asia)
 # Delete the column called "E"
 asia$E = NULL
-# Verify if the data set "asia"" appears in the memory ?
+# Verify if the data set "asia" appears in the memory ?
 ls()
 ```
 
 **Format**
+
+- Each variable is in a column.
+- Each observation is a row.
+- Each value is a cell.
 
 The asia data set contains the following variables:
 
@@ -178,11 +183,11 @@ The asia data set contains the following variables:
 
 **Usage**
 
-- Investigate the characteristics of `asia` using the exploratory analysis techniques (These are basic `R` operations that are not crutial for us, unroll the `Code` box) and execut them in R.
+- Investigate the characteristics of `asia` using the exploratory analysis techniques (These are basic `R` operations that are not crucial for us, unroll the `Code` box) and execute them in R.
     - Print this data set on screen;
     - Verify the format of data : variable names and values (levels) ;
     - What is the sample size := how many individuals are there?
-    - Summarise the data set with a build-in funtion `summary()`.
+    - Summarise the data set with a build-in function `summary()`.
 
 ```{r, eval = TRUE}
 # print data set 
@@ -198,7 +203,7 @@ head(asia, N = 5)
 # dimensions of an object
 dim(asia)
 
-# summarise the data set with a build-in funtion summary()
+# summarise the data set with a build-in function summary()
 summary(asia)
 ```
 
@@ -206,12 +211,12 @@ summary(asia)
 
 ----
 
-# Exercises : Structure learning
-## Expert-driven approach
+# Exercises : Structure Learning
+## Expert-Driven Approach
 
-There are different ways to manually initialize and modify the graph of a Bayesian Network. We illustrate in this hands-on session one of the options 
+There are different ways to manually initialise and modify the graph of a Bayesian Network. We illustrate in this hands-on session one of the options.
 
-- to create a *formula* for a given set of variables. Each node is specified by a pair of brackets `[<var_name>]`. If the node has a parentset we denote it by `|` and specify the list of parents separated by colons `:`. We can compute the *formula* into a `bn` object with `model2network`. (see Example)
+- to create a *formula* for a given set of variables. Each node is specified by a pair of brackets `[<var_name>]`. If the node has a parent set, we denote it by `|` and specify the list of parents separated by colons `:`. We can compute the *formula* into a `bn` object with `model2network`. (see Example below)
 
 ### Example { - }
 
@@ -255,10 +260,10 @@ Now, it's your turn :
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_1"> Show/Hide </button>  
 <div id="Exercise_1" class="collapse">  
 
-Following code shows one possible solution. Other BN structures are also accaptable.
+Following code shows one possible solution. Other BN structures are also acceptable.
 
 ```{r eval=TRUE, fig.align = 'center', fig.show='hold', out.width = '70%'}
-# create and plot the network structure.
+# Create and plot the network structure.
 dag_mydag = model2network("[A][S][T|S][L][B|S][D|B][X|L:T]")
 # Plot
 graphviz.plot(dag_mydag)
@@ -477,12 +482,12 @@ graphviz.plot(dag_learn_gs_corrected)
 #### Question { - }
 It's your turn :
 
-- set S -> L in stead of S - L, then plot the DAG, you should have the following figure:
+- set S -> L instead of S - L, then plot the DAG, you should have the following figure:
 
 ```{r eval=FALSE, include=FALSE}
 score(set.arc(dag_learn_gs_corrected, from = "S", to = "L"),asia)
 score(set.arc(dag_learn_gs_corrected, from = "L", to = "S"),asia)
-# They have the same score. This is why the algo Inter-IAMB can not decide which direction is better.
+# They have the same score. This is why the algo Inter-IAMB cannot decide which direction is better.
 # But we know that S -> L is more realistic.
 ```
 
@@ -550,9 +555,9 @@ These general rules are applied in slightly differently to different classes of 
 
 `compare()` function compares two Bayesian network structures by listing three elements (output of `compare()`) that are the counts of:
 
-- the true positive  (tp) arcs, which appear both in target and in current;
-- the false positive (fp) arcs, which appear in current but not in target;
-- the false negative (fn) arcs, which appear in target  but not in current.
+- the true positive  (`tp`) arcs, which appear both in `target` and in `current`;
+- the false positive (`fp`) arcs, which appear in `current` but not in `target`;
+- the false negative (`fn`) arcs, which appear in `target` but not in `current`.
 
 ```{r}
 compare(target = dag_Laur, current = dag_mydag, arcs = TRUE)
@@ -586,8 +591,8 @@ We can compute the network score of a particular graph for a particular data set
 
 **Remarks:**
 
-- the number of variables in the network and in the data must be the same, although the order is not important.
-- the names of the variables must match as well.
+- The number of variables in the network and in the data must be the same, although the order is not important.
+- The names of the variables must match as well.
 
 ```{r eval=FALSE, include=TRUE}
 score(dag_mydag, asia)
@@ -600,7 +605,7 @@ score(dag_learn_hc, asia)
 
 ----
 
-# Exercises: Parameter learning
+# Exercises: Parameter Learning
 
 In general, there are three ways of creating a `bn.fit` object representing a Bayesian network:
 
@@ -613,7 +618,7 @@ We will talk about the first and the third.
 ## Data-driven approach
 
 Once the structure of a DAG has been determined, the parameters can be determined as well. Two most common approaches are **maximum likelihood estimation (MLE)** and **Bayesian estimation**. Parameter estimates are based only on the subset of data spanning the considered variable and its parents. 
-<!-- The `bn.fit` function from bnlearn will automatically determine the type of data and fit parameters. -->
+<!-- The `bn.fit` function from `bnlearn` will automatically determine the type of data and fit parameters. -->
 When using `bnlearn`, parameter learning is performed by the `bn.fit` function, which takes the network structure and the data as parameters.
 
 ### Exercise 1 { - }
@@ -622,7 +627,7 @@ When using `bnlearn`, parameter learning is performed by the `bn.fit` function, 
 - Using `asia` data set, learn three sets of parameters based on:
     - your BN structure 
     - Lauritzen's BN structure
-    - the data driven BN structure (output of Hill-Climbing algorithm)
+    - the data-driven BN structure (output of Hill-Climbing algorithm)
 - Print the conditional probability table (CPT) of Lung Cancer with respect to (given) Smoking History
 
 $$\Pr(L|S) =  ?$$
@@ -680,7 +685,7 @@ Specifying all the local distributions can be problematic in a large network. In
 dag = dag_Laur
 fitted = bn.fit(dag, asia)
 cpt = coef(fitted$S)
-# Imagine the distribution of Smoking in a polulation is no: 70% , and yes : 30%
+# Imagine the distribution of Smoking history in a population is "no": 70% , and "yes" : 30%
 cpt[1:2] = c(0.7, 0.3) # The probability distribution of node S must sum to one.
 fitted$S = cpt
 fitted
