@@ -833,9 +833,3 @@ L_ratio = L_S_yes / L_S_no
 L_ratio
 ```
 </div>
-
-
-
-
-
-
