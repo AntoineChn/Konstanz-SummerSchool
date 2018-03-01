@@ -1,22 +1,59 @@
 ---
-title: "Konstanz Summer School Day2 : Hands-on workshop"
+title: "Konstanz Summer School Day2"
+
 output: html_document
+fontsize: 10pt
 ---
 
-# Hello Konstanz
+# Hands-on workshop
 
-```{r message=FALSE, warning=FALSE}
-if(!require(leaflet)) install.packages("leaflet")
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '..')
+if(!require(magrittr)) {install.packages("magrittr"); library(magrittr);}
+# rm(list = ls())
+# knitr::opts_chunk$set(fig.align = 'center', fig.show='hold', out.width = '70%',
+                      # warning=FALSE, message=FALSE)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  # collapse = TRUE,
+  cache = TRUE,
+  # out.width = "100%",
+  fig.align = 'center',
+  # fig.width = 15,
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold",
+  warning=FALSE, message=FALSE,
+  eval = FALSE
+)
+```
+
+## Hello Konstanz
+
+<a class="weatherwidget-io" href="https://forecast7.com/en/47d689d17/konstanz/" data-label_1="KONSTANZ" data-label_2="WEATHER" data-theme="original" >KONSTANZ WEATHER</a>
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
+
+## Hello `R`
+```{r Konstanz-map, message=FALSE, warning=FALSE}
 library(leaflet)
-
+library(tidyverse)
 m <- leaflet() %>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(lng=9.17818, lat=47.66095, popup="Konstanz Summer School")
+  addMarkers(lng=9.17818, lat=47.66095, popup="Konzil konstanz - Hafenstraße 2, 78462 Konstanz, Germany", label = "Konstanz Summer School")
 m  # Print the map
 ```
 
+<center>
+```{r ref.label="Konstanz-map", eval = T, echo = F}
+```
+</center>
+
+# Hands-on sessions
 
 - Hands-on 0 : instructions for R : https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_0-InstructionsForR.html
 - Hands-on 1 : Dose-Response Modelling : https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_1-DoseResponseModeling.html
 - Hands-on 2 : Bayesian networks : https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_2-BayesianNetworks.html
 - Hands-on 3 : PK modelling : Coming soon
+
