@@ -216,6 +216,7 @@ plot(data_GSH$KBrO3_mM, data_GSH$pct_control, las=1,
 
 # Modelling
 
+## Hill dose-response model
 Let's get serious:
 
 - define the Hill dose-response model as a function
@@ -258,14 +259,16 @@ plot(x, y, type="b")
 
 </div>
 
-----
-
 **Problem:** 
 
 - it goes up from zero to one 
 - and we want it to go down from 100 to 0
 
-So we change it a bit
+----
+
+## Extended Hill dose-response model
+
+**So we change it a bit**
 
 - define an extended Hill dose-response model as a function
 - try it...
@@ -345,8 +348,37 @@ plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 
 **now play with EC50 and N to fit the data better**
 
-**Notes :**
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Output_Modelling_ExpectedFitPlot"> Show one possible fit plot </button> 
+
+<div id="Output_Modelling_ExpectedFitPlot" class="collapse">  
+```{r eval=TRUE, echo=F}
+A = 100
+B = -100
+MyEC50 = 0.5
+MyN = 1.8
+
+xlims = c(0, 6) # a vector of min and max
+ylims = c(0, 120)
+plot(data_GSH$KBrO3_mM, data_GSH$pct_control, xlim=xlims, ylim=ylims, col="red")
+par(new=T) # will overlay the next plot
+x = seq(0, 6, 0.1)
+y = Hill(x=x, EC50=MyEC50, n=MyN, from = A, diff = B)
+plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Output_Modelling_ExpectedFitPar"> Show parameters </button> 
+<div id="Output_Modelling_ExpectedFitPar" class="collapse">  
+- `A = 100`
+- `B = -100`
+- `EC50 = 0.5`
+- `N = 1.8`
+</div>
+
+</div>
+
+
+
+## Notes
 
 There are many tools in R that can be used to fit automatically your model one of them is PROAST (from the RIVM) but we can also access PROAST online (more fun)
-
 
