@@ -84,6 +84,8 @@ A new major version of R comes out once a year, and there are 2-3 minor releases
     - Otherwise go to : http://cran.r-project.org/bin/windows/base/ and manually [download R version 3.4.3](https://cran.r-project.org/bin/windows/base/R-3.4.3-win.exe)
 1. Install R : Leave all default settings in the installation options
 
+Note: c.f. Youtube video "How to Install R" https://youtu.be/MSmWl-sbn64.
+
 ## Install R for Mac OS
 
 If you are a user of **homebrew**, we do NOT recommend you install R via `homebrew`.
@@ -96,6 +98,8 @@ If you are a user of **homebrew**, we do NOT recommend you install R via `homebr
         - **Note** :the use of X11 (including `tcltk`) requires `XQuartz` to be installed since it is no longer part of OS X. Always re-install XQuartz when upgrading your OS X to a new major version.
 1. Install R : Leave all default settings in the installation options.
 1. Install XQuartz : Leave all default settings in the installation options.
+
+Note: c.f. Youtube video "Install R for Mac" https://youtu.be/uxuuWXU-7UQ.
 
 ----
 
