@@ -1,5 +1,5 @@
 ---
-title: "Hands-on workshop: Introduction of R"
+title: "Hands-on workshop: Introduction for R"
 output: 
   html_document:
     code_folding: show
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introdiction 
+# Introduction 
 
 ## History
 
