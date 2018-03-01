@@ -4075,6 +4075,9 @@ h6 {
 }
 </style>
 
+<style type="text/css">.boxed {
+border: 1px solid green ;
+}</style>
 
 </head>
 
@@ -4146,10 +4149,17 @@ m &lt;- leaflet() %&gt;%
   addTiles() %&gt;%  # Add default OpenStreetMap map tiles
   addMarkers(lng=9.17818, lat=47.66095, popup=&quot;Konzil konstanz - Hafenstraße 2, 78462 Konstanz, Germany&quot;, label = &quot;Konstanz Summer School&quot;)
 m  # Print the map</code></pre>
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ShowKonstanzMap">
+Show output
+</button>
+<div id="ShowKonstanzMap" class="collapse">
+<div class="boxed">
 <center>
 <div id="htmlwidget-c67d805109f78686674c" style="width:672px;height:415.296px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-c67d805109f78686674c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[47.66095,9.17818,null,null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Konzil konstanz - Hafenstraße 2, 78462 Konstanz, Germany",null,null,null,"Konstanz Summer School",null,null]}],"limits":{"lat":[47.66095,47.66095],"lng":[9.17818,9.17818]}},"evals":[],"jsHooks":[]}</script>
 </center>
+</div>
+</div>
 </section>
 </section>
 <section id="hands-on-sessions" class="level1">

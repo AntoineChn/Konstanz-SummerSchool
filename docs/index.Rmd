@@ -1,7 +1,9 @@
 ---
 title: "Konstanz Summer School Day2"
 
-output: html_document
+output: 
+  html_document:
+    css: styles.css
 fontsize: 10pt
 ---
 
@@ -44,11 +46,16 @@ m <- leaflet() %>%
   addMarkers(lng=9.17818, lat=47.66095, popup="Konzil konstanz - Hafenstraße 2, 78462 Konstanz, Germany", label = "Konstanz Summer School")
 m  # Print the map
 ```
-
+<button class="btn btn-primary" data-toggle="collapse" data-target="#ShowKonstanzMap"> Show output </button> 
+<div id="ShowKonstanzMap" class="collapse">  
+<div class="boxed">
 <center>
 ```{r ref.label="Konstanz-map", eval = T, echo = F}
 ```
 </center>
+</div>
+</div>
+
 
 # Hands-on sessions
 
