@@ -95,8 +95,9 @@ R is always pointed at a directory on your computer.
 - R should print all files in your working directory. Check if `data_GSH.txt` is listed
 - if not click on <button class="btn btn-primary" data-toggle="collapse" data-target="#SOSDownloadData"> Need help ? </button>  
 
-<div class="boxed">
 <div id="SOSDownloadData" class="collapse">  
+<div class="boxed">
+
 Copy - Paste in R console prompt: after `>`, then press `enter` key
 ```{r eval=FALSE}
 tmpData = readLines("https://antoinechn.github.io/Konstanz-SummerSchool/data/data_GSH.txt")
@@ -128,8 +129,8 @@ head(data_GSH)
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#SOSLoadData"> Need help ? </button> 
-<div class="boxed">
 <div id="SOSLoadData" class="collapse">  
+<div class="boxed">
 
 ```{r}
 data_GSH = read.table("https://antoinechn.github.io/Konstanz-SummerSchool/data/data_GSH.txt", sep="\t", header=TRUE)
@@ -150,8 +151,8 @@ plot(data_GSH$KBrO3_mM, data_GSH$pct_control)
 
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Output_BA_Plot"> Show output </button> 
-<div class="boxed">
 <div id="Output_BA_Plot" class="collapse">  
+<div class="boxed">
 
 ```{r ref.label="BA_Plot", eval=TRUE, echo=FALSE}
 ```
@@ -185,8 +186,8 @@ plot(data_GSH$KBrO3_mM, data_GSH$pct_control, las=1,
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Output_BA_OtherPlot"> Show output </button> 
-<div class="boxed">
 <div id="Output_BA_OtherPlot" class="collapse">  
+<div class="boxed">
 ```{r eval = T}
 # nicer
 plot(data_GSH$KBrO3_mM, data_GSH$pct_control, las=1)
@@ -246,8 +247,8 @@ plot(x, y, type="b")
 ```
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Output_Modelling_defineHillFunction"> Show output </button> 
-<div class="boxed">
 <div id="Output_Modelling_defineHillFunction" class="collapse">  
+<div class="boxed">
 
 ```{r eval=TRUE}
 # define the Hill dose-response model as a function
@@ -298,8 +299,8 @@ plot(x, y, type="b")
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Output_Modelling_redefineHillFunction"> Show output </button> 
 
-<div class="boxed">
 <div id="Output_Modelling_redefineHillFunction" class="collapse">  
+<div class="boxed">
 ```{r eval=TRUE}
 # define an extended Hill dose-response model as a function
 Hill = function (x, EC50, n, from, diff) {
@@ -360,8 +361,8 @@ plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Output_Modelling_ExpectedFitPlot"> Show one possible fit plot </button> 
 
-<div class="boxed">
 <div id="Output_Modelling_ExpectedFitPlot" class="collapse">  
+<div class="boxed">
 ```{r eval=TRUE, echo=F}
 A = 100
 B = -100

@@ -4,6 +4,7 @@ output:
   html_document:
     code_folding: show
     number_sections: true
+    css: styles.css
     toc: yes
     toc_depth: 3
     toc_float:
@@ -259,6 +260,7 @@ Now, it's your turn :
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_1"> Show/Hide </button>  
 <div id="Exercise_1" class="collapse">  
+<div class="boxed">
 
 Following code shows one possible solution. Other BN structures are also acceptable.
 
@@ -269,6 +271,7 @@ dag_mydag = model2network("[A][S][T|S][L][B|S][D|B][X|L:T]")
 graphviz.plot(dag_mydag)
 ```
 
+</div>
 </div>
 
 ----
@@ -342,7 +345,7 @@ Consider the following piece of medical knowledge taken from [Lauritzen and Spie
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_2"> Show/Hide </button>  
 <div id="Exercise_2" class="collapse">  
-
+<div class="boxed">
 ```{r}
 # creat Lauritzen's BN structure
 dag_Laur = model2network("[A][S][T|A][L|S][B|S][D|B:T:L][X|T:L]")
@@ -357,6 +360,7 @@ graphviz.plot(dag_Laur, sub = "Lauritzen's DAG")
 graphviz.plot(dag_mydag, sub = "My DAG")
 ```
 
+</div>
 </div>
 
 ----
@@ -446,7 +450,7 @@ Some constraint-based learning algorithms :
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_3"> Show/Hide </button>  
 <div id="Exercise_3" class="collapse">  
-
+<div class="boxed">
 ```{r}
 # Make sure there is no column named "E" in "asia"" database, otherwise RUN : asia$E = NULL
 # dag_learn_iamb   = iamb(asia) # Optional
@@ -461,8 +465,7 @@ print("This is a partially directed acyclic graph (PDAG)")
 ```
 
 </div>
-
-
+</div>
 
 ----
 
@@ -500,12 +503,13 @@ graphviz.plot(dag_learn_gs_corrected)
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_4"> Show/Hide </button>  
 <div id="Exercise_4" class="collapse">  
-
+<div class="boxed">
 ```{r echo=TRUE, eval=FALSE}
 dag_learn_gs_corrected = set.arc(dag_learn_gs_corrected, from = "S", to = "L")
 graphviz.plot(dag_learn_gs_corrected)
 ```
 
+</div>
 </div>
 
 ----
@@ -522,6 +526,7 @@ graphviz.plot(dag_learn_gs_corrected)
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_5"> Show/Hide </button>  
 <div id="Exercise_5" class="collapse">  
+<div class="boxed">
 
 ```{r}
 dag_learn_hc = hc(asia)
@@ -529,6 +534,7 @@ dag_learn_hc
 graphviz.plot(dag_learn_hc)
 ```
 
+</div>
 </div>
 
 ----
@@ -636,7 +642,7 @@ $$\Pr(L|S) =  ?$$
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#DontSmoke"> Show/Hide </button>  
 <div id="DontSmoke" class="collapse">  
-
+<div class="boxed">
 ```{r}
 # By default bn.fit use mle mthod :  
 # bn.fit(x, data) == bn.fit(x, data, method = "mle")
@@ -664,6 +670,7 @@ $$\frac{\mathbb{P}(L|S = \text{yes})}{\mathbb{P}(L|S = \text{no})} =\frac{0.1176
 </p>
 
 </div>
+</div>
 
 ----
 
@@ -680,6 +687,7 @@ Specifying all the local distributions can be problematic in a large network. In
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#HybridApproach"> Show/Hide </button>  
 <div id="HybridApproach" class="collapse">  
+<div class="boxed">
 
 ```{r results = "show"}
 dag = dag_Laur
@@ -691,6 +699,7 @@ fitted$S = cpt
 fitted
 ```
 
+</div>
 </div>
 
 ----
@@ -810,6 +819,7 @@ prop.table(
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Prediction"> Show/Hide </button>  
 <div id="Prediction" class="collapse">  
+<div class="boxed">
 
 ```{r}
 set.seed(20180308)
@@ -832,4 +842,5 @@ L_S_no  = cpquery(fitted = bn_dag_Laur,
 L_ratio = L_S_yes / L_S_no
 L_ratio
 ```
+</div>
 </div>
