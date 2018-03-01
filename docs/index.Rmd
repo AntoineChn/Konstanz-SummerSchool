@@ -1,0 +1,11 @@
+---
+title: "Konstanz Summer School Day2 : Hands-on workshop"
+output: html_document
+---
+
+# Hello World
+
+- Hands-on 0 : instructions for R : https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_0-InstructionsForR.html
+- Hands-on 1 : Dose-Response Modelling : https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_1-DoseResponseModeling.html
+- Hands-on 2 : Bayesian networks : https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_2-BayesianNetworks.html
+- Hands-on 3 : PK modelling : Coming soon

@@ -1,5 +1,5 @@
 ---
-title: "Hands-on workshop: dose-response modeling for AOPs"
+title: "Hands-on workshop: Dose-response modeling for AOPs"
 output: 
   html_document:
     code_folding: show
