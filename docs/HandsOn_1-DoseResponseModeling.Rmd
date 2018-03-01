@@ -34,32 +34,32 @@ knitr::opts_chunk$set(
 ```
 
 
-## Frédéric's mail { - } 
+<!-- ## Frédéric's mail { - }  -->
 
-> Salut Wang: 
-> tu peux mettre ce script ou l'adapter? 
-> Il leur faut aussi pouvoir telecharger le fichier de données (a mettre au meme endroit que le script! 
-> 
-> J'imagine que la moitié ne sauront pas même faire ça... sans parler des problemes d'extension sous > windows; 
-> à prendre les gens pour des idiots on en fait des idiots)
+<!-- > Salut Wang:  -->
+<!-- > tu peux mettre ce script ou l'adapter?  -->
+<!-- > Il leur faut aussi pouvoir telecharger le fichier de données (a mettre au meme endroit que le script!  -->
+<!-- >  -->
+<!-- > J'imagine que la moitié ne sauront pas même faire ça... sans parler des problemes d'extension sous > windows;  -->
+<!-- > à prendre les gens pour des idiots on en fait des idiots) -->
 
 
-## The Plan of Work { - } 
+<!-- ## The Plan of Work { - }  -->
 
-- Installing R: and package BN learn, test if the package is well 
-- Dose-response modelling
-    - KBrO3 -> GSH dataset
-    - Préparer un script (html) :
-    - 45 min de formation de R
-        - Vecteur c()
-        - Assignement x = 
-        - Concept
-        - Fonction (demo)
-        - Packages
-    - Faire ajuster à la main un modèle de Hill avec quatre parametre à jouer
-Top Bottom 
+<!-- - Installing R: and package BN learn, test if the package is well  -->
+<!-- - Dose-response modelling -->
+<!--     - KBrO3 -> GSH dataset -->
+<!--     - Préparer un script (html) : -->
+<!--     - 45 min de formation de R -->
+<!--         - Vecteur c() -->
+<!--         - Assignement x =  -->
+<!--         - Concept -->
+<!--         - Fonction (demo) -->
+<!--         - Packages -->
+<!--     - Faire ajuster à la main un modèle de Hill avec quatre parametre à jouer -->
+<!-- Top Bottom  -->
 
-----
+<!-- ---- -->
 
 # Preperation
 
