@@ -84,8 +84,8 @@ A new major version of R comes out once a year, and there are 2-3 minor releases
     - Otherwise go to : http://cran.r-project.org/bin/windows/base/ and manually [download R version 3.4.3](https://cran.r-project.org/bin/windows/base/R-3.4.3-win.exe)
 1. Install R : Leave all default settings in the installation options
 
-Note: c.f. <button class="btn btn-primary" data-toggle="collapse" data-target="#YoutubeInstallRMac"> Video : "How to Install R"</button>
-<div id="YoutubeInstallRMac" class="collapse">  
+Note: c.f. <button class="btn btn-primary" data-toggle="collapse" data-target="#YoutubeInstallRWin"> Video : "How to Install R"</button>
+<div id="YoutubeInstallRWin" class="collapse">  
 <div class="boxed">
 
 <iframe width="630" height="472"
@@ -102,26 +102,26 @@ If you are a user of **homebrew**, we do NOT recommend you install R via `homebr
 
 1. Download latest R for Mac OS :
     - Download the latest R 
-        - Go to [this page](https://cran.r-project.org/bin/macosx/) (https://cran.r-project.org/bin/macosx/) and download [R-3.4.3.pkg](https://cloud.r-project.org/bin/macosx/R-3.4.3.pkg) (latest R for Konstanz Summer School)
+        - Go to [this page](https://cran.r-project.org/bin/macosx/) (https://cran.r-project.org/bin/macosx/) and [download R-3.4.3.pkg](https://cloud.r-project.org/bin/macosx/R-3.4.3.pkg) (latest R for Konstanz Summer School)
     - Download [XQuartz](https://www.xquartz.org/)
-        - go to [this page](https://www.xquartz.org/) (https://www.xquartz.org/) and download [XQuartz-2.7.11.dmg](https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.11.dmg)
+        - go to [this page](https://www.xquartz.org/) and [download XQuartz-2.7.11.dmg](https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.11.dmg)
         - **Note** :the use of X11 (including `tcltk`) requires `XQuartz` to be installed since it is no longer part of OS X. Always re-install XQuartz when upgrading your OS X to a new major version.
 1. Install R : Leave all default settings in the installation options.
 1. Install XQuartz : Leave all default settings in the installation options.
 
-Note: c.f. <button class="btn btn-primary" data-toggle="collapse" data-target="#YoutubeInstallRWin"> Video “Install R for Mac” </button> 
-<div id="YoutubeInstallRWin" class="collapse">  
+Note: c.f. <button class="btn btn-primary" data-toggle="collapse" data-target="#YoutubeInstallRMac"> Video “Installing XQuartz and R for Mac” </button> 
+<div id="YoutubeInstallRMac" class="collapse">  
 <div class="boxed">
 
 <iframe width="630" height="472"
-src="https://www.youtube.com/embed/uxuuWXU-7UQ">
+src="https://www.youtube.com/embed/6-I0nd5ojXM">
 </iframe>
 
 </div>
 </div>
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, include=FALSE}
 c(420,315)*1.5
 ```
 
