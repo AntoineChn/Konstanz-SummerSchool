@@ -86,6 +86,10 @@ A new major version of R comes out once a year, and there are 2-3 minor releases
 
 Note: c.f. Youtube video "How to Install R" https://youtu.be/MSmWl-sbn64.
 
+<iframe width="630" height="472"
+src="https://www.youtube.com/embed/MSmWl-sbn64">
+</iframe>
+
 ## Install R for Mac OS
 
 If you are a user of **homebrew**, we do NOT recommend you install R via `homebrew`.
@@ -99,7 +103,14 @@ If you are a user of **homebrew**, we do NOT recommend you install R via `homebr
 1. Install R : Leave all default settings in the installation options.
 1. Install XQuartz : Leave all default settings in the installation options.
 
-Note: c.f. Youtube video "Install R for Mac" https://youtu.be/uxuuWXU-7UQ.
+<iframe width="630" height="472"
+src="https://www.youtube.com/embed/uxuuWXU-7UQ">
+</iframe>
+
+```{r, eval=FALSE}
+c(420,315)*1.5
+```
+
 
 ----
 
@@ -109,6 +120,7 @@ Note: c.f. Youtube video "Install R for Mac" https://youtu.be/uxuuWXU-7UQ.
 
 TODO
 
+----
 <!-- ### R Session { - } -->
 
 <!-- After R is started, there is a console awaiting for input. At the prompt `>`, you can enter numbers and perform calculations. -->
