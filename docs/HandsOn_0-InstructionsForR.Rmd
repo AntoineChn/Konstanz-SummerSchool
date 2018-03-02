@@ -135,6 +135,9 @@ c(420,315)*1.5
 TODO
 
 ----
+
+
+[Back to home](https://goo.gl/j9PYg4)
 <!-- ### R Session { - } -->
 
 <!-- After R is started, there is a console awaiting for input. At the prompt `>`, you can enter numbers and perform calculations. -->
