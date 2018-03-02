@@ -59,8 +59,14 @@ m  # Print the map
 
 # Hands-on sessions
 
-- Hands-on 0 : [Instructions for R](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_0-InstructionsForR.html)
-- Hands-on 1 : [Dose-Response Modelling](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_1-DoseResponseModeling.html)
-- Hands-on 2 : [Bayesian networks](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_2-BayesianNetworks.html)
+- Hands-on 0 : [Instructions for R](https://goo.gl/v8qt4S)
+- Hands-on 1 : [Dose-Response Modelling](https://goo.gl/QsA3qJ)
+- Hands-on 2 : [Bayesian networks](https://goo.gl/AMr81p)
 - Hands-on 3 : PK modelling : Coming soon
+
+
+<!-- - Hands-on 0 : [Instructions for R](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_0-InstructionsForR.html) -->
+<!-- - Hands-on 1 : [Dose-Response Modelling](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_1-DoseResponseModeling.html) -->
+<!-- - Hands-on 2 : [Bayesian networks](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_2-BayesianNetworks.html) -->
+<!-- - Hands-on 3 : PK modelling : Coming soon -->
 
