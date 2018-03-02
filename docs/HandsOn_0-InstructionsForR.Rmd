@@ -102,9 +102,9 @@ If you are a user of **homebrew**, we do NOT recommend you install R via `homebr
 
 1. Download latest R for Mac OS :
     - Download the latest R 
-        - Go to [this page](https://cran.r-project.org/bin/macosx/) (https://cran.r-project.org/bin/macosx/) and [download R-3.4.3.pkg](https://cloud.r-project.org/bin/macosx/R-3.4.3.pkg) (latest R for Konstanz Summer School)
+        - Go to [this page](https://cran.r-project.org/bin/macosx/) https://cran.r-project.org/bin/macosx/ and [download R-3.4.3.pkg](https://cloud.r-project.org/bin/macosx/R-3.4.3.pkg) (latest R for Konstanz Summer School)
     - Download [XQuartz](https://www.xquartz.org/)
-        - go to [this page](https://www.xquartz.org/) and [download XQuartz-2.7.11.dmg](https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.11.dmg)
+        - go to [this page](https://www.xquartz.org/) https://www.xquartz.org/ and [download XQuartz-2.7.11.dmg](https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.11.dmg)
         - **Note** :the use of X11 (including `tcltk`) requires `XQuartz` to be installed since it is no longer part of OS X. Always re-install XQuartz when upgrading your OS X to a new major version.
 1. Install R : Leave all default settings in the installation options.
 1. Install XQuartz : Leave all default settings in the installation options.

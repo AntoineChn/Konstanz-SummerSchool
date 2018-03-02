@@ -1,5 +1,5 @@
 ---
-title: "Konstanz Summer School Day2"
+title: "Konstanz Summer School Day3"
 
 output: 
   html_document:
