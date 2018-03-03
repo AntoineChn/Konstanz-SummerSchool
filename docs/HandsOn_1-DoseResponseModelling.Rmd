@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
   cache = TRUE,
   out.width = "100%",
   fig.align = 'center',
-  fig.width = 15,
+  fig.width = 8,
   fig.asp = 0.618,  # 1 / phi
   fig.show = "hold",
   warning=FALSE, message=FALSE,
@@ -74,7 +74,7 @@ R is always pointed at a directory on your computer. By default,
     - **On Windows** 
         - in R interface choose : `Menu - File - Change dir...`
         - Choose a local directory (folder)
-            - for example I use `C:/Users/Admin/Documents/Konstanz_summer_school/Day2` as my working directory
+            - for example I use `C:/Users/Admin/Documents/Konstanz_summer_school/Day2` (actrually Day 3) as my working directory
         - ![](imgs/SetWD_on_Win.png){ width=49.2% } ![](imgs/ChooseWD_Win.png){ width=49.3% }
     - **On MacOs** 
         - in R insterface choose : `menu - Misc - Change Working Directory...`
@@ -87,7 +87,7 @@ R is always pointed at a directory on your computer. By default,
 ## Download dataset and load it to R
 
 - The dataset is accessible via the following two links [**Link 1**](https://trello-attachments.s3.amazonaws.com/59552633a56853b5f6d1f1f9/5a92760183331b90626ce166/678efebfc21386538df65c23120fc741/data_GSH.txt) or [**Link 2**](https://antoinechn.github.io/Konstanz-SummerSchool/data/data_GSH.txt)
-- Click on one of two Links, a new web page will open then you have two options
+- Click on one of the two Links, a new web page will open then you have two options
     - Option 1: press Windows Shortcut : `Control + S` or MacOS Shortcut : `Command ⌘ + S` 
     - Option 2: right click your mouse (or touchpad) and choose `save as`
 - save `data_GSH.txt` to your working directory (in my case `/Documents/Konstanz_summer_school/Day2`)
@@ -153,6 +153,10 @@ head(data_GSH)
 
 </div>
 </div>
+
+----
+
+----
 
 # Data visualisation using `plot()` function
 

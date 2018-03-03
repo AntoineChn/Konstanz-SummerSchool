@@ -1,19 +1,447 @@
 ---
 title: "Hands-on workshop: integration with PK"
 output: 
-  html_notebook:
-    toc: true
+  html_document:
+    code_folding: show
     number_sections: true
+    css: styles.css
+    toc: yes
+    toc_depth: 3
     toc_float:
-      collapsed: true
+      collapsed: false
       smooth_scroll: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_knit$set(root.dir = '..')
+if(!require(magrittr)) {install.packages("magrittr"); library(magrittr);}
+# rm(list = ls())
+# knitr::opts_chunk$set(fig.align = 'center', fig.show='hold', out.width = '70%',
+                      # warning=FALSE, message=FALSE)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  # collapse = TRUE,
+  cache = TRUE,
+  out.width = "100%",
+  fig.align = 'center',
+  fig.width = 8,
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold",
+  warning=FALSE, message=FALSE,
+  eval = FALSE
+)
 ```
 
-# Section title
+# Preperation
 
-## Subsection title 
+## Set Working Directory (WD)
+
+R is always pointed at a directory on your computer. By default, 
+
+- R loads files (Plain text files / Data files etc.) from this directory.
+- R outputs files (Plain text files / Data files etc.) to this directory.
+
+- Set **W**orking **D**irectory (WD)
+    - **On Windows** 
+        - in R interface choose : `Menu - File - Change dir...`
+        - Choose a local directory (folder)
+            - for example I use `C:/Users/Admin/Documents/Konstanz_summer_school/Day2` (actrually Day 3) as my working directory
+        - ![](imgs/SetWD_on_Win.png){ width=49.2% } ![](imgs/ChooseWD_Win.png){ width=49.3% }
+    - **On MacOs** 
+        - in R insterface choose : `menu - Misc - Change Working Directory...`
+            - for example I use `~/Documents/Konstanz_summer_school/Day2` as my working directory
+        - ![](imgs/SetWD_on_MacOS.png){ width=47.5% } ![](imgs/ChooseWD_MacOS.png){ width=50.5% }
+    - **Verify your WD**
+        - type `getwd()` in R console prompt: after `>`, then press `enter` key
+        - R should print your current **WD**
+
+## Download dataset and load it to R
+
+- The dataset is accessible via the following two links [**Link 1**](https://trello-attachments.s3.amazonaws.com/59552633a56853b5f6d1f1f9/5a92760183331b90626ce166/f99b2b57b957d442cec69446144ff461/KBrO3_kinetics.txt) or [**Link 2**](https://antoinechn.github.io/Konstanz-SummerSchool/data/KBrO3_kinetics.txt)
+- Click on one of the two Links, a new web page will open then you have two options
+    - Option 1: press Windows Shortcut : `Control + S` or MacOS Shortcut : `Command ⌘ + S` 
+    - Option 2: right click your mouse (or touchpad) and choose `save as`
+- save `KBrO3_kinetics.txt` to your working directory (in my case `/Documents/Konstanz_summer_school/Day2`)
+- once this is done, type `list.files()` in R console prompt: after `>`, then press `enter` key
+- R should print all files in your working directory. Check if `KBrO3_kinetics.txt` is listed
+- if not click on <button class="btn btn-primary" data-toggle="collapse" data-target="#SOSDownloadData"> Need help ? </button>  
+
+<div id="SOSDownloadData" class="collapse">  
+<div class="boxed">
+
+Copy - Paste in R console prompt: after `>`, then press `enter` key
+```{r eval=FALSE}
+tmpData = readLines("https://antoinechn.github.io/Konstanz-SummerSchool/data/KBrO3_kinetics.txt")
+writeLines(tmpData, "KBrO3_kinetics.txt")
+rm(tmpData)
+```
+
+- once this is done, type `list.files()` in R console prompt: after `>`, then press `enter` key
+- R should print all files in your working directory. Check if `KBrO3_kinetics.txt` is listed
+- if still not 
+    - check your internet connection !!!
+    - or contact us.
+
+```{r eval = FALSE}
+list.files()
+```
+
+</div>
+</div>
+
+# KBrO~3~ in RPTEC cells
+
+## Load data
+
+We will fist model the *in vitro* kinetics of KBrO~3~ in RPTEC cells
+
+```{r eval = T}
+# read the data from a file
+kinetic.data = read.table("KBrO3_kinetics.txt")
+
+exists("kinetic.data")
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#SOSLoadData"> Need help ? </button> 
+<div id="SOSLoadData" class="collapse">  
+<div class="boxed">
+
+**Try this**
+```{r eval = F}
+kinetic.data = read.table("https://trello-attachments.s3.amazonaws.com/59552633a56853b5f6d1f1f9/5a92760183331b90626ce166/f99b2b57b957d442cec69446144ff461/KBrO3_kinetics.txt")
+exists("kinetic.data")
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#SOSLoadDataM2"> Still not working ? </button> 
+<div id="SOSLoadDataM2" class="collapse">  
+
+**Try this**
+```{r eval = F}
+kinetic.data = read.table("https://antoinechn.github.io/Konstanz-SummerSchool/data/KBrO3_kinetics.txt")
+exists("kinetic.data")
+```
+
+</div>
+</div>
+</div>
+
+----
+
+----
+
+## Print `kinetic.data`
+
+```{r}
+# how big?
+dim(kinetic.data)
+# small: look at them all
+kinetic.data
+```
+
+## Plot `kinetic.data`
+
+- Plot the data to get a sense of it
+
+```{r dataVisualisation}
+# plot them on two panels 
+par(mfrow=c(1,2)) # 1 row, two columns
+plot(kinetic.data[,1], kinetic.data[,2], las=1, type="b",
+     xlab="Time (min)", ylab="KBrO3 (mM)",
+     log="", pch=16, cex=1.3, cex.lab=1.2, col="orange")
+plot(kinetic.data[,1], kinetic.data[,3], las=1, type="b",
+     xlab="Time (min)", ylab="",
+     log="", pch=16, cex=1.3, cex.lab=1.2, col="red")
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Output_dataVisualisation"> Show output </button> 
+<div id="Output_dataVisualisation" class="collapse">  
+<div class="boxed">
+
+```{r ref.label="dataVisualisation", eval=TRUE, echo=FALSE}
+```
+
+</div>
+</div>
+
+----
+
+----
+
+## Modelling
+
+Now we need a model for those data. They look like decreasing exponential (quite usual). It is customary to look at them on a log y-scale.
+
+### Plot the data on a log y-scale
+
+```{r dataVisualisation_logY}
+par(mfrow=c(1,2))
+plot(kinetic.data[,1], kinetic.data[,2], las=1, type="b",
+     xlab="Time (min)", ylab="KBrO3 (mM)",
+     log="y", pch=16, cex=1.3, cex.lab=1.2, col="orange")
+plot(kinetic.data[,1], kinetic.data[,3], las=1, type="b",
+     xlab="Time (min)", ylab="",
+     log="y", pch=16, cex=1.3, cex.lab=1.2, col="red")
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#Output_dataVisualisation_logY"> Show output </button> 
+<div id="Output_dataVisualisation_logY" class="collapse">  
+<div class="boxed">
+
+```{r ref.label="dataVisualisation_logY", eval=TRUE, echo=FALSE}
+```
+
+</div>
+</div>
+
+### Model
+
+It seems that there is only one line (not two or more lines joined with different slopes. In this case a mono-exponential decrease model will probably do. That model would be:
+
+$$KBrO_3 = C_0 * \exp(-k \times time)$$
+
+#### Question { - }
+
+- What values should we give to parameters $C_O$ and $k$? 
+    - for $C_0$ ? <button class="btn btn-primary" data-toggle="collapse" data-target="#SetParameter_C0"> Show answer </button> 
+    - for $k$, try different values till you match the low dose data, let's begin with $k = 0$ : <button class="btn btn-primary" data-toggle="collapse" data-target="#SetParameter_k"> show plot</button> 
+
+
+<!-- ```{r, eval=F} -->
+<!-- CO = ? -->
+<!-- ``` -->
+
+<div id="SetParameter_C0" class="collapse">  
+<div class="boxed">
+$C_0$ is obvious $0.375$
+```{r eval = T}
+C0 = 0.375
+```
+</div>
+</div>
+
+
+<div id="SetParameter_k" class="collapse">  
+<div class="boxed">
+
+```{r FitPlot, eval=T}
+k = 0 # Try different values till you match the low dose data
+
+KBrO3 = C0 * exp(-k * kinetic.data[,1])
+
+par(mfrow=c(1,2))
+plot(kinetic.data[,1], kinetic.data[,2], las=1, type="b",
+     xlab="Time (min)", ylab="KBrO3 (mM)",
+     log="y", pch=16, cex=1.3, cex.lab=1.2, col="orange")
+lines(kinetic.data[,1], KBrO3, col="blue")
+```
+
+</div>
+</div>
+
+#### Exercise { - }
+
+- repeat the above lines, changing k value, till you find a decent fit
+- report the value found:
+$$k = ?$$
+
+#### Solution { - }
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#OnePossibleFit"> Show one possible fit </button> 
+
+<div id="OnePossibleFit" class="collapse">
+<div class="boxed">
+
+```{r AGoodFit, eval = T, echo=FALSE}
+C0 = 0.375
+k = 0.00209
+
+KBrO3 = C0 * exp(-k * kinetic.data[,1])
+par(mfrow=c(1,2))
+plot(kinetic.data[,1], kinetic.data[,2], las=1, type="b",
+     xlab="Time (min)", ylab="KBrO3 (mM)",
+     log="y", pch=16, cex=1.3, cex.lab=1.2, col="orange",
+     main = "this seems to be a good fit")
+lines(kinetic.data[,1], KBrO3, col="blue")
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#OnePossibleFit_par"> Show paramters </button>
+<div id="OnePossibleFit_par" class="collapse">
+- `C0 = 0.375`
+- `k = 0.00209`
+
+```{r ref.label='AGoodFit'}
+```
+</div>
+
+</div>
+</div>
+
+----
+
+#### Exercise { - }
+
+- Does it work at high dose? ($k$ might depend on the dose...)
+- how would you check it?
+
+#### Soluction { - }
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#OnePossibleFit_HighDose"> Show solution </button>
+<div id="OnePossibleFit_HighDose" class="collapse">
+<div class="boxed">
+```{r PlotHighDost}
+C0 = 6
+k = 0.00209
+
+KBrO3 = C0 * exp(-k * kinetic.data[,1])
+par(mfrow=c(1,2))
+plot(kinetic.data[,1], kinetic.data[,3], las=1, type="b",
+     xlab="Time (min)", ylab="KBrO3 (mM)",
+     log="y", pch=16, cex=1.3, cex.lab=1.2, col="red")
+lines(kinetic.data[,1], KBrO3, col="blue")
+```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#OnePossibleFit_HighDosePlot"> Show plot </button>
+<div id="OnePossibleFit_HighDosePlot" class="collapse">
+```{r ref.label='PlotHighDost', eval=T, echo = F}
+```
+</div>
+</div>
+</div>
+
+----
+
+----
+
+# Back to `data_GSH`
+
+OK, so now we should have the KBrO3 kinetics about OK. let's reanalyze the KBrO3 - GSH data, taking the kinetics into account.
+
+## Load `data_GSH`
+
+```{r repeatGHS, eval=T, results="hide", fig.show='hide'}
+# re-read the GSH data
+data_GSH = read.table("data_GSH.txt", sep="\t", header=TRUE)
+data_GSH
+# replot the data
+plot(data_GSH$KBrO3_mM, data_GSH$pct_control)
+```
+
+Remember that we have fitted a Hill dose-response model to that data
+
+```{r}
+Hill = function (x, EC50, n, from, diff) {
+  return(from + diff * (x^n / (x^n + EC50^n)))
+}
+```
+
+## Discussion { - }
+
+`x` was the nominal (initial) concentration of `KBrO3` in the medium, but now we know that `KBrO3` disappears progressively (probably by reduction to bromide). So, what should be `x`? 
+- Should we take the concentration of KBrO3 at 1 hour, or or the average concentration over the 1st hour?
+
+**Recall** The `GSH` measurements were made after 1 hour. 
+
+```{r eval = F}
+# If we take the concentration at 1h we should use
+KBrO3 = C0 * exp(-k * 1 * 60) # 1 hour is 60 minutes...
+```
+```{r eval = F}
+If we take the average we should use
+KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)
+```
+
+### Questions { - } 
+
+- Does it make any difference? why?
+    - Let's try it
+```{r eval=T}
+# define the Hill dose-response model as a function
+Hill = function (x, EC50, n) {
+  return(x^n / (x^n + EC50^n))
+}
+Hill(x=KBrO3, EC50=1, n=1)
+```
+    - plot it...  <button class="btn btn-primary" data-toggle="collapse" data-target="#DoseResponseModelPlot"> Show output </button>
+```{r DoseResponseModelPlot}
+x = KBrO3
+y = Hill(x=KBrO3, EC50=1, n=1)
+plot(x, y, type="b")
+```
+
+<div id="OnePossibleFit_HighDose" class="collapse">
+<div class="boxed">
+```{r ref.label='DoseResponseModelPlot', eval=T}
+```
+</div>
+</div>
+
+- Define a sequence of nominal concentrations
+
+```{r eval = T}
+Hill = function (x, EC50, n, from, diff) {
+  return(from + diff * (x^n / (x^n + EC50^n)))
+}
+# define an extended Hill dose-response model as a function
+
+C0 = seq(0, 10, 0.1)
+# the actual bromate concentration seen by the cells was:
+par(mfrow= c(1,2))
+KBrO3 = C0 * exp(-k * 1 * 60) # Model 1
+y = Hill(x=KBrO3, EC50=10, n=1, from=100, diff=-100)
+plot(C0, y, type="b", main = "KBrO3 = C0 * exp(-k * 1 * 60)")
+
+KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)
+y = Hill(x=KBrO3, EC50=10, n=1, from=100, diff=-100) # Model 2
+plot(C0, y, type="b", main = "KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)")
+```
+
+# the actual bromate concentration seen by the cells was:
+
+- `KBrO3 = C0 * exp(-k * 1 * 60)` ? 
+$$KBrO_3 = C_0 \exp(-k\times1\times60)$$
+- `KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)` ? 
+$$KBrO_3 = \frac{-\frac{C_0\exp(-k\times60)}{k}+\frac{C_0\exp(0)}{k}}{60-0}$$
+
+
+<!-- ```{r} -->
+<!-- # define an extended Hill dose-response model as a function -->
+<!-- Hill = function (x, EC50, n, from, diff) { -->
+<!--   return(from + diff * (x^n / (x^n + EC50^n))) -->
+<!-- } -->
+
+<!-- k = 1 -->
+<!-- C0 = seq(0, 10, 0.1) -->
+<!-- KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0) -->
+<!-- y = Hill(x=KBrO3, EC50=0.5, n=1.8, from=100, diff=-100) -->
+<!-- plot(C0, y, type="b") -->
+<!-- ``` -->
+
+### Exercise { - }
+
+Now replot the data and overlay with the model
+
+**Remark** make sure to define the axes limits before doing overlays...
+
+```{r}
+xlims = c(0, 6) # a vector of min and max
+ylims = c(0, 120)
+plot(data_GSH$KBrO3_mM, data_GSH$pct_control, xlim=xlims, ylim=ylims, col="red")
+par(new=T) # will overlay the next plot
+plot(C0, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
+```
+
+- now play with EC50 and N to fit the data better
+
+**we have coupled PK and PD (dose-response)**
+
+```{r, include=F}
+xlims = c(0, 6) # a vector of min and max
+ylims = c(0, 120)
+y = Hill(x=KBrO3, EC50=0.5, n=1.8, from=100, diff=-100) 
+plot(data_GSH$KBrO3_mM, data_GSH$pct_control, xlim=xlims, ylim=ylims, col="red")
+par(new=T) # will overlay the next plot
+plot(C0, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
+```
+
 
