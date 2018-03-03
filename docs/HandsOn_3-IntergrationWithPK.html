@@ -1900,16 +1900,17 @@ plot(C0, y, type=&quot;b&quot;, main = &quot;KBrO3 = (-C0*exp(-k * 60)/k + C0*ex
 <li><code>KBrO3 = C0 * exp(-k * 1 * 60)</code> ? <span class="math display">\[KBrO_3 = C_0 \exp(-k\times1\times60)\]</span></li>
 <li><code>KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)</code> ? <span class="math display">\[KBrO_3 = \frac{-\frac{C_0\exp(-k\times60)}{k}+\frac{C_0\exp(0)}{k}}{60-0}\]</span></li>
 </ul>
-<pre class="r"><code># define an extended Hill dose-response model as a function
-Hill = function (x, EC50, n, from, diff) {
-  return(from + diff * (x^n / (x^n + EC50^n)))
-}
-
-k = 1
-C0 = seq(0, 10, 0.1)
-KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)
-y = Hill(x=KBrO3, EC50=0.5, n=1.8, from=100, diff=-100)
-plot(C0, y, type=&quot;b&quot;)</code></pre>
+<!-- ```{r} -->
+<!-- # define an extended Hill dose-response model as a function -->
+<!-- Hill = function (x, EC50, n, from, diff) { -->
+<!--   return(from + diff * (x^n / (x^n + EC50^n))) -->
+<!-- } -->
+<!-- k = 1 -->
+<!-- C0 = seq(0, 10, 0.1) -->
+<!-- KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0) -->
+<!-- y = Hill(x=KBrO3, EC50=0.5, n=1.8, from=100, diff=-100) -->
+<!-- plot(C0, y, type="b") -->
+<!-- ``` -->
 <div id="exercise-2" class="section level3 unnumbered">
 <h3>Exercise</h3>
 <p>Now replot the data and overlay with the model</p>
@@ -1923,6 +1924,9 @@ plot(C0, y, type=&quot;l&quot;, xlim=xlims, ylim=ylims, xlab=&quot;&quot;, ylab=
 <li>now play with EC50 and N to fit the data better</li>
 </ul>
 <p><strong>we have coupled PK and PD (dose-response)</strong></p>
+<hr />
+<hr />
+<p><a href="https://goo.gl/j9PYg4">Back to home</a></p>
 </div>
 </div>
 

@@ -158,7 +158,7 @@ head(data_GSH)
 
 ----
 
-# Data visualisation using `plot()` function
+# Data visualisation using `plot()`
 
 Plot the data to get a sense of it
 ```{r BA_Plot}
@@ -400,7 +400,7 @@ plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 - `A = 100`
 - `B = -100`
 - `EC50 = 0.5`
-- `N = 1.8`
+- `n = 1.8`
 </div>
 </div>
 </div>
@@ -409,3 +409,5 @@ plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 ## Notes
 
 There are many tools in R that can be used to fit automatically your model one of them is PROAST (from the RIVM) but we can also access PROAST online (more fun)
+
+[Back to home](https://goo.gl/j9PYg4)

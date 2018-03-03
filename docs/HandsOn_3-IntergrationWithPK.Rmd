@@ -444,4 +444,8 @@ par(new=T) # will overlay the next plot
 plot(C0, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 ```
 
+----
 
+----
+
+[Back to home](https://goo.gl/j9PYg4)

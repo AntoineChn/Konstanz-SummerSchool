@@ -37,7 +37,7 @@ output:
 <!-- ----------------------------------------------------------------------------------------------------------------------------------- -->
 
 
-# The bnlearn package
+# `bnlearn` package
 The `bnlearn` package is the most complete and popular package for Bayesian Networks available to the date in R. We will start our tutorial by reviewing some of its capacities.
 
 First we should install and load the package.
@@ -844,3 +844,9 @@ L_ratio
 ```
 </div>
 </div>
+
+----
+
+----
+
+[Back to home](https://goo.gl/j9PYg4)
