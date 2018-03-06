@@ -62,7 +62,7 @@ m  # Print the map
 - Hands-on 0 : [Instructions for R](https://goo.gl/v8qt4S)
 - Hands-on 1 : [Dose-Response Modelling](https://goo.gl/rVf2Uq)
 - Hands-on 2 : [Bayesian networks](https://goo.gl/AMr81p)
-- Hands-on 3 : [PK modelling](https://goo.gl/GF5BaC)
+- Hands-on 3 : [PK Modelling and AOPs](https://goo.gl/GF5BaC)
 
 
 <!-- - Hands-on 0 : [Instructions for R](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_0-InstructionsForR.html) -->
