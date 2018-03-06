@@ -70,3 +70,15 @@ m  # Print the map
 <!-- - Hands-on 2 : [Bayesian networks](https://antoinechn.github.io/Konstanz-SummerSchool/HandsOn_2-BayesianNetworks.html) -->
 <!-- - Hands-on 3 : PK modelling : Coming soon -->
 
+
+<!-- ![](https://trello-attachments.s3.amazonaws.com/59552633a56853b5f6d1f1f9/5a92760183331b90626ce166/962e327a8ff09ffae7dfe43703d2d2df/EU-ToxRisk_Summer_School-Modelling_and_Extrapolation_06-09_March_2018-KonstanzDay3.png){ width=100% } -->
+
+----
+
+----
+
+# Agenda
+```{r eval=T, echo=F, out.width='100%'}
+# knitr::include_graphics('https://trello-attachments.s3.amazonaws.com/59552633a56853b5f6d1f1f9/5a92760183331b90626ce166/ecd3805de6addb3a946f216199b177af/EU-ToxRisk_Summer_School-Modelling_and_Extrapolation_06-09_March_2018-KonstanzDay3.pdf')
+knitr::include_graphics('https://trello-attachments.s3.amazonaws.com/59552633a56853b5f6d1f1f9/5a92760183331b90626ce166/962e327a8ff09ffae7dfe43703d2d2df/EU-ToxRisk_Summer_School-Modelling_and_Extrapolation_06-09_March_2018-KonstanzDay3.png')
+```
