@@ -3059,11 +3059,11 @@ graphviz.plot(dag_mydag, sub = &quot;My DAG&quot;)</code></pre>
 <div id="questions-2" class="section level4 unnumbered">
 <h4>Questions</h4>
 <ul>
-<li>learn a BN structure base on <code>asia</code> data set.
+<li>learn a BN structure base on <code>asia</code> data set (Following functions will allow you to do this.)
 <ul>
 <li><code>gs(asia)</code></li>
 <li><code>iamb(asia)</code> (optional)</li>
-<li><code>inter.iamb(asia)</code> (optional) will allow you to do this.</li>
+<li><code>inter.iamb(asia)</code> (optional)</li>
 </ul></li>
 <li>plot the BN structure (output of <code>gs()</code> or <code>iamb()</code> or <code>inter.iamb()</code>)</li>
 <li>What do you observe ? Is this a DAG ? What is the type of this graph ?</li>
@@ -3531,9 +3531,9 @@ prop.table(
 <ul>
 <li>Estime following probabilties using <code>cpquery()</code>
 <ul>
-<li><span class="math inline">\(\hat{\Pr}(L)\)</span> : Probability of an individual having lung cancer</li>
-<li><span class="math inline">\(\hat{\Pr}(L|S = no)\)</span> : Probability of an individual having lung cancer given that he/she has smoking history</li>
-<li><span class="math inline">\(\hat{\Pr}(L|S = yes)\)</span> : Probability of an individual having lung cancer given that he/she has <strong>NO</strong> smoking history.</li>
+<li><span class="math inline">\(\hat{\Pr} (L)\)</span> : Probability of an individual having lung cancer</li>
+<li><span class="math inline">\(\hat{\Pr} (L|S = no)\)</span> : Probability of an individual having lung cancer given that he/she has smoking history</li>
+<li><span class="math inline">\(\hat{\Pr} (L|S = yes)\)</span> : Probability of an individual having lung cancer given that he/she has <strong>NO</strong> smoking history.</li>
 </ul></li>
 <li>Cluculate the ratio between <span class="math inline">\(\Pr(L|S = yes)\)</span> and <span class="math inline">\(\Pr(L|S = no)\)</span></li>
 <li>Compare the ratio with “Exercise 1 in Data-driven approach”</li>

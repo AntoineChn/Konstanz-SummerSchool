@@ -405,6 +405,10 @@ plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 </div>
 </div>
 
+## Inverting the Hill dose-reponse model
+
+- Can you code a function inverting the Hill dose-response model?
+- Plot the function you found.
 
 ## Notes
 

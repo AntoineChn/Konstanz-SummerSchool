@@ -409,10 +409,10 @@ Some constraint-based learning algorithms :
 - Inter-IAMB
 
 #### Questions { - } 
-- learn a BN structure base on `asia` data set. 
+- learn a BN structure base on `asia` data set (Following functions will allow you to do this.)
     - `gs(asia)`
     - `iamb(asia)` (optional)
-    - `inter.iamb(asia)` (optional) will allow you to do this.
+    - `inter.iamb(asia)` (optional)
 - plot the BN structure (output of `gs()` or `iamb()` or `inter.iamb()`)
 - What do you observe ? Is this a DAG ? What is the type of this graph ?
 
@@ -809,9 +809,9 @@ prop.table(
 ### Exercise { - }
 
 - Estime following probabilties using `cpquery()` 
-    - $\hat{\Pr}(L)$ : Probability of an individual having lung cancer 
-    - $\hat{\Pr}(L|S = no)$ : Probability of an individual having lung cancer given that he/she has smoking history 
-    - $\hat{\Pr}(L|S = yes)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
+    - $\hat{\Pr} (L)$ : Probability of an individual having lung cancer 
+    - $\hat{\Pr} (L|S = no)$ : Probability of an individual having lung cancer given that he/she has smoking history 
+    - $\hat{\Pr} (L|S = yes)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
 - Cluculate the ratio between $\Pr(L|S = yes)$ and $\Pr(L|S = no)$
 - Compare the ratio with "Exercise 1 in Data-driven approach"
 
