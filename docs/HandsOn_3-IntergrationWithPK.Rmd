@@ -78,14 +78,14 @@ rm(tmpData)
 ```
 
 - once this is done, type `list.files()` in R console prompt: after `>`, then press `enter` key
+```{r eval = FALSE}
+list.files()
+```
 - R should print all files in your working directory. Check if `KBrO3_kinetics.txt` is listed
 - if still not 
     - check your internet connection !!!
     - or contact us.
 
-```{r eval = FALSE}
-list.files()
-```
 
 </div>
 </div>
@@ -99,7 +99,6 @@ We will fist model the *in vitro* kinetics of KBrO~3~ in RPTEC cells
 ```{r eval = T}
 # read the data from a file
 kinetic.data = read.table("KBrO3_kinetics.txt")
-
 exists("kinetic.data")
 ```
 
@@ -132,7 +131,7 @@ exists("kinetic.data")
 
 ## Print `kinetic.data`
 
-```{r}
+```{r eval = T}
 # how big?
 dim(kinetic.data)
 # small: look at them all
@@ -145,7 +144,7 @@ kinetic.data
 
 ```{r dataVisualisation}
 # plot them on two panels 
-par(mfrow=c(1,2)) # 1 row, two columns
+par(mfrow=c(1,2)) # One row, Two columns
 plot(kinetic.data[,1], kinetic.data[,2], las=1, type="b",
      xlab="Time (min)", ylab="KBrO3 (mM)",
      log="", pch=16, cex=1.3, cex.lab=1.2, col="orange")
@@ -168,9 +167,9 @@ plot(kinetic.data[,1], kinetic.data[,3], las=1, type="b",
 
 ----
 
-## Modelling
+## Kinetic Modelling
 
-Now we need a model for those data. They look like decreasing exponential (quite usual). It is customary to look at them on a log y-scale.
+Now we need a model for those data. They look like decreasing exponentially (quite usual). It is customary to look at them on a log y-scale.
 
 ### Plot the data on a log y-scale
 
@@ -198,7 +197,7 @@ plot(kinetic.data[,1], kinetic.data[,3], las=1, type="b",
 
 It seems that there is only one line (not two or more lines joined with different slopes. In this case a mono-exponential decrease model will probably do. That model would be:
 
-$$KBrO_3 = C_0 * \exp(-k \times time)$$
+$$KBrO_3 = C_0  \times e^{-k \cdot \text{time}}$$
 
 #### Question { - }
 
@@ -313,9 +312,9 @@ lines(kinetic.data[,1], KBrO3, col="blue")
 
 ----
 
-# Back to `data_GSH`
+# KBrO~3~ - GHS - Kinetics
 
-OK, so now we should have the KBrO3 kinetics about OK. let's reanalyze the KBrO3 - GSH data, taking the kinetics into account.
+OK, so now we should have the KBrO~3~ kinetics about OK. let's reanalyze the KBrO~3~ - GSH data, taking the kinetics into account.
 
 ## Load `data_GSH`
 
@@ -337,8 +336,11 @@ Hill = function (x, EC50, n, from, diff) {
 
 ## Discussion { - }
 
-`x` was the nominal (initial) concentration of `KBrO3` in the medium, but now we know that `KBrO3` disappears progressively (probably by reduction to bromide). So, what should be `x`? 
-- Should we take the concentration of KBrO3 at 1 hour, or or the average concentration over the 1st hour?
+`x` was the nominal (initial) concentration of `KBrO3` in the medium, but now we know that `KBrO3` disappears progressively (probably by reduction to bromide). 
+
+- So, what should be `x`? 
+    - should we take the concentration of KBrO3 at 1 hour ?
+    - or the average concentration over the 1st hour?
 
 **Recall** The `GSH` measurements were made after 1 hour. 
 
@@ -347,38 +349,44 @@ Hill = function (x, EC50, n, from, diff) {
 KBrO3 = C0 * exp(-k * 1 * 60) # 1 hour is 60 minutes...
 ```
 ```{r eval = F}
-If we take the average we should use
+# If we take the average we should use
 KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)
 ```
 
 ### Questions { - } 
 
-- Does it make any difference? why?
-    - Let's try it
+**Does it make any difference? why?**
+
+- Let's try it
 ```{r eval=T}
+# Try : If we take the concentration at 1h
+KBrO3 = C0 * exp(-k * 1 * 60) # 1 hour is 60 minutes...
 # define the Hill dose-response model as a function
 Hill = function (x, EC50, n) {
   return(x^n / (x^n + EC50^n))
 }
 Hill(x=KBrO3, EC50=1, n=1)
 ```
-    - plot it...  <button class="btn btn-primary" data-toggle="collapse" data-target="#DoseResponseModelPlot"> Show output </button>
+
+- plot it...  <button class="btn btn-primary" data-toggle="collapse" data-target="#DoseResponseModelPlot"> Show output </button>
 ```{r DoseResponseModelPlot}
 x = KBrO3
 y = Hill(x=KBrO3, EC50=1, n=1)
 plot(x, y, type="b")
 ```
 
-<div id="OnePossibleFit_HighDose" class="collapse">
+<div id="DoseResponseModelPlot" class="collapse">
 <div class="boxed">
-```{r ref.label='DoseResponseModelPlot', eval=T}
+```{r ref.label='DoseResponseModelPlot', eval=T, echo = F}
 ```
 </div>
 </div>
 
+----
+
 - Define a sequence of nominal concentrations
 
-```{r eval = T}
+```{r eval = T, fig.align='center', fig.show='hold', fig.width=13}
 Hill = function (x, EC50, n, from, diff) {
   return(from + diff * (x^n / (x^n + EC50^n)))
 }
@@ -402,6 +410,7 @@ plot(C0, y, type="b", main = "KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 -
 $$KBrO_3 = C_0 \exp(-k\times1\times60)$$
 - `KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)` ? 
 $$KBrO_3 = \frac{-\frac{C_0\exp(-k\times60)}{k}+\frac{C_0\exp(0)}{k}}{60-0}$$
+$$KBrO_3 = \frac{-C_0e^{-60k} +C_0e^0}{60k}$$
 
 
 <!-- ```{r} -->
@@ -443,6 +452,26 @@ plot(data_GSH$KBrO3_mM, data_GSH$pct_control, xlim=xlims, ylim=ylims, col="red")
 par(new=T) # will overlay the next plot
 plot(C0, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 ```
+
+```{r, include=F}
+Hill = function (x, EC50, n, from, diff) {
+  return(from + diff * (x^n / (x^n + EC50^n)))
+}
+# define an extended Hill dose-response model as a function
+
+C0 = seq(0, 10, 0.1)
+# the actual bromate concentration seen by the cells was:
+par(mfrow= c(1,2))
+KBrO3 = C0 * exp(-k * 1 * 60) # Model 1
+y = Hill(x=KBrO3, EC50=0.5, n=1.8, from=100, diff=-100) 
+plot(C0, y, type="b", main = "KBrO3 = C0 * exp(-k * 1 * 60)")
+
+KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)
+y = Hill(x=KBrO3, EC50=0.5, n=1.8, from=100, diff=-100) 
+plot(C0, y, type="b", main = "KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)")
+```
+```
+
 
 ----
 
