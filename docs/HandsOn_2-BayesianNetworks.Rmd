@@ -39,7 +39,7 @@ output:
 
 # `bnlearn` package
 
-The `bnlearn` package is the most complete and popular package for Bayesian Networks available to the date in `R`.
+The `bnlearn` package is one of the most complete and popular package for Bayesian Networks available to the date in `R`.
 
 First we should install and load the package.
 
@@ -234,8 +234,10 @@ graphviz.plot(dag_example, sub = "Example DAG")
 **Remark** 
 
 ```{r eval = F}
+# the order doesn't matter
 model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthquake]")
 model2network("[Earthquake][Anxiety|Alert:Earthquake][Alert|Earthquake]")
+model2network("[Earthquake][Alert|Earthquake][Anxiety|Earthquake:Alert]")
 ```
 
 
@@ -409,7 +411,7 @@ graphviz.plot(dag_mydag, sub = "My DAG")
 
 ----
 
-```{r echo=FALSE, include=FALSE}
+```{r eval = F, echo=FALSE, include=FALSE}
 library(tidyverse)
 library(lubridate)
 plotD3bn <- function(bn) {
@@ -695,7 +697,7 @@ run2 <- replicate(100,
 
 #### - `cpquery()` { - }
 
-- Prior distribution of Lung cancer
+- Prior probability of `Dyspnea` being `yes`
 
 ```{r}
 # cpquery(fitted, event, evidence, cluster = NULL, method = "ls", ..., debug = FALSE)
@@ -707,7 +709,7 @@ cpquery(fitted = bn_dag_Laur,
         n = 100000)
 ```
 
-- Posterior distribution of Lung cancer given Smoking history being "no"
+- Posterior probability of `Dyspnea = yes` given Lung cancer being `no`
 
 ```{r}
 # Posterior distribution of Lung cancer given Smoking history being "no"
@@ -718,7 +720,7 @@ cpquery(fitted = bn_dag_Laur,
 
 ```
 
--  Posterior distribution of Lung cancer given Smoking history being "yes" 
+-  Posterior probability of `Dyspnea = yes` given Lung cancer being `yes`
 
 ```{r}
 # Posterior distribution of Lung cancer given Smoking history being "yes"
@@ -766,16 +768,11 @@ prop.table(
     - $\Pr (L = yes\,|\,S = yes)$ : Probability of an individual having lung cancer 
     - $\Pr (L = yes\,|\,S = no)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
     - $\Pr (L = yes)$
-
-**Recall**
-
-$$\Pr(L = yes) = {\huge[} \Pr(L = yes\,|\,S = yes) \times \Pr(S = yes){\huge+}\Pr(L = yes\,|\,S = no)\times\Pr(S = no){\huge]} $$
-
 - Estime following probabilties using `cpquery()` 
     - $\hat{\Pr} (L = yes)$ : Probability of an individual having lung cancer 
-    - $\hat{\Pr} (L = yes|S = yes)$ : Probability of an individual having lung cancer given that he/she has smoking history 
-    - $\hat{\Pr} (L = yes|S = no)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
-- Calculate the ratio between $\hat{\Pr}(L = yes|S = yes)$ and $\hat{\Pr}(L = yes|S = no)$
+    - $\hat{\Pr} (L = yes\,|\,S = yes)$ : Probability of an individual having lung cancer given that he/she has smoking history 
+    - $\hat{\Pr} (L = yes\,|\,S = no)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
+- Calculate the ratio between $\hat{\Pr}(L = yes\,|\,S = yes)$ and $\hat{\Pr}(L = yes\,|\,S = no)$
 - Compare the ratio with "Exercise 4.1 under Section 4.1 Data-driven approach"
 
 #### Solution { - }
@@ -783,6 +780,24 @@ $$\Pr(L = yes) = {\huge[} \Pr(L = yes\,|\,S = yes) \times \Pr(S = yes){\huge+}\P
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Prediction"> Show/Hide </button>  
 <div id="Prediction" class="collapse">  
 <div class="boxed">
+
+- Calculate by hand 
+    - $\Pr (L = yes\,|\,S = yes) = 0.11769384$ (read from `coef(bn_dag_Laur$L)`)
+    - $\Pr (L = yes\,|\,S = no) = 0.01368209$ (read from `coef(bn_dag_Laur$L)`)
+    -  $\Pr (L = yes) = 0.11769384 \times 0.503 + 0.01368209 \times 0.497 = 0.066$
+
+**Recall**
+
+$$\Pr(L = yes) = {\huge[} \Pr(L = yes\,|\,S = yes) \times \Pr(S = yes){\huge+}\Pr(L = yes\,|\,S = no)\times\Pr(S = no){\huge]} $$
+
+```{r eval = F}
+coef(bn_dag_Laur$L)
+coef(bn_dag_Laur$S)
+0.11769384 * 0.503 + 0.01368209 * 0.497 # sum(coef(bn_dag_Laur$L) [2,] * coef(bn_dag_Laur$S))
+```
+
+
+- Estime following probabilties using `cpquery()`
 
 ```{r}
 set.seed(20180308)
@@ -815,14 +830,13 @@ L_ratio
 
 - Estime following probabilties using `cpquery()` 
     - $\hat{\Pr} (S)$ : Probability of an individual having smoking history 
-    - $\hat{\Pr} (S = yes|L = yes)$ : Probability of an individual having smoking history given that he/she has lung cancer  
-    - $\hat{\Pr} (S = yes|L = no)$ : Probability of an individual having smoking history given that he/she does **NOT** have lung cancer.
-- Calculate the ratio between $\hat{\Pr}(S = yes |L = yes)$ and $\hat{\Pr}(S = yes|L = no)$
-- Calculate (by hand) the ratio between $\Pr(S|L = yes)$ and $\Pr(S|L = no)$
+    - $\hat{\Pr} (S = yes\,|\,L = yes)$ : Probability of an individual having smoking history given that he/she has lung cancer  
+    - $\hat{\Pr} (S = yes\,|\,L = no)$ : Probability of an individual having smoking history given that he/she does **NOT** have lung cancer.
+- Calculate the ratio between $\hat{\Pr}(S = yes \,|\,L = yes)$ and $\hat{\Pr}(S = yes\,|\,L = no)$
+- Calculate (by hand) the ratio between $\Pr(S = yes \,|\,L = yes)$ and $\Pr(S = yes \,|\,L = no)$ (homework!!)
 
 <!-- **Recall** Bayes Rule: -->
 <!-- $$\Pr(B|A) = \frac{\Pr(A|B) \times \Pr(B)}{\Pr(A)}$$ -->
-
 
 <!-- $$\Pr(L = yes) = {\huge[} \Pr(L = yes\,|\,S = yes) \times \Pr(S = yes){\huge+}\Pr(L = yes\,|\,S = no)\times\Pr(S = no){\huge]} $$ -->
 
