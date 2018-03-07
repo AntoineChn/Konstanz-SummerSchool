@@ -571,7 +571,11 @@ length(c("aa", "bb", "cc", "dd", "ee"))
 ```
 ----
 
-[Back to home](https://goo.gl/j9PYg4)
-
 -->
+
+----
+
+----
+
+[Back to home](https://goo.gl/j9PYg4)
 
