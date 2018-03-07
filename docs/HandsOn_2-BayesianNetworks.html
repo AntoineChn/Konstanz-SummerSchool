@@ -1457,7 +1457,7 @@ $(document).ready(function ()  {
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
     };
-    options.showAndHide = false;
+    options.showAndHide = true;
     options.smoothScroll = true;
 
     // tocify
@@ -1520,12 +1520,6 @@ div.tocify {
   border-radius: 0px;
 }
 
-.tocify-subheader {
-  display: inline;
-}
-.tocify-subheader .tocify-item {
-  font-size: 0.95em;
-}
 
 </style>
 
@@ -2048,6 +2042,7 @@ score(dag_learn_hc, asia)</code></pre>
 <li><strong>Bayesian estimation</strong>.</li>
 </ul>
 <p>Parameter estimates are based only on the subset of data spanning the considered variable and its parents. <!-- The `bn.fit` function from `bnlearn` will automatically determine the type of data and fit parameters. --> When using <code>bnlearn</code>, parameter learning is performed by the <code>bn.fit</code> function, which takes the network structure and the data as <em>arguments</em>.</p>
+<hr />
 <div id="exercise-4.1" class="section level3 unnumbered">
 <h3>Exercise 4.1</h3>
 <div id="questions-3" class="section level4 unnumbered">
@@ -2225,14 +2220,12 @@ fitted</code></pre>
 </div>
 <div id="exercises-prediction" class="section level1">
 <h1><span class="header-section-number">5</span> Exercises: Prediction</h1>
-<div id="inference-and-probability-queries" class="section level2">
-<h2><span class="header-section-number">5.1</span> Inference and probability queries</h2>
+<p><strong>Inference and probability queries</strong></p>
 <p>The inference engine of <code>bnlearn</code> is limited, but it can be used to test the networks and to perform basic operations with the models.</p>
 <p>By using <code>cpquery()</code> we can ask for the probability of an <code>event</code> given a set of <code>evidence</code>. We may ask for a particular combination of configurations in the BN and a set of observed statuses for the variables in the evidence. For example we could ask, what is the posibility of a positive cancer diagnosis for a person that smokes?, in the <code>asia</code> network.</p>
 <p>Reference : <a href="http://jarias.es/bayesnetRtutorial/#inference_and_probability_queries" class="uri">http://jarias.es/bayesnetRtutorial/#inference_and_probability_queries</a></p>
-</div>
 <div id="conditional-probability-query" class="section level2">
-<h2><span class="header-section-number">5.2</span> Conditional probability query</h2>
+<h2><span class="header-section-number">5.1</span> Conditional probability query</h2>
 <ul>
 <li>Interested in the marginal posterior probability distribution of variables given evidence on other variables</li>
 <li>Most likely outcome (a.k.a. maximum a posteriori)</li>

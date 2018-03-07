@@ -8,7 +8,7 @@ output:
     toc: yes
     toc_depth: 3
     toc_float:
-      collapsed: false
+      collapsed: true
       smooth_scroll: true
 ---
 
@@ -535,6 +535,8 @@ Parameter estimates are based only on the subset of data spanning the considered
 <!-- The `bn.fit` function from `bnlearn` will automatically determine the type of data and fit parameters. -->
 When using `bnlearn`, parameter learning is performed by the `bn.fit` function, which takes the network structure and the data as *arguments*.
 
+----
+
 ### Exercise 4.1 { - }
 
 #### Questions { - }
@@ -614,7 +616,7 @@ fitted
 
 # Exercises: Prediction
 
-## Inference and probability queries
+**Inference and probability queries**
 
 The inference engine of `bnlearn` is limited, but it can be used to test the networks and to perform basic operations with the models.
 
