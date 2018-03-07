@@ -38,11 +38,14 @@ output:
 
 
 # `bnlearn` package
-The `bnlearn` package is the most complete and popular package for Bayesian Networks available to the date in R. We will start our tutorial by reviewing some of its capacities.
+
+
+
+The `bnlearn` package is the most complete and popular package for Bayesian Networks available to the date in `R`. We will start our tutorial by reviewing some of its capacities.
 
 First we should install and load the package.
 
-*Please make sure that you either download or compile at least `bnelarn` 4.2.x as previous versions might have some bugs.
+**Please make sure that you either download or compile at least `bnelarn 4.2.x` as previous versions might have some bugs.**
 
 You should check out the documentation that is available online [[Link]](http://bnlearn.com/). It contains nice examples and additional use cases beyond this tutorial, if you are interested in this topic there are a couple of related books written by the author of the package, you can find the references in the mentioned website.
 
@@ -153,7 +156,7 @@ data(asia)
 # NOT RUN : colnames(asia)
 # Delete the column called "E"
 asia$E = NULL
-# Verify if the data set "asia" appears in the memory ?
+# Verify if the data set "asia" appears in the working environment ?
 ls()
 ```
 
@@ -305,6 +308,41 @@ graphviz.plot(dag_mydag)
 <!--     } -->
 <!-- } -->
 <!-- ``` -->
+
+
+```{r eval = F, include=F}
+plotD3bn <- function(bn) {
+  varNames <- nodes(bn)
+
+  # Nodes should be zero indexed!
+  links <- data.frame(arcs(bn)) %>%
+    mutate(from = match(from, varNames)-1, to = match(to, varNames)-1, value = 1)
+  
+  nodes <- data.frame(name = varNames) %>%
+    mutate(group = 1, size = 30)
+  
+  networkD3::forceNetwork(
+    Links = links,  
+    Nodes = nodes,
+    Source = "from",
+    Target = "to",
+    Value = "value",
+    NodeID = "name",
+    Group = "group",
+    fontSize = 20,
+    zoom = TRUE,
+    arrows = TRUE,
+    bounded = TRUE,
+    opacityNoHover = 1
+  )
+}
+if(!require(networkD3)) install.packages("networkD3")
+plotD3bn(dag_mydag)
+library(tidyverse)
+load(url("http://www.bnlearn.com/bnrepository/asia/asia.rda"))
+bn.net(bn)
+bn.fit.barchart(bn$dysp)
+```
 
 
 
@@ -809,10 +847,10 @@ prop.table(
 ### Exercise { - }
 
 - Estime following probabilties using `cpquery()` 
-    - $\hat{\Pr} (L)$ : Probability of an individual having lung cancer 
-    - $\hat{\Pr} (L|S = no)$ : Probability of an individual having lung cancer given that he/she has smoking history 
-    - $\hat{\Pr} (L|S = yes)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
-- Cluculate the ratio between $\Pr(L|S = yes)$ and $\Pr(L|S = no)$
+    - $\hat{\mathbb{P}} (L)$ : Probability of an individual having lung cancer 
+    - $\hat{\mathbb{P}} (L|S = no)$ : Probability of an individual having lung cancer given that he/she has smoking history 
+    - $\hat{\mathbb{P}} (L|S = yes)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
+- Cluculate the ratio between $\mathbb{P}(L|S = yes)$ and $\mathbb{P}(L|S = no)$
 - Compare the ratio with "Exercise 1 in Data-driven approach"
 
 ### Solution { - }

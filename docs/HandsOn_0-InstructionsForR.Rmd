@@ -31,9 +31,35 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, echo = FALSE}
+
+exercise_number <- 0
+exercise <- function(txt) {
+  exercise_number <<- exercise_number + 1
+  cat(paste0("\n**Exercise** ", exercise_number), paste0("*", txt, "*\n"))
+}
+
+```
+
+## Learning Objectives { - }
+
+* To gain familiarity with the buttons, options in the R GUI
+* To understand variables and how to assign to them
+* To be able to manage your workspace in an interactive R session
+* To be able to use mathematical and comparison operations
+* To be able to call functions
+
 # Introduction 
 
-## History
+**source :** Most of the material here was borrowed and adapted from 
+
+- http://kingaa.github.io/R_Tutorial/
+- https://ateucher.github.io/rcourse_site/
+- http://r4ds.had.co.nz/
+
+under the Creative Commons Attribution ([CC_BY](https://creativecommons.org/licenses/by/3.0/)) license.
+
+## What is R ?
 
 In 1991, R was created by Ross Ihaka and Robert Gentleman in the Department of Statistics at the University of Auckland. In 1993 the first announcement of R was made to the public. Ross’s and Robert’s experience developing R is documented in a 1996 paper in the Journal of Computational and Graphical Statistics:
 
@@ -120,110 +146,432 @@ src="https://www.youtube.com/embed/6-I0nd5ojXM">
 </div>
 </div>
 
-
-```{r, eval=FALSE, include=FALSE}
-c(420,315)*1.5
-```
-
-
 ----
 
 ----
+
 
 # Getting Started with R
 
-TODO
+Much of your time in R will be spent in the R interactive
+console. This is where you will run all of your code, and can be a
+useful environment to try out ideas before adding them to an R script file.
+
+The first thing you will see in the R interactive session is a bunch
+of information, followed by a ">" and a blinking cursor. It operates on the idea 
+of a "Read, Evaluate, Print loop" (REPL): 
+
+- you type in commands
+- R tries to execute them 
+- and then returns a result.
+
+## Start and stop `R`
+
+### Starting R { - }
+
+Click on the icon on your desktop, or in the Start menu (if you allowed the Setup program to make either or both of these).
+
+### Stopping R { - }
+    
+Stop `R` by typing `q()` at the command prompt. 
+
+**Remarks** 
+
+- the `()`: if you type `q` by itself, you will get some confusing output which is actually `R` trying to tell you the definition of the `q` function; more on this later.
+- When you quit, `R` will ask you if you want to save the workspace (that is, all of the variables you have defined in this session); in general, you should say “`no`” to avoid clutter and unintentional confusion of results from different sessions. 
+    - Note: When you say “`yes`” to saving your workspace, it is saved in a hidden file named .RData. By default, when you open a new `R` session in the same directory, this workspace is loaded and a message informing you so is printed:
+        - `[Previously saved workspace restored]`
+
+## Using R as a calculator
+
+When you start **R**, a console window is opened.
+The console has a few basic menus at the top; check them out on your own. 
+
+The console is where you enter commands for **R** to execute *interactively*, meaning that the command is executed and the result is displayed as soon as you hit the ` Enter` key. 
+(The simplest thing you could do with R is do arithmetic)
+
+For example, at the command prompt `>`, type in `2+2` and hit `Enter`; you will see 
+```{r }
+2+2 
+```
+
+And `R` will print out the answer, with a preceding "`[1]`". Don't worry about this. For now think of it as indicating ouput.
+
+If you type in an incomplete command, R will wait for you to
+complete it:
+
+~~~ {.r}
+> 2 +
+~~~
+
+~~~ {.output}
++
+~~~
+
+Any time you hit return and the R session shows a "`+`" instead of a "`>`", it
+means it's waiting for you to complete the command. If you want to cancel
+a command you can simply hit "`Esc`" and R will give you back the "`>`"
+prompt.
+
+When using R as a calculator, the order of operations is the same as you
+would have learnt back in school.
+
+From highest to lowest precedence:
+
+ * Parentheses: `(`, `)`
+ * Exponents: `^`
+ * Divide: `/`
+ * Multiply: `*`
+ * Add: `+`
+ * Subtract: `-`
+
+```{r}
+3 + 5 * 2
+```
+
+Use parentheses to group operations in order to force the order of
+evaluation if it differs from the default, or to make clear what you 
+intend.
+
+```{r}
+(3 + 5) * 2
+```
+
+This can get unwieldy when not needed, but clarifies your intentions.
+
+```{r, eval=FALSE}
+(3 + (5 * (2 ^ 2))) # hard to read
+3 + 5 * 2 ^ 2       # clear, if you remember the rules
+3 + 5 * (2 ^ 2)     # if you forget some rules, this might help
+```
+
+The text after each line of code is called a
+"comment". Anything that follows after the hash (or octothorpe) symbol
+`#` is ignored by `R` when it executes code.
+
+## Functions
+Most of `R`'s functionality comes from its **functions**. A function takes zero, one or multiple **arguments**, depending on the function, and returns a value. To call a function enter it's name followed by a pair of brackets - include any arguments in the brackets.
+```{r}
+exp(10)
+```
+
+To find out more about a function called `function_name` type `?function_name`. 
+<!-- To search for the functions associated with a topic type `??topic` or `??"multiple topics"`. As well as providing a detailed description of the command and how it works, scrolling ot the bottom of the help page will usually show a collection of code examples which illustrate command usage.  -->
+
+#### Exercise { - }
+
+Which function calculates sums? And what arguments does it take?
+
+## Variables and assignment
+
+We can store values in variables by giving them a name, and using the assignment operator `=`  (We should note that another form of assignment operator `<-` is also in use.):
+
+```{r}
+x = 1 / 40
+# This is equal to :
+# x <- 1 / 40
+```
+
+**R** automatically creates the variable `x` and stores the `0.025` in it, but by default doesn't print anything.
+
+To ask **R** to print the value, just type the variable name by itself
+```{r}
+x
+```
+
+Our variable `x` can be used in place of a number in any calculation that expects a number:
+
+```{r}
+exp(x)
+```
+
+Notice also that variables can be reassigned:
+
+```{r}
+x = 100
+```
+
+`x` used to contain the value `0.025` and and now it has the value `100`.
+
+Assignment values can contain the variable being assigned to:
+
+```{r}
+x = x + 1
+x
+```
+
+- The right hand side of the assignment can be any valid `R` expression.
+- The right hand side is *fully evaluated* before the assignment occurs.
+
+#### Exercise { - } 
+
+"Create an object called `x` with the value `7`. What is the value of `x^x`. Save the value in a object called `y`. If you assign the value `20` to the object `x` does the value of `y` change? What does this indicate about how R assigns values to objects?"
+
+**Remarks**
+
+Variable names can contain letters, numbers, underscores and periods. They cannot start with a number nor contain spaces at all. Different people use different conventions for long variable names, these include :
+
+ * periods.between.words
+ * underscores\_between_words
+ * camelCaseToSeparateWords
+
+What you use is up to you, but **be consistent**.
+
+## Managing your environment
+
+There are a few useful commands you can use to interact with the `R` session.
+
+#### `ls()` function { - } 
+`ls` will list all of the variables and functions stored in the global environment (your working `R` session):
+
+```{r, eval=FALSE}
+ls()
+```
+
+```
+[1] "x"   "y"
+```
+
+**Remarks**
+
+- Note here that we didn't given any arguments to `ls`, but we still needed to give the parentheses to tell R to call the function.
+- If we type `ls` by itself, R will print out the source code for that function!
+
+####  `rm()` function  { - } 
+
+You can use `rm` to delete objects you no longer need:
+
+```{r}
+rm(x)
+```
+
+If you have lots of things in your environment and want to delete all of them,
+you can pass the results of `ls` to the `rm` function:
+
+```{r}
+rm(list = ls())
+```
+
+In this case we've combined the two. Just like the order of operations, anything
+inside the innermost parentheses is evaluated first, and so on.
+
+In this case we've specified that the results of `ls` should be used for the
+`list` argument in `rm`.
+
+**Remarks**
+
+Pay attention when R does something unexpected! Errors, like above, are thrown when R cannot proceed with a calculation. Warnings on the other hand usually mean that the function has run, but it probably hasn't worked as expected.
+
+In both cases, the message that R prints out usually give you clues how to fix a problem.
+
+## Writing functions
+
+Writing functions is simple. Paste the following code into your console
+
+```{r}
+sum.of.squares = function(x,y) {
+  x^2 + y^2
+}
+```
+
+You have now created a function called `sum.of.squares` which requires two *arguments* and returns the *sum of the squares* of these arguments. Since you ran the code through the console, the function is now available, like any of the other built-in functions within `R`. Running `sum.of.squares(3,4)` will give you the answer `25`.
+
+```{r}
+sum.of.squares(3,4)
+```
+
+
+The procedure for writing any other functions is similar, involving three key steps:
+
+  * Define the function in R script
+  * Load the function into the R session
+  * Use the function
+
+## Data frames
+
+A data frame is a very important data type in `R`. It's pretty much the *de facto* 
+data structure for most tabular data and what we use for statistics.
+
+Some additional information on data frames:
+
+* Usually created by `read.csv()` and `read.table()`.
+* Can also create with `data.frame()` function.
+* Find the number of rows and columns with `nrow()` and `ncol()`, respectively.
+* Rownames are usually 1, 2, ..., n.
+
+### Creating data frames { - }
+
+```{r}
+dat <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
+dat
+```
+
+### Useful functions { - }
+
+  * `head()` - show first 6 rows
+  * `tail()` - show last 6 rows
+  * `dim()` - returns the dimensions
+  * `nrow()` - number of rows
+  * `ncol()` - number of columns
+  * `str()` - structure of each column
+  * `names()` - shows the `names` attribute for a data frame, which gives the column names.
+
+```{r eval = F}
+# Load the built-in data set "cars"
+data("cars")
+```
+
+#### Exercise { - } 
+
+Test upper useful functions on `data.frame` : `cars`
+
+```{r eval = F}
+head(cars)
+tail(cars)
+dim(cars)
+nrow(cars)
+ncol(cars)
+str(cars)
+names(cars)
+```
+
+### Subsetting data { - }
+
+```{r eval = F}
+cars[2,] # 2nd row, all columns
+cars[,1] # All rows, 1st columns
+cars$speed # Speed feature in data.frame cars
+```
+
+## Flow control
+<!-- https://ateucher.github.io/rcourse_site/10-control-flow.html -->
+
+Often when we're coding we want to control the flow of our actions. This can be done
+by setting actions to occur only if a condition or a set of conditions are met.
+Alternatively, we can also set an action to occur a particular number of times.
+
+There are several ways you can control flow in R.
+For conditional statements, the most commonly used approaches are the constructs:
+
+```{r, eval=FALSE}
+# if
+if (condition is true) {
+  perform action
+}
+
+# if ... else
+if (condition is true) {
+  perform action
+} else {  # that is, if the condition is false,
+  perform alternative action
+}
+```
+
+## Get new functions: Packages
+
+To install any package use `install.packages()`
+
+```{r, eval=FALSE}
+install.packages("bnlearn")  ## install the ggplot2 package
+```
+
+You can't ever learn all of R, but you can learn how to build a program and how 
+to find help to do the things that you want to do.
+
+
+<!-- 
+
+# Getting Started with R
+
+## Interactive calculations { - }  
+
+### R Session { - }
+
+When you start **R**, a console window is opened.
+The console has a few basic menus at the top; check them out on your own. 
+
+The console is where you enter commands for **R** to execute *interactively*, meaning that the command is executed and the result is displayed as soon as you hit the ` Enter` key. 
+For example, at the command prompt `>`, type in `2+2` and hit `Enter`; you will see 
+```{r }
+2+2 
+```
+The results from calculations can be stored in (*assigned to*) variables. (We should note that another form of assignment operator `<-` is also in use.)
+For example:
+```{r }
+a = 2+2
+```
+**R** automatically creates the variable `a` and stores the result (`r a`) in it, but by default doesn't print anything.
+
+To ask **R** to print the value, just type the variable name by itself
+```{r}
+a
+```
+
+### Functions { - }
+
+R functions are invoked by its name, then followed by the parenthesis, and zero or more arguments. The following apply the function `c()` to combine three numeric values into a vector.
+
+```{r}
+c(1, 2, 3)
+```
+
+### Comments { - }
+
+All text after the pound sign "#" within the same line is considered a comment.
+
+```{r}
+1 + 1      # this is a comment
+```
+
+### Extension Package { - }
+
+Sometimes we need additional functionality beyond those offered by the core R library. In order to install an extension package, you should invoke the `install.packages()` function at the prompt and follow the instruction. We will need `bnlearn` package.
+
+```{r eval = FALSE}
+install.packages("bnlearn") # install bnlearn package
+```
+
+### Getting Help { - }
+
+R provides extensive documentation. For example, entering `?c` or `help(c)` at the prompt gives documentation of the function `c` in R. Please give it a try.
+
+```{r}
+help(c)
+```
 
 ----
 
+## Basic Data Types
+
+### Vector { - } 
+
+Vector
+A vector is a sequence of data elements of the same basic type. Members in a vector are officially called components. Nevertheless, we will just call them members in this site.
+
+Here is a vector containing three numeric values 2, 3 and 5.
+```{r}
+c(2, 3, 5)
+```
+
+And here is a vector of logical values.
+```{r}
+c(TRUE, FALSE, TRUE, FALSE, FALSE) 
+```
+
+
+A vector can contain character strings.
+```{r}
+c("aa", "bb", "cc", "dd", "ee") 
+```
+
+Incidentally, the number of members in a vector is given by the length function.
+
+```{r}
+length(c("aa", "bb", "cc", "dd", "ee")) 
+```
 ----
 
 [Back to home](https://goo.gl/j9PYg4)
-<!-- ### R Session { - } -->
 
-<!-- After R is started, there is a console awaiting for input. At the prompt `>`, you can enter numbers and perform calculations. -->
+-->
 
-<!-- ```{r} -->
-<!-- 1 + 2  -->
-<!-- ``` -->
-
-<!-- ### Variable Assignment { - }  -->
-
-<!-- We assign values to variables with the assignment operator `=`. Just typing the variable by itself at the prompt will print out the value. We should note that another form of assignment operator `<-` is also in use. -->
-
-<!-- ```{r} -->
-<!-- x = 1 -->
-<!-- x  -->
-<!-- ``` -->
-
-<!-- ### Functions { - } -->
-
-<!-- R functions are invoked by its name, then followed by the parenthesis, and zero or more arguments. The following apply the function `c()` to combine three numeric values into a vector. -->
-
-<!-- ```{r} -->
-<!-- c(1, 2, 3)  -->
-<!-- ``` -->
-
-<!-- ### Comments { - } -->
-
-<!-- All text after the pound sign "#" within the same line is considered a comment. -->
-
-<!-- ```{r} -->
-<!-- 1 + 1      # this is a comment -->
-<!-- ``` -->
-
-<!-- ### Extension Package { - } -->
-
-<!-- Sometimes we need additional functionality beyond those offered by the core R library. In order to install an extension package, you should invoke the `install.packages()` function at the prompt and follow the instruction. We will need `bnlearn` package. -->
-
-<!-- ```{r eval = FALSE} -->
-<!-- install.packages("bnlearn") # install bnlearn package -->
-<!-- ``` -->
-
-<!-- ### Getting Help { - }  -->
-
-<!-- R provides extensive documentation. For example, entering `?c` or `help(c)` at the prompt gives documentation of the function `c` in R. Please give it a try. -->
-
-<!-- ```{r} -->
-<!-- help(c) -->
-<!-- ``` -->
-
-<!-- ---- -->
-
-<!-- To run a typed command, just hit enter -->
-
-<!-- The place in the RGui where you input commands is indicated in -->
-<!-- the screenshot below:  -->
-
-
-
-<!-- ---- -->
-
-<!-- what is console ? -->
-<!-- it begins with a `>` -->
-
-<!-- # packages -->
-
-<!-- # Basics -->
-
-<!-- ## Object -->
-
-<!-- vector -->
-<!-- matrix -->
-<!-- data.frame -->
-
-<!-- plot() -->
-<!-- ls() -->
-
-
-
-<!-- df <- data.frame(x = c(1, 2, 3), y = c(0, 10, NA), z= c("a",NA,"b")) -->
-<!-- df -->
-<!-- na.omit(df) -->
-<!-- na.rm(df) -->
-<!-- na.rm(df, c("x","y")) -->
-<!-- na.rm(df, "z") -->
-
-<!-- library(questionr) -->
-
-<!-- x <- list(abc = 1) -->

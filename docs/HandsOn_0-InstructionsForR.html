@@ -1555,10 +1555,27 @@ div.tocify {
 </div>
 
 
+<div id="learning-objectives" class="section level2 unnumbered">
+<h2>Learning Objectives</h2>
+<ul>
+<li>To gain familiarity with the buttons, options in the R GUI</li>
+<li>To understand variables and how to assign to them</li>
+<li>To be able to manage your workspace in an interactive R session</li>
+<li>To be able to use mathematical and comparison operations</li>
+<li>To be able to call functions</li>
+</ul>
+</div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<div id="history" class="section level2">
-<h2><span class="header-section-number">1.1</span> History</h2>
+<p><strong>source :</strong> Most of the material here was borrowed and adapted from</p>
+<ul>
+<li><a href="http://kingaa.github.io/R_Tutorial/" class="uri">http://kingaa.github.io/R_Tutorial/</a></li>
+<li><a href="https://ateucher.github.io/rcourse_site/" class="uri">https://ateucher.github.io/rcourse_site/</a></li>
+<li><a href="http://r4ds.had.co.nz/" class="uri">http://r4ds.had.co.nz/</a></li>
+</ul>
+<p>under the Creative Commons Attribution (<a href="https://creativecommons.org/licenses/by/3.0/">CC_BY</a>) license.</p>
+<div id="what-is-r" class="section level2">
+<h2><span class="header-section-number">1.1</span> What is R ?</h2>
 <p>In 1991, R was created by Ross Ihaka and Robert Gentleman in the Department of Statistics at the University of Auckland. In 1993 the first announcement of R was made to the public. Ross’s and Robert’s experience developing R is documented in a 1996 paper in the Journal of Computational and Graphical Statistics:</p>
 <blockquote>
 <p>Ross Ihaka and Robert Gentleman. R: A language for data analysis and graphics. Journal of Computational and Graphical Statistics, 5(3):299–314, 1996</p>
@@ -1650,63 +1667,378 @@ Note: c.f. <button class="btn btn-primary" data-toggle="collapse" data-target="#
 </div>
 <div id="getting-started-with-r" class="section level1">
 <h1><span class="header-section-number">3</span> Getting Started with R</h1>
-<p>TODO</p>
-<hr />
-<hr />
-<p><a href="https://goo.gl/j9PYg4">Back to home</a> <!-- ### R Session { - } --></p>
-<!-- After R is started, there is a console awaiting for input. At the prompt `>`, you can enter numbers and perform calculations. -->
-<!-- ```{r} -->
-<!-- 1 + 2  -->
-<!-- ``` -->
-<!-- ### Variable Assignment { - }  -->
-<!-- We assign values to variables with the assignment operator `=`. Just typing the variable by itself at the prompt will print out the value. We should note that another form of assignment operator `<-` is also in use. -->
-<!-- ```{r} -->
-<!-- x = 1 -->
-<!-- x  -->
-<!-- ``` -->
-<!-- ### Functions { - } -->
-<!-- R functions are invoked by its name, then followed by the parenthesis, and zero or more arguments. The following apply the function `c()` to combine three numeric values into a vector. -->
-<!-- ```{r} -->
-<!-- c(1, 2, 3)  -->
-<!-- ``` -->
-<!-- ### Comments { - } -->
-<!-- All text after the pound sign "#" within the same line is considered a comment. -->
-<!-- ```{r} -->
-<!-- 1 + 1      # this is a comment -->
-<!-- ``` -->
-<!-- ### Extension Package { - } -->
-<!-- Sometimes we need additional functionality beyond those offered by the core R library. In order to install an extension package, you should invoke the `install.packages()` function at the prompt and follow the instruction. We will need `bnlearn` package. -->
-<!-- ```{r eval = FALSE} -->
-<!-- install.packages("bnlearn") # install bnlearn package -->
-<!-- ``` -->
-<!-- ### Getting Help { - }  -->
-<!-- R provides extensive documentation. For example, entering `?c` or `help(c)` at the prompt gives documentation of the function `c` in R. Please give it a try. -->
-<!-- ```{r} -->
-<!-- help(c) -->
-<!-- ``` -->
-<!-- ---- -->
-<!-- To run a typed command, just hit enter -->
-<!-- The place in the RGui where you input commands is indicated in -->
-<!-- the screenshot below:  -->
-<!-- ---- -->
-<!-- what is console ? -->
-<!-- it begins with a `>` -->
-<!-- # packages -->
-<!-- # Basics -->
-<!-- ## Object -->
-<!-- vector -->
-<!-- matrix -->
-<!-- data.frame -->
-<!-- plot() -->
-<!-- ls() -->
-<!-- df <- data.frame(x = c(1, 2, 3), y = c(0, 10, NA), z= c("a",NA,"b")) -->
-<!-- df -->
-<!-- na.omit(df) -->
-<!-- na.rm(df) -->
-<!-- na.rm(df, c("x","y")) -->
-<!-- na.rm(df, "z") -->
-<!-- library(questionr) -->
-<!-- x <- list(abc = 1) -->
+<p>Much of your time in R will be spent in the R interactive console. This is where you will run all of your code, and can be a useful environment to try out ideas before adding them to an R script file.</p>
+<p>The first thing you will see in the R interactive session is a bunch of information, followed by a “&gt;” and a blinking cursor. It operates on the idea of a “Read, Evaluate, Print loop” (REPL):</p>
+<ul>
+<li>you type in commands</li>
+<li>R tries to execute them</li>
+<li>and then returns a result.</li>
+</ul>
+<div id="start-and-stop-r" class="section level2">
+<h2><span class="header-section-number">3.1</span> Start and stop <code>R</code></h2>
+<div id="starting-r" class="section level3 unnumbered">
+<h3>Starting R</h3>
+<p>Click on the icon on your desktop, or in the Start menu (if you allowed the Setup program to make either or both of these).</p>
+</div>
+<div id="stopping-r" class="section level3 unnumbered">
+<h3>Stopping R</h3>
+<p>Stop <code>R</code> by typing <code>q()</code> at the command prompt.</p>
+<p><strong>Remarks</strong></p>
+<ul>
+<li>the <code>()</code>: if you type <code>q</code> by itself, you will get some confusing output which is actually <code>R</code> trying to tell you the definition of the <code>q</code> function; more on this later.</li>
+<li>When you quit, <code>R</code> will ask you if you want to save the workspace (that is, all of the variables you have defined in this session); in general, you should say “<code>no</code>” to avoid clutter and unintentional confusion of results from different sessions.
+<ul>
+<li>Note: When you say “<code>yes</code>” to saving your workspace, it is saved in a hidden file named .RData. By default, when you open a new <code>R</code> session in the same directory, this workspace is loaded and a message informing you so is printed:
+<ul>
+<li><code>[Previously saved workspace restored]</code></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="using-r-as-a-calculator" class="section level2">
+<h2><span class="header-section-number">3.2</span> Using R as a calculator</h2>
+<p>When you start <strong>R</strong>, a console window is opened. The console has a few basic menus at the top; check them out on your own.</p>
+<p>The console is where you enter commands for <strong>R</strong> to execute <em>interactively</em>, meaning that the command is executed and the result is displayed as soon as you hit the <code>Enter</code> key. (The simplest thing you could do with R is do arithmetic)</p>
+<p>For example, at the command prompt <code>&gt;</code>, type in <code>2+2</code> and hit <code>Enter</code>; you will see</p>
+<pre class="r"><code>2+2 </code></pre>
+<pre><code>#&gt; [1] 4</code></pre>
+<p>And <code>R</code> will print out the answer, with a preceding “<code>[1]</code>”. Don’t worry about this. For now think of it as indicating ouput.</p>
+<p>If you type in an incomplete command, R will wait for you to complete it:</p>
+<pre class="r"><code>&gt; 2 +</code></pre>
+<pre class="output"><code>+</code></pre>
+<p>Any time you hit return and the R session shows a “<code>+</code>” instead of a “<code>&gt;</code>”, it means it’s waiting for you to complete the command. If you want to cancel a command you can simply hit “<code>Esc</code>” and R will give you back the “<code>&gt;</code>” prompt.</p>
+<p>When using R as a calculator, the order of operations is the same as you would have learnt back in school.</p>
+<p>From highest to lowest precedence:</p>
+<ul>
+<li>Parentheses: <code>(</code>, <code>)</code></li>
+<li>Exponents: <code>^</code></li>
+<li>Divide: <code>/</code></li>
+<li>Multiply: <code>*</code></li>
+<li>Add: <code>+</code></li>
+<li>Subtract: <code>-</code></li>
+</ul>
+<pre class="r"><code>3 + 5 * 2</code></pre>
+<pre><code>#&gt; [1] 13</code></pre>
+<p>Use parentheses to group operations in order to force the order of evaluation if it differs from the default, or to make clear what you intend.</p>
+<pre class="r"><code>(3 + 5) * 2</code></pre>
+<pre><code>#&gt; [1] 16</code></pre>
+<p>This can get unwieldy when not needed, but clarifies your intentions.</p>
+<pre class="r"><code>(3 + (5 * (2 ^ 2))) # hard to read
+3 + 5 * 2 ^ 2       # clear, if you remember the rules
+3 + 5 * (2 ^ 2)     # if you forget some rules, this might help</code></pre>
+<p>The text after each line of code is called a “comment”. Anything that follows after the hash (or octothorpe) symbol <code>#</code> is ignored by <code>R</code> when it executes code.</p>
+</div>
+<div id="functions" class="section level2">
+<h2><span class="header-section-number">3.3</span> Functions</h2>
+<p>Most of <code>R</code>’s functionality comes from its <strong>functions</strong>. A function takes zero, one or multiple <strong>arguments</strong>, depending on the function, and returns a value. To call a function enter it’s name followed by a pair of brackets - include any arguments in the brackets.</p>
+<pre class="r"><code>exp(10)</code></pre>
+<pre><code>#&gt; [1] 22026.47</code></pre>
+<p>To find out more about a function called <code>function_name</code> type <code>?function_name</code>. <!-- To search for the functions associated with a topic type `??topic` or `??"multiple topics"`. As well as providing a detailed description of the command and how it works, scrolling ot the bottom of the help page will usually show a collection of code examples which illustrate command usage.  --></p>
+<div id="exercise" class="section level4 unnumbered">
+<h4>Exercise</h4>
+<p>Which function calculates sums? And what arguments does it take?</p>
+</div>
+</div>
+<div id="variables-and-assignment" class="section level2">
+<h2><span class="header-section-number">3.4</span> Variables and assignment</h2>
+<p>We can store values in variables by giving them a name, and using the assignment operator <code>=</code> (We should note that another form of assignment operator <code>&lt;-</code> is also in use.):</p>
+<pre class="r"><code>x = 1 / 40
+# This is equal to :
+# x &lt;- 1 / 40</code></pre>
+<p><strong>R</strong> automatically creates the variable <code>x</code> and stores the <code>0.025</code> in it, but by default doesn’t print anything.</p>
+<p>To ask <strong>R</strong> to print the value, just type the variable name by itself</p>
+<pre class="r"><code>x</code></pre>
+<pre><code>#&gt; [1] 0.025</code></pre>
+<p>Our variable <code>x</code> can be used in place of a number in any calculation that expects a number:</p>
+<pre class="r"><code>exp(x)</code></pre>
+<pre><code>#&gt; [1] 1.025315</code></pre>
+<p>Notice also that variables can be reassigned:</p>
+<pre class="r"><code>x = 100</code></pre>
+<p><code>x</code> used to contain the value <code>0.025</code> and and now it has the value <code>100</code>.</p>
+<p>Assignment values can contain the variable being assigned to:</p>
+<pre class="r"><code>x = x + 1
+x</code></pre>
+<pre><code>#&gt; [1] 101</code></pre>
+<ul>
+<li>The right hand side of the assignment can be any valid <code>R</code> expression.</li>
+<li>The right hand side is <em>fully evaluated</em> before the assignment occurs.</li>
+</ul>
+<div id="exercise-1" class="section level4 unnumbered">
+<h4>Exercise</h4>
+<p>“Create an object called <code>x</code> with the value <code>7</code>. What is the value of <code>x^x</code>. Save the value in a object called <code>y</code>. If you assign the value <code>20</code> to the object <code>x</code> does the value of <code>y</code> change? What does this indicate about how R assigns values to objects?”</p>
+<p><strong>Remarks</strong></p>
+<p>Variable names can contain letters, numbers, underscores and periods. They cannot start with a number nor contain spaces at all. Different people use different conventions for long variable names, these include :</p>
+<ul>
+<li>periods.between.words</li>
+<li>underscores_between_words</li>
+<li>camelCaseToSeparateWords</li>
+</ul>
+<p>What you use is up to you, but <strong>be consistent</strong>.</p>
+</div>
+</div>
+<div id="managing-your-environment" class="section level2">
+<h2><span class="header-section-number">3.5</span> Managing your environment</h2>
+<p>There are a few useful commands you can use to interact with the <code>R</code> session.</p>
+<div id="ls-function" class="section level4 unnumbered">
+<h4><code>ls()</code> function</h4>
+<p><code>ls</code> will list all of the variables and functions stored in the global environment (your working <code>R</code> session):</p>
+<pre class="r"><code>ls()</code></pre>
+<pre><code>[1] &quot;x&quot;   &quot;y&quot;</code></pre>
+<p><strong>Remarks</strong></p>
+<ul>
+<li>Note here that we didn’t given any arguments to <code>ls</code>, but we still needed to give the parentheses to tell R to call the function.</li>
+<li>If we type <code>ls</code> by itself, R will print out the source code for that function!</li>
+</ul>
+</div>
+<div id="rm-function" class="section level4 unnumbered">
+<h4><code>rm()</code> function</h4>
+<p>You can use <code>rm</code> to delete objects you no longer need:</p>
+<pre class="r"><code>rm(x)</code></pre>
+<p>If you have lots of things in your environment and want to delete all of them, you can pass the results of <code>ls</code> to the <code>rm</code> function:</p>
+<pre class="r"><code>rm(list = ls())</code></pre>
+<p>In this case we’ve combined the two. Just like the order of operations, anything inside the innermost parentheses is evaluated first, and so on.</p>
+<p>In this case we’ve specified that the results of <code>ls</code> should be used for the <code>list</code> argument in <code>rm</code>.</p>
+<p><strong>Remarks</strong></p>
+<p>Pay attention when R does something unexpected! Errors, like above, are thrown when R cannot proceed with a calculation. Warnings on the other hand usually mean that the function has run, but it probably hasn’t worked as expected.</p>
+<p>In both cases, the message that R prints out usually give you clues how to fix a problem.</p>
+</div>
+</div>
+<div id="writing-functions" class="section level2">
+<h2><span class="header-section-number">3.6</span> Writing functions</h2>
+<p>Writing functions is simple. Paste the following code into your console</p>
+<pre class="r"><code>sum.of.squares = function(x,y) {
+  x^2 + y^2
+}</code></pre>
+<p>You have now created a function called <code>sum.of.squares</code> which requires two <em>arguments</em> and returns the <em>sum of the squares</em> of these arguments. Since you ran the code through the console, the function is now available, like any of the other built-in functions within <code>R</code>. Running <code>sum.of.squares(3,4)</code> will give you the answer <code>25</code>.</p>
+<pre class="r"><code>sum.of.squares(3,4)</code></pre>
+<pre><code>#&gt; [1] 25</code></pre>
+<p>The procedure for writing any other functions is similar, involving three key steps:</p>
+<ul>
+<li>Define the function in R script</li>
+<li>Load the function into the R session</li>
+<li>Use the function</li>
+</ul>
+</div>
+<div id="data-frames" class="section level2">
+<h2><span class="header-section-number">3.7</span> Data frames</h2>
+<p>A data frame is a very important data type in <code>R</code>. It’s pretty much the <em>de facto</em> data structure for most tabular data and what we use for statistics.</p>
+<p>Some additional information on data frames:</p>
+<ul>
+<li>Usually created by <code>read.csv()</code> and <code>read.table()</code>.</li>
+<li>Can also create with <code>data.frame()</code> function.</li>
+<li>Find the number of rows and columns with <code>nrow()</code> and <code>ncol()</code>, respectively.</li>
+<li>Rownames are usually 1, 2, …, n.</li>
+</ul>
+<div id="creating-data-frames" class="section level3 unnumbered">
+<h3>Creating data frames</h3>
+<pre class="r"><code>dat &lt;- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
+dat</code></pre>
+<pre><code>#&gt;    id  x  y
+#&gt; 1   a  1 11
+#&gt; 2   b  2 12
+#&gt; 3   c  3 13
+#&gt; 4   d  4 14
+#&gt; 5   e  5 15
+#&gt; 6   f  6 16
+#&gt; 7   g  7 17
+#&gt; 8   h  8 18
+#&gt; 9   i  9 19
+#&gt; 10  j 10 20</code></pre>
+</div>
+<div id="useful-functions" class="section level3 unnumbered">
+<h3>Useful functions</h3>
+<ul>
+<li><code>head()</code> - show first 6 rows</li>
+<li><code>tail()</code> - show last 6 rows</li>
+<li><code>dim()</code> - returns the dimensions</li>
+<li><code>nrow()</code> - number of rows</li>
+<li><code>ncol()</code> - number of columns</li>
+<li><code>str()</code> - structure of each column</li>
+<li><code>names()</code> - shows the <code>names</code> attribute for a data frame, which gives the column names.</li>
+</ul>
+<pre class="r"><code># Load the built-in data set &quot;cars&quot;
+data(&quot;cars&quot;)</code></pre>
+<div id="exercise-2" class="section level4 unnumbered">
+<h4>Exercise</h4>
+<p>Test upper useful functions on <code>data.frame</code> : <code>cars</code></p>
+<pre class="r"><code>head(cars)
+tail(cars)
+dim(cars)
+nrow(cars)
+ncol(cars)
+str(cars)
+names(cars)</code></pre>
+</div>
+</div>
+<div id="subsetting-data" class="section level3 unnumbered">
+<h3>Subsetting data</h3>
+<pre class="r"><code>cars[2,] # 2nd row, all columns
+cars[,1] # All rows, 1st columns
+cars$speed # Speed feature in data.frame cars</code></pre>
+</div>
+</div>
+<div id="flow-control" class="section level2">
+<h2><span class="header-section-number">3.8</span> Flow control</h2>
+<!-- https://ateucher.github.io/rcourse_site/10-control-flow.html -->
+<p>Often when we’re coding we want to control the flow of our actions. This can be done by setting actions to occur only if a condition or a set of conditions are met. Alternatively, we can also set an action to occur a particular number of times.</p>
+<p>There are several ways you can control flow in R. For conditional statements, the most commonly used approaches are the constructs:</p>
+<pre class="r"><code># if
+if (condition is true) {
+  perform action
+}
+
+# if ... else
+if (condition is true) {
+  perform action
+} else {  # that is, if the condition is false,
+  perform alternative action
+}</code></pre>
+</div>
+<div id="get-new-functions-packages" class="section level2">
+<h2><span class="header-section-number">3.9</span> Get new functions: Packages</h2>
+<p>To install any package use <code>install.packages()</code></p>
+<pre class="r"><code>install.packages(&quot;bnlearn&quot;)  ## install the ggplot2 package</code></pre>
+<p>You can’t ever learn all of R, but you can learn how to build a program and how to find help to do the things that you want to do.</p>
+<!-- 
+
+# Getting Started with R
+
+## Interactive calculations { - }  
+
+### R Session { - }
+
+When you start **R**, a console window is opened.
+The console has a few basic menus at the top; check them out on your own. 
+
+The console is where you enter commands for **R** to execute *interactively*, meaning that the command is executed and the result is displayed as soon as you hit the ` Enter` key. 
+For example, at the command prompt `>`, type in `2+2` and hit `Enter`; you will see 
+
+```r
+2+2 
+```
+
+```
+#> [1] 4
+```
+The results from calculations can be stored in (*assigned to*) variables. (We should note that another form of assignment operator `<-` is also in use.)
+For example:
+
+```r
+a = 2+2
+```
+**R** automatically creates the variable `a` and stores the result (4) in it, but by default doesn't print anything.
+
+To ask **R** to print the value, just type the variable name by itself
+
+```r
+a
+```
+
+```
+#> [1] 4
+```
+
+### Functions { - }
+
+R functions are invoked by its name, then followed by the parenthesis, and zero or more arguments. The following apply the function `c()` to combine three numeric values into a vector.
+
+
+```r
+c(1, 2, 3)
+```
+
+```
+#> [1] 1 2 3
+```
+
+### Comments { - }
+
+All text after the pound sign "#" within the same line is considered a comment.
+
+
+```r
+1 + 1      # this is a comment
+```
+
+```
+#> [1] 2
+```
+
+### Extension Package { - }
+
+Sometimes we need additional functionality beyond those offered by the core R library. In order to install an extension package, you should invoke the `install.packages()` function at the prompt and follow the instruction. We will need `bnlearn` package.
+
+
+```r
+install.packages("bnlearn") # install bnlearn package
+```
+
+### Getting Help { - }
+
+R provides extensive documentation. For example, entering `?c` or `help(c)` at the prompt gives documentation of the function `c` in R. Please give it a try.
+
+
+```r
+help(c)
+```
+
+----
+
+## Basic Data Types
+
+### Vector { - } 
+
+Vector
+A vector is a sequence of data elements of the same basic type. Members in a vector are officially called components. Nevertheless, we will just call them members in this site.
+
+Here is a vector containing three numeric values 2, 3 and 5.
+
+```r
+c(2, 3, 5)
+```
+
+```
+#> [1] 2 3 5
+```
+
+And here is a vector of logical values.
+
+```r
+c(TRUE, FALSE, TRUE, FALSE, FALSE) 
+```
+
+```
+#> [1]  TRUE FALSE  TRUE FALSE FALSE
+```
+
+
+A vector can contain character strings.
+
+```r
+c("aa", "bb", "cc", "dd", "ee") 
+```
+
+```
+#> [1] "aa" "bb" "cc" "dd" "ee"
+```
+
+Incidentally, the number of members in a vector is given by the length function.
+
+
+```r
+length(c("aa", "bb", "cc", "dd", "ee")) 
+```
+
+```
+#> [1] 5
+```
+----
+
+[Back to home](https://goo.gl/j9PYg4)
+
+-->
+</div>
 </div>
 
 
