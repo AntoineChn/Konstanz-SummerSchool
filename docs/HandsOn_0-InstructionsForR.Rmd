@@ -472,11 +472,19 @@ if (condition is true) {
 To install any package use `install.packages()`
 
 ```{r, eval=FALSE}
-install.packages("bnlearn")  ## install the ggplot2 package
+install.packages("bnlearn")  ## install the bnlearn package
 ```
 
 You can't ever learn all of R, but you can learn how to build a program and how 
 to find help to do the things that you want to do.
+
+
+----
+
+----
+
+[Back to home](https://goo.gl/j9PYg4)
+
 
 
 <!-- 
@@ -572,10 +580,3 @@ length(c("aa", "bb", "cc", "dd", "ee"))
 ----
 
 -->
-
-----
-
-----
-
-[Back to home](https://goo.gl/j9PYg4)
-
