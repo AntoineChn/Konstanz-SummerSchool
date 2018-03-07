@@ -39,9 +39,7 @@ output:
 
 # `bnlearn` package
 
-
-
-The `bnlearn` package is the most complete and popular package for Bayesian Networks available to the date in `R`. We will start our tutorial by reviewing some of its capacities.
+The `bnlearn` package is the most complete and popular package for Bayesian Networks available to the date in `R`.
 
 First we should install and load the package.
 
@@ -233,9 +231,17 @@ dag_example = model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthq
 graphviz.plot(dag_example, sub = "Example DAG")
 ```
 
+**Remark** 
+
+```{r eval = F}
+model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthquake]")
+model2network("[Earthquake][Anxiety|Alert:Earthquake][Alert|Earthquake]")
+```
+
+
 ----
 
-### Exercise 1 { - }
+### Exercise 3.1 { - }
 
 Now, it's your turn : 
 
@@ -348,7 +354,7 @@ bn.fit.barchart(bn$dysp)
 
 ----
 
-### Exercise 2 { - }
+### Exercise 3.2 { - }
 
 **Source** This exercise is from this [[LINK]](http://www.cs.technion.ac.il/~dang/books/Learning%20Bayesian%20Networks(Neapolitan,%20Richard).pdf)
 
@@ -438,121 +444,7 @@ plotD3bn(dag_Laur)
 
 ## Data-driven approach
 
-### Exercise 3 : Constraint-based methods{ - }
-
-Some constraint-based learning algorithms :
-
-- Grow-Shrink
-- IAMB
-- Inter-IAMB
-
-#### Questions { - } 
-- learn a BN structure base on `asia` data set (Following functions will allow you to do this.)
-    - `gs(asia)`
-    - `iamb(asia)` (optional)
-    - `inter.iamb(asia)` (optional)
-- plot the BN structure (output of `gs()` or `iamb()` or `inter.iamb()`)
-- What do you observe ? Is this a DAG ? What is the type of this graph ?
-
-<!-- ```{r eval=FALSE, include=FALSE} -->
-<!-- # Make sure there is no column named "E" in "asia"" database -->
-<!-- dag_learn_gs     = gs(asia) -->
-<!-- dag_learn_iamb   = iamb(asia) -->
-<!-- dag_learn_inter  = inter.iamb(asia) -->
-
-<!-- dag_learn_iamb_per   = iamb(asia, test = "smc-x2") -->
-<!-- dag_learn_iamb_per %>% graphviz.plot() -->
-<!-- dag_learn_iamb_per %>% cextend %>% graphviz.plot() -->
-
-<!-- dag_learn_inter_per  = inter.iamb(asia, test = "smc-x2") -->
-<!-- dag_learn_inter_per %>% graphviz.plot() -->
-<!-- dag_learn_inter_per %>% cextend %>% graphviz.plot() -->
-
-
-<!-- par(mfrow = c(2, 2)) -->
-<!-- graphviz.plot(dag_Laur        , sub = "BN structure generate by Lauritzen" ) -->
-<!-- graphviz.plot(dag_learn_gs    , sub = "Grow-Shrink" ) -->
-<!-- graphviz.plot(dag_learn_iamb  , sub = "IAMB" ) -->
-<!-- graphviz.plot(dag_learn_inter , sub = "Inter-IAMB" ) -->
-
-<!-- unlist(compare(dag_Laur , dag_learn_gs    )) -->
-<!-- unlist(compare(dag_Laur , dag_learn_iamb  )) -->
-<!-- unlist(compare(dag_Laur , dag_learn_inter )) -->
-
-<!-- graphviz.compare(dag_learn_gs,cextend(dag_learn_gs)) -->
-<!-- graphviz.plot(dag_learn_gs    , sub = "Grow-Shrink" ) -->
-<!-- cextend(dag_learn_gs) %>% graphviz.plot -->
-<!-- ``` -->
-
-#### Solution { - } 
-
-<button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_3"> Show/Hide </button>  
-<div id="Exercise_3" class="collapse">  
-<div class="boxed">
-```{r}
-# Make sure there is no column named "E" in "asia"" database, otherwise RUN : asia$E = NULL
-# dag_learn_iamb   = iamb(asia) # Optional
-# dag_learn_inter  = inter.iamb(asia) # Optional
-dag_learn_gs     = gs(asia)
-
-# graphviz.plot(dag_learn_iamb  , sub = "IAMB" ) # Optional
-# graphviz.plot(dag_learn_inter , sub = "Inter-IAMB" ) # Optional
-graphviz.plot(dag_learn_gs    , sub = "Grow-Shrink" )
-
-print("This is a partially directed acyclic graph (PDAG)")
-```
-
-</div>
-</div>
-
-----
-
-### Exercise 4: Setting the direction of undirected arcs { - }
-
-Due to the way Bayesian networks are defined, the network structure must be a directed acyclic graph (DAG); otherwise their parameters cannot be estimated because the factorization of the global probability distribution of the data into the local ones (one for each variable in the model) is not completely known.
-
-The notion of "factorization of the global probability distribution" should have been introduced in the previous lecture.
-
-If a network structure contains one or more undirected arcs, their direction can be set with the `set.arc()` function, if the direction of the arc is known or can be guessed from the experimental setting of the data:
-
-```{r}
-dag_learn_gs_corrected = set.arc(dag_learn_gs, from = "S", to = "B")
-graphviz.plot(dag_learn_gs_corrected)
-```
-
-#### Question { - }
-It's your turn :
-
-- set S -> L instead of S - L, then plot the DAG, you should have the following figure:
-
-```{r eval=FALSE, include=FALSE}
-score(set.arc(dag_learn_gs_corrected, from = "S", to = "L"),asia)
-score(set.arc(dag_learn_gs_corrected, from = "L", to = "S"),asia)
-# They have the same score. This is why the algo Inter-IAMB cannot decide which direction is better.
-# But we know that S -> L is more realistic.
-```
-
-```{r echo=FALSE}
-dag_learn_gs_corrected = set.arc(dag_learn_gs_corrected, from = "S", to = "L")
-graphviz.plot(dag_learn_gs_corrected)
-```
-
-#### Solution { - }
-
-<button class="btn btn-primary" data-toggle="collapse" data-target="#Exercise_4"> Show/Hide </button>  
-<div id="Exercise_4" class="collapse">  
-<div class="boxed">
-```{r echo=TRUE, eval=FALSE}
-dag_learn_gs_corrected = set.arc(dag_learn_gs_corrected, from = "S", to = "L")
-graphviz.plot(dag_learn_gs_corrected)
-```
-
-</div>
-</div>
-
-----
-
-### Exercise 5 : Score-based methods { - }
+### Exercise 3.3 : Score-based methods { - }
 
 #### Questions { - }
 
@@ -577,23 +469,25 @@ graphviz.plot(dag_learn_hc)
 
 ----
 
-## Mix approach
-
-<span style="color:red"> *Wang's note : la sub-section Mix approach peut être éliminée si elle surcharge le contenu*</span>
-
-The first step in learning a Bayesian network is structure learning, that is, using the data to determine which arcs are present in the graph that underlies the model. Normally, we would like for that to be a purely data-driven process — for the purposes of exploring the data, in benchmarking learning algorithms, or just because we do not know much about the phenomenon we are trying to model. However, in some contexts we have prior knowledge on what the structure of the network should look like and we would like to incorporate such knowledge in the structure learning process. One way to do that is to use whitelists and blacklists. Both are implemented as follows in bnlearn.
-
-1. Arcs in the whitelist are always included in the network.
-1. Arcs in the blacklist are never included in the network.
-1. Any arc whitelisted and blacklisted at the same time is assumed to be whitelisted, and is thus removed from the blacklist. In other words, the whitelist has precedence over the blacklist.
-
-These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs.
-
 ----
+
+<!-- ## Mix approach -->
+
+<!-- <span style="color:red"> *Wang's note : la sub-section Mix approach peut être éliminée si elle surcharge le contenu*</span> -->
+
+<!-- The first step in learning a Bayesian network is structure learning, that is, using the data to determine which arcs are present in the graph that underlies the model. Normally, we would like for that to be a purely data-driven process — for the purposes of exploring the data, in benchmarking learning algorithms, or just because we do not know much about the phenomenon we are trying to model. However, in some contexts we have prior knowledge on what the structure of the network should look like and we would like to incorporate such knowledge in the structure learning process. One way to do that is to use whitelists and blacklists. Both are implemented as follows in bnlearn. -->
+
+<!-- 1. Arcs in the whitelist are always included in the network. -->
+<!-- 1. Arcs in the blacklist are never included in the network. -->
+<!-- 1. Any arc whitelisted and blacklisted at the same time is assumed to be whitelisted, and is thus removed from the blacklist. In other words, the whitelist has precedence over the blacklist. -->
+
+<!-- These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs. -->
+
+<!-- ---- -->
 
 ## Comparing Bayesian network structures
 
-### Qualitative methods
+### Qualitative methods { - }
 
 #### - `compare()` function { - }
 
@@ -611,16 +505,16 @@ compare(target = dag_Laur, current = dag_mydag, arcs = TRUE)
 
 Another approach to compare network structures is to plot them side by side and highlight differences with different colours. `graphviz.compare()` does that using `Rgraphviz` package while taking care that the nodes have the same position for all networks, to make it easier to spot which arcs are different. As we can see below, and unlike any of the functions we covered above, `graphviz.compare()` can take more than two network structures as arguments.
 
-```{r out.width= '100%'}
+```{r fig.align="center", out.width= '100%'}
 par(mfrow = c(1, 3))
 graphviz.plot(dag_Laur, sub = "dag_Laur")
-graphviz.plot(dag_learn_gs, sub = "dag_learn_gs")
+graphviz.plot(dag_mydag, sub = "dag_mydag")
 graphviz.plot(dag_learn_hc, sub = "dag_learn_hc")
 ```
 
-```{r out.width= '100%'}
+```{r fig.align="center", out.width= '100%'}
 par(mfrow = c(1, 3))
-graphviz.compare(dag_Laur, dag_learn_gs, dag_learn_hc)
+graphviz.compare(dag_Laur, dag_mydag, dag_learn_hc)
 ```
 
 ```{r eval = FALSE, include=FALSE}
@@ -628,7 +522,9 @@ par(mfrow = c(1,2)) # show two plots side by side
 graphviz.compare(dag_Laur, dag_mydag)
 ```
 
-### `score()` function { - }
+### Quantitative method { - }
+
+#### - `score()` function { - }
 
 We can compute the network score of a particular graph for a particular data set with the `score()` function (manual).
 <!-- if the score function is not specified, the BIC score is returned for both continuous and discrete data. -->
@@ -638,7 +534,7 @@ We can compute the network score of a particular graph for a particular data set
 - The number of variables in the network and in the data must be the same, although the order is not important.
 - The names of the variables must match as well.
 
-```{r eval=FALSE, include=TRUE}
+```{r eval = F, include=TRUE}
 score(dag_mydag, asia)
 score(dag_Laur , asia)
 # score(dag_learn_inter, asia) # score() function cannot be applied to partially dag (pdag).
@@ -661,11 +557,16 @@ We will talk about the first and the third.
 
 ## Data-driven approach
 
-Once the structure of a DAG has been determined, the parameters can be determined as well. Two most common approaches are **maximum likelihood estimation (MLE)** and **Bayesian estimation**. Parameter estimates are based only on the subset of data spanning the considered variable and its parents. 
-<!-- The `bn.fit` function from `bnlearn` will automatically determine the type of data and fit parameters. -->
-When using `bnlearn`, parameter learning is performed by the `bn.fit` function, which takes the network structure and the data as parameters.
+Once the structure of a DAG has been determined, the parameters can be determined as well. Two most common approaches are 
 
-### Exercise 1 { - }
+- **maximum likelihood estimation (MLE)** and 
+- **Bayesian estimation**. 
+
+Parameter estimates are based only on the subset of data spanning the considered variable and its parents. 
+<!-- The `bn.fit` function from `bnlearn` will automatically determine the type of data and fit parameters. -->
+When using `bnlearn`, parameter learning is performed by the `bn.fit` function, which takes the network structure and the data as *arguments*.
+
+### Exercise 4.1 { - }
 
 #### Questions { - }
 - Using `asia` data set, learn three sets of parameters based on:
@@ -674,7 +575,7 @@ When using `bnlearn`, parameter learning is performed by the `bn.fit` function, 
     - the data-driven BN structure (output of Hill-Climbing algorithm)
 - Print the conditional probability table (CPT) of Lung Cancer with respect to (given) Smoking History
 
-$$\Pr(L|S) =  ?$$
+$$\Pr(L\,|\,S) =  ?$$
 
 #### Solution { - }
 
@@ -701,7 +602,7 @@ coef(bn_dag_Laur$L) # or simply run : bn_dag_Laur$L
 bn.fit.barchart(bn_dag_Laur$L)
 ```
 
-$$\frac{\mathbb{P}(L|S = \text{yes})}{\mathbb{P}(L|S = \text{no})} =\frac{0.11769384}{0.01368209} = 8.6020348$$ 
+$$\frac{\Pr(L|S = \text{yes})}{\Pr(L|S = \text{no})} =\frac{0.11769384}{0.01368209} = 8.6020348$$ 
 
 <p align="center">
   <img width="153" height="100" src="http://howhut.com/wp-content/uploads/2013/07/Quit-Smoking-300x268.jpg">
@@ -716,10 +617,10 @@ $$\frac{\mathbb{P}(L|S = \text{yes})}{\mathbb{P}(L|S = \text{no})} =\frac{0.1176
 
 Specifying all the local distributions can be problematic in a large network. In most cases it can be more convenient to create a `bn.fit` object from (possibly dummy) data using `bn.fit()`, and then to modify just the local distributions of the nodes of interest.
 
-### Exercise 2 { - }
+### Exercise 4.2 { - }
 
 - Creating custom fitted Bayesian networks using both data and expert knowledge.
-    - For discrete Bayesian networks we can extract the conditional probability table stored in the bn.fit object with `coef()`, modify it, and re-save it.
+    - For discrete Bayesian networks we can extract the conditional probability table stored in the `bn.fit` object with `coef()`, modify it, and re-save it.
 
 #### Solution { - }
 
@@ -792,28 +693,43 @@ run2 <- replicate(100,
 
 ### Example { - }
 
+#### - `cpquery()` { - }
+
+- Prior distribution of Lung cancer
+
 ```{r}
 # cpquery(fitted, event, evidence, cluster = NULL, method = "ls", ..., debug = FALSE)
 set.seed(20180308)
-
 # Prior distribution of Lung cancer
 cpquery(fitted = bn_dag_Laur, 
         event = (D == "yes"), 
         evidence = TRUE, # evidence being true means that we have no prior evidence.
         n = 100000)
+```
 
+- Posterior distribution of Lung cancer given Smoking history being "no"
+
+```{r}
 # Posterior distribution of Lung cancer given Smoking history being "no"
 cpquery(fitted = bn_dag_Laur, 
         event = (D == "yes"), 
         evidence = (L == "no"),
         n = 100000)
 
+```
+
+-  Posterior distribution of Lung cancer given Smoking history being "yes" 
+
+```{r}
 # Posterior distribution of Lung cancer given Smoking history being "yes"
 cpquery(fitted = bn_dag_Laur, 
         event = (D == "yes"), 
         evidence = (L == "yes"),
         n = 100000)
 ```
+
+
+#### - `cpdist()` { - }
 
 ```{r}
 # cpdist( fitted, nodes, evidence, cluster = NULL, method = "ls", ..., debug = FALSE)
@@ -844,16 +760,25 @@ prop.table(
 )
 ```
 
-### Exercise { - }
+### Exercise 5.1 { - }
+
+- Calculate by hand 
+    - $\Pr (L = yes\,|\,S = yes)$ : Probability of an individual having lung cancer 
+    - $\Pr (L = yes\,|\,S = no)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
+    - $\Pr (L = yes)$
+
+**Recall**
+
+$$\Pr(L = yes) = {\huge[} \Pr(L = yes\,|\,S = yes) \times \Pr(S = yes){\huge+}\Pr(L = yes\,|\,S = no)\times\Pr(S = no){\huge]} $$
 
 - Estime following probabilties using `cpquery()` 
-    - $\hat{\mathbb{P}} (L)$ : Probability of an individual having lung cancer 
-    - $\hat{\mathbb{P}} (L|S = no)$ : Probability of an individual having lung cancer given that he/she has smoking history 
-    - $\hat{\mathbb{P}} (L|S = yes)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
-- Cluculate the ratio between $\mathbb{P}(L|S = yes)$ and $\mathbb{P}(L|S = no)$
-- Compare the ratio with "Exercise 1 in Data-driven approach"
+    - $\hat{\Pr} (L = yes)$ : Probability of an individual having lung cancer 
+    - $\hat{\Pr} (L = yes|S = yes)$ : Probability of an individual having lung cancer given that he/she has smoking history 
+    - $\hat{\Pr} (L = yes|S = no)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
+- Calculate the ratio between $\hat{\Pr}(L = yes|S = yes)$ and $\hat{\Pr}(L = yes|S = no)$
+- Compare the ratio with "Exercise 4.1 under Section 4.1 Data-driven approach"
 
-### Solution { - }
+#### Solution { - }
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#Prediction"> Show/Hide </button>  
 <div id="Prediction" class="collapse">  
@@ -866,22 +791,55 @@ L_prior = cpquery(fitted = bn_dag_Laur,
             event = (L == "yes"), 
             evidence = TRUE, # evidence being true means that we have no prior evidence.
             n = 100000)
+L_prior
 
 L_S_yes = cpquery(fitted = bn_dag_Laur, 
             event = (L == "yes"), 
             evidence = (S == "yes"),
             n = 100000)
+L_S_yes
 
 L_S_no  = cpquery(fitted = bn_dag_Laur, 
             event = (L == "yes"), 
             evidence = (S == "no"),
             n = 100000)
+L_S_no
 
 L_ratio = L_S_yes / L_S_no
 L_ratio
 ```
 </div>
 </div>
+
+### Exercise 5.2 { - }
+
+- Estime following probabilties using `cpquery()` 
+    - $\hat{\Pr} (S)$ : Probability of an individual having smoking history 
+    - $\hat{\Pr} (S = yes|L = yes)$ : Probability of an individual having smoking history given that he/she has lung cancer  
+    - $\hat{\Pr} (S = yes|L = no)$ : Probability of an individual having smoking history given that he/she does **NOT** have lung cancer.
+- Calculate the ratio between $\hat{\Pr}(S = yes |L = yes)$ and $\hat{\Pr}(S = yes|L = no)$
+- Calculate (by hand) the ratio between $\Pr(S|L = yes)$ and $\Pr(S|L = no)$
+
+<!-- **Recall** Bayes Rule: -->
+<!-- $$\Pr(B|A) = \frac{\Pr(A|B) \times \Pr(B)}{\Pr(A)}$$ -->
+
+
+<!-- $$\Pr(L = yes) = {\huge[} \Pr(L = yes\,|\,S = yes) \times \Pr(S = yes){\huge+}\Pr(L = yes\,|\,S = no)\times\Pr(S = no){\huge]} $$ -->
+
+<!-- $$\Pr(S = yes\,|\,L = yes) = \frac{\Pr(L = yes \,|\, S = yes) \times \Pr(S = yes)}{\Pr(L = yes)}$$ -->
+
+
+# Notes
+
+Source: https://www.norsys.com/tutorials/netica/secA/tut_A1.htm
+
+### Probabilities need not be exact to be useful { - }
+
+Some people have shied away from using Bayes nets because they imagine they will only work well, if the probabilities upon which they are based are exact. This is not true. It turns out very often that approximate probabilities, even subjective ones that are guessed at, give very good results. Bayes nets are generally quite robust to imperfect knowledge. Often the combination of several strands of imperfect knowledge can allow us to make surprisingly strong conclusions.
+
+### Causal Conditional Probabilities are easier to estimate than the reverse { - }
+
+Studies have shown people are better at estimating probabilities "in the forward direction". For example, doctors are quite good at giving the probability estimates for "if the patient has lung cancer, what are the chances their X-ray will be abnormal?", rather than the reverse, "if the X-ray is abnormal, what are the chances of lung cancer being the cause?" (Jensen, Finn V. (1996) An Introduction to Bayesian Networks, Springer Verlag, New York.)
 
 ----
 
