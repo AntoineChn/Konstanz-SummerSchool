@@ -185,8 +185,9 @@ The asia data set contains the following variables:
 
 **Usage**
 
-- Investigate the characteristics of `asia` using the exploratory analysis techniques (These are basic `R` operations that are not crucial for us, unroll the `Code` box) and execute them in R.
-    - Print this data set on screen;
+- Investigate the characteristics of `asia` using some basic `R` operations :
+<!-- (These are basic `R` operations that are not crucial for us, unroll the `Code` box) and execute them in R. -->
+    - Print the data set on screen;
     - Verify the format of data : variable names and values (levels) ;
     - What is the sample size := how many individuals are there?
     - Summarise the data set with a build-in function `summary()`.
@@ -198,12 +199,10 @@ The asia data set contains the following variables:
 
 # The first five lines should be enough to get a very first idea of the data set asia
 # Verify the format of data : variable names and types.
-# print last 5 rows of mydata
-head(asia, N = 5)
+head(asia, n = 5)
 
 # What is the sample size := how many individuals are there?
-# dimensions of an object
-dim(asia)
+nrow(asia)
 
 # summarise the data set with a build-in function summary()
 summary(asia)
@@ -222,7 +221,7 @@ There are different ways to manually initialise and modify the graph of a Bayesi
 
 ### Example { - }
 
-- unroll the `Code` to learn how to encode a BN structure
+- R syntax for manually defining a BN structure using `model2network()` function
 
 ```{r example_dag, fig.align="center", out.width='70%'}
 # manually define a BN structure using model2network() function
@@ -234,12 +233,11 @@ graphviz.plot(dag_example, sub = "Example DAG")
 **Remark** 
 
 ```{r eval = F}
-# the order doesn't matter
+# the order doesn't matter : the three definitions below are equivalent
 model2network("[Earthquake][Alert|Earthquake][Anxiety|Alert:Earthquake]")
-model2network("[Earthquake][Anxiety|Alert:Earthquake][Alert|Earthquake]")
 model2network("[Earthquake][Alert|Earthquake][Anxiety|Earthquake:Alert]")
+model2network("[Earthquake][Anxiety|Alert:Earthquake][Alert|Earthquake]")
 ```
-
 
 ----
 
@@ -249,13 +247,13 @@ Now, it's your turn :
 
 **Suppose** we use the following variable names:
 
-- A : Visit to Asia
-- B : Bronchitis
-- D : Dyspnea
-- L : Lung Cancer
-- T : Tuberculosis
-- S : Smoking History
-- X : Chest X-ray
+- `A` : Visit to Asia
+- `B` : Bronchitis
+- `D` : Dyspnea
+- `L` : Lung Cancer
+- `T` : Tuberculosis
+- `S` : Smoking History
+- `X` : Chest X-ray
 
 #### Questions { - }
 
@@ -410,37 +408,6 @@ graphviz.plot(dag_mydag, sub = "My DAG")
 </div>
 
 ----
-
-```{r eval = F, echo=FALSE, include=FALSE}
-library(tidyverse)
-library(lubridate)
-plotD3bn <- function(bn) {
-  varNames <- nodes(bn)
-
-  # Nodes should be zero indexed!
-  links <- data.frame(arcs(bn)) %>%
-    mutate(from = match(from, varNames)-1, to = match(to, varNames)-1, value = 1)
-  
-  nodes <- data.frame(name = varNames) %>%
-    mutate(group = 1, size = 30)
-  
-  networkD3::forceNetwork(
-    Links = links,  
-    Nodes = nodes,
-    Source = "from",
-    Target = "to",
-    Value = "value",
-    NodeID = "name",
-    Group = "group",
-    fontSize = 20,
-    zoom = TRUE,
-    arrows = TRUE,
-    bounded = TRUE,
-    opacityNoHover = 1
-  )
-}
-plotD3bn(dag_Laur)
-```
 
 ----
 
@@ -651,7 +618,7 @@ fitted
 
 The inference engine of `bnlearn` is limited, but it can be used to test the networks and to perform basic operations with the models.
 
-By using `cpquery` we can ask for the probability of an `event` given a set of `evidence`. We may ask for a particular combination of configurations in the BN and a set of observed statuses for the variables in the evidence. For example we could ask, what is the posibility of a positive cancer diagnosis for a person that smokes?, in the `asia` network.
+By using `cpquery()` we can ask for the probability of an `event` given a set of `evidence`. We may ask for a particular combination of configurations in the BN and a set of observed statuses for the variables in the evidence. For example we could ask, what is the posibility of a positive cancer diagnosis for a person that smokes?, in the `asia` network.
 
 Reference : http://jarias.es/bayesnetRtutorial/#inference_and_probability_queries
 
@@ -662,12 +629,12 @@ Reference : http://jarias.es/bayesnetRtutorial/#inference_and_probability_querie
 - Interested in finding the configuration of the variables that have the highest posterior probability (discre
 
 
-`cpquery` estimates the conditional probability of event given evidence using the method specified in the method argument.
-`cpdist` generates random observations conditional on the evidence using the method specified in the method argument.
+`cpquery()` estimates the conditional probability of event given evidence using the method specified in the method argument.
+`cpdist()` generates random observations conditional on the evidence using the method specified in the method argument.
 
 **Remark** 
 
-Note that both `cpquery` and `cpdist` are based on Monte Carlo particle filters, and therefore they may return slightly different values on different runs.
+Note that both `cpquery()` and `cpdist()` are based on Monte Carlo particle filters, and therefore they may return slightly different values on different runs.
 
 ```{r, eval = FALSE, include = FALSE}
 bn_dag_Laur$B$prob[2,2]
