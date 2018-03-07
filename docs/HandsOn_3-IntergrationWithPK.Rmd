@@ -434,13 +434,44 @@ Now replot the data and overlay with the model
 
 **Remark** make sure to define the axes limits before doing overlays...
 
+```{r eval=T, echo = F, include=F}
+k = 0.002
+```
+
+
 ```{r}
 xlims = c(0, 6) # a vector of min and max
 ylims = c(0, 120)
-plot(data_GSH$KBrO3_mM, data_GSH$pct_control, xlim=xlims, ylim=ylims, col="red")
+KBrO3.experimental.1h = data_GSH$KBrO3_mM * exp(-k * 1 * 60)
+plot(KBrO3.experimental.1h, data_GSH$pct_control, xlim=xlims, ylim=ylims, col="red",
+     xlab = "KBrO3 concentration at 1h (mM)", ylab = "GSH (% of control)",
+     cex.lab = 1.4, las = 1)
 par(new=T) # will overlay the next plot
-plot(C0, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
+y = Hill(x = KBrO3, EC50 = 1, n = 1, from = 100, diff = -100)
+plot(C0, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="",
+     xaxt = "n", yaxt = "n", col = "red", lwd = 2.5) # turn off labels
 ```
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#somePlot"> Show a possible solution </button>  
+
+<div id="somePlot" class="collapse">  
+<div class="boxed">
+
+```{r eval = T, echo=FALSE}
+xlims = c(0, 6) # a vector of min and max
+ylims = c(0, 120)
+KBrO3.experimental.1h = data_GSH$KBrO3_mM * exp(-k * 1 * 60)
+plot(KBrO3.experimental.1h, data_GSH$pct_control, xlim=xlims, ylim=ylims, col="red",
+     xlab = "KBrO3 concentration at 1h (mM)", ylab = "GSH (% of control)",
+     cex.lab = 1.4, las = 1)
+par(new=T) # will overlay the next plot
+y = Hill(x = KBrO3, EC50 = 0.5, n = 2, from = 100, diff = -100)
+plot(C0, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="",
+     xaxt = "n", yaxt = "n", col = "red", lwd = 2.5) # turn off labels
+```
+
+</div>
+</div>
 
 - now play with EC50 and N to fit the data better
 
