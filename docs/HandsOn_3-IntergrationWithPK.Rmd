@@ -195,13 +195,13 @@ plot(kinetic.data[,1], kinetic.data[,3], las=1, type="b",
 
 ### Model
 
-It seems that there is only one line (not two or more lines joined with different slopes. In this case a mono-exponential decrease model will probably do. That model would be:
+It seems that there is only one line (not two or more lines joined with different slopes). In this case a mono-exponential decrease model will probably do. That model would be:
 
 $$KBrO_3 = C_0  \times e^{-k \cdot \text{time}}$$
 
 #### Question { - }
 
-- What values should we give to parameters $C_O$ and $k$? 
+- What values should we give to parameters $C_0$ and $k$? 
     - for $C_0$ ? <button class="btn btn-primary" data-toggle="collapse" data-target="#SetParameter_C0"> Show answer </button> 
     - for $k$, try different values till you match the low dose data, let's begin with $k = 0$ : <button class="btn btn-primary" data-toggle="collapse" data-target="#SetParameter_k"> show plot</button> 
 
@@ -264,7 +264,7 @@ plot(kinetic.data[,1], kinetic.data[,2], las=1, type="b",
 lines(kinetic.data[,1], KBrO3, col="blue")
 ```
 
-<button class="btn btn-primary" data-toggle="collapse" data-target="#OnePossibleFit_par"> Show paramters </button>
+<button class="btn btn-primary" data-toggle="collapse" data-target="#OnePossibleFit_par"> Show parameters </button>
 <div id="OnePossibleFit_par" class="collapse">
 - `C0 = 0.375`
 - `k = 0.00209`
@@ -283,7 +283,7 @@ lines(kinetic.data[,1], KBrO3, col="blue")
 - Does it work at high dose? ($k$ might depend on the dose...)
 - how would you check it?
 
-#### Soluction { - }
+#### Solution { - }
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#OnePossibleFit_HighDose"> Show solution </button>
 <div id="OnePossibleFit_HighDose" class="collapse">
@@ -357,32 +357,34 @@ KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)
 
 **Does it make any difference? why?**
 
-- Let's try it
-```{r eval=T}
-# Try : If we take the concentration at 1h
-KBrO3 = C0 * exp(-k * 1 * 60) # 1 hour is 60 minutes...
-# define the Hill dose-response model as a function
-Hill = function (x, EC50, n) {
-  return(x^n / (x^n + EC50^n))
-}
-Hill(x=KBrO3, EC50=1, n=1)
-```
+<!-- - Let's try it -->
+<!-- ```{r eval=T} -->
+<!-- # Try : If we take the concentration at 1h -->
+<!-- KBrO3 = C0 * exp(-k * 1 * 60) # 1 hour is 60 minutes... -->
+<!-- # define the Hill dose-response model as a function -->
+<!-- Hill = function (x, EC50, n) { -->
+<!--   return(x^n / (x^n + EC50^n)) -->
+<!-- } -->
+<!-- Hill(x=KBrO3, EC50=1, n=1) -->
+<!-- ``` -->
 
-- plot it...  <button class="btn btn-primary" data-toggle="collapse" data-target="#DoseResponseModelPlot"> Show output </button>
-```{r DoseResponseModelPlot}
-x = KBrO3
-y = Hill(x=KBrO3, EC50=1, n=1)
-plot(x, y, type="b")
-```
+<!-- - plot it...  <button class="btn btn-primary" data-toggle="collapse" data-target="#DoseResponseModelPlot"> Show output </button> -->
+<!-- ```{r DoseResponseModelPlot} -->
+<!-- x = KBrO3 -->
+<!-- y = Hill(x=KBrO3, EC50=1, n=1) -->
+<!-- plot(x, y, type="b") -->
+<!-- ``` -->
 
-<div id="DoseResponseModelPlot" class="collapse">
-<div class="boxed">
-```{r ref.label='DoseResponseModelPlot', eval=T, echo = F}
-```
-</div>
-</div>
+<!-- <div id="DoseResponseModelPlot" class="collapse"> -->
+<!-- <div class="boxed"> -->
+<!-- ```{r ref.label='DoseResponseModelPlot', eval=T, echo = F} -->
+<!-- ``` -->
+<!-- </div> -->
+<!-- </div> -->
 
-----
+<!-- ---- -->
+
+### Plot the `GSH` data as a funtion of `KBr03` concentration at 60 min { - }
 
 - Define a sequence of nominal concentrations
 
@@ -397,20 +399,20 @@ C0 = seq(0, 10, 0.1)
 par(mfrow= c(1,2))
 KBrO3 = C0 * exp(-k * 1 * 60) # Model 1
 y = Hill(x=KBrO3, EC50=10, n=1, from=100, diff=-100)
-plot(C0, y, type="b", main = "KBrO3 = C0 * exp(-k * 1 * 60)")
+plot(C0, y, type="b", main = "KBrO3 = C0 * exp(-k * 1 * 60)", ylim = c(50, 100), las = 1)
 
 KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)
 y = Hill(x=KBrO3, EC50=10, n=1, from=100, diff=-100) # Model 2
-plot(C0, y, type="b", main = "KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)")
+plot(C0, y, type="b", main = "KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)", ylim = c(50, 100), las = 1)
 ```
 
-# the actual bromate concentration seen by the cells was:
+<!-- # the actual bromate concentration seen by the cells was: -->
 
-- `KBrO3 = C0 * exp(-k * 1 * 60)` ? 
-$$KBrO_3 = C_0 \exp(-k\times1\times60)$$
-- `KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)` ? 
-$$KBrO_3 = \frac{-\frac{C_0\exp(-k\times60)}{k}+\frac{C_0\exp(0)}{k}}{60-0}$$
-$$KBrO_3 = \frac{-C_0e^{-60k} +C_0e^0}{60k}$$
+<!-- - `KBrO3 = C0 * exp(-k * 1 * 60)` ?  -->
+<!-- $$KBrO_3 = C_0 \exp(-k\times1\times60)$$ -->
+<!-- - `KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 - 0)` ?  -->
+<!-- $$KBrO_3 = \frac{-\frac{C_0\exp(-k\times60)}{k}+\frac{C_0\exp(0)}{k}}{60-0}$$ -->
+<!-- $$KBrO_3 = \frac{-C_0e^{-60k} +C_0e^0}{60k}$$ -->
 
 
 <!-- ```{r} -->
