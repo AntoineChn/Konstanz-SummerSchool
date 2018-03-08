@@ -469,6 +469,18 @@ if (condition is true) {
 }
 ```
 
+Example
+
+```{r}
+if(1 == 1){
+  x = 2
+}else{
+  x = 3
+}
+print(x)
+```
+
+
 ## Get new functions: Packages
 
 To install any package use `install.packages()`
