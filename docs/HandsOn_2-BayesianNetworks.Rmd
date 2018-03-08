@@ -450,7 +450,7 @@ graphviz.plot(dag_learn_hc)
 <!-- 1. Arcs in the blacklist are never included in the network. -->
 <!-- 1. Any arc whitelisted and blacklisted at the same time is assumed to be whitelisted, and is thus removed from the blacklist. In other words, the whitelist has precedence over the blacklist. -->
 
-<!-- These general rules are applied in slightly differently to different classes of structure learning aglorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs. -->
+<!-- These general rules are applied in slightly differently to different classes of structure learning algorithms, because the latter search for the optimal model in different spaces and in different ways. For instance, score-based learning algorithms operate on the space of DAGs, and therefore cannot deal with whitelisted undirected arcs. -->
 
 <!-- ---- -->
 
@@ -498,16 +498,23 @@ graphviz.compare(dag_Laur, dag_mydag)
 We can compute the network score of a particular graph for a particular data set with the `score()` function (manual).
 <!-- if the score function is not specified, the BIC score is returned for both continuous and discrete data. -->
 
+**Remark** In case the `score()` function is defined differently in several packages, you should specify from which package we what to call the function. That is, there is any error we you use `score()` function, replace `score()` by `bnlearn::score()` so that r knows you want to use score function from the `bnlearn` package.
+
 **Remarks:**
 
 - The number of variables in the network and in the data must be the same, although the order is not important.
 - The names of the variables must match as well.
 
 ```{r eval = F, include=TRUE}
-score(dag_mydag, asia)
+score(dag_mydag, asia) 
 score(dag_Laur , asia)
-# score(dag_learn_inter, asia) # score() function cannot be applied to partially dag (pdag).
 score(dag_learn_hc, asia)
+
+# if it does not work, try bnlearn::score()
+
+# bnlearn::score(dag_mydag, asia) 
+# bnlearn::score(dag_Laur , asia)
+# bnlearn::score(dag_learn_hc, asia)
 ```
 
 **Remark: ** The scores of `dag_Laur` and `dag_learn_hc` are almost the same.
@@ -537,22 +544,28 @@ When using `bnlearn`, parameter learning is performed by the `bn.fit` function, 
 
 ----
 
-### Exercise 4.1 { - }
+### Exercise 4.1 (Demonstration) { - }
 
 #### Questions { - }
-- Using `asia` data set, learn three sets of parameters based on:
+- Use `asia` data set to learn three sets of parameters based on: (`bn.fit(x = one_of_BN_Structures_of_your_choice, data = asia, method = "mle")`)
     - your BN structure 
     - Lauritzen's BN structure
     - the data-driven BN structure (output of Hill-Climbing algorithm)
-- Print the conditional probability table (CPT) of Lung Cancer with respect to (given) Smoking History
+- Print the output of `bn.fit()` function and find out the conditional probability table (CPT) of Lung Cancer with respect to (given) Smoking History : $\Pr(L\,|\,S) =  ?$
+- Calculate how much smoking causes lung cancer :
 
-$$\Pr(L\,|\,S) =  ?$$
+$$\frac{\Pr(L = yes \,|\,S = \text{yes})}{\Pr(L = yes \,|\,S = \text{no})} = ?$$
+
+**Remark** As you are not given any example showing how to use `bn.fit`, type simply `?bn.fit` and try to figure it out by yourself. Otherwise, you are free to check the solution below.
 
 #### Solution { - }
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#DontSmoke"> Show/Hide </button>  
 <div id="DontSmoke" class="collapse">  
 <div class="boxed">
+
+- learn three sets of parameters
+
 ```{r}
 # By default bn.fit use mle mthod :  
 # bn.fit(x, data) == bn.fit(x, data, method = "mle")
@@ -566,14 +579,21 @@ bn_dag_learn_hc   = bn.fit(x = dag_learn_hc,  data = asia, method = "mle")
 # bn_dag_learn_hc_bayes   = bn.fit(x = dag_learn_hc,  data = asia, method = "bayes")
 ```
 
+- Print the output of `bn.fit()` function and find out the conditional probability table (CPT) of Lung Cancer with respect to (given) Smoking History : $\Pr(L\,|\,S) =  ?$
+
 ```{r results="show", fig.show="show"}
-# print the CPT of Lung Cancer w.r.t Smoking History
+# You can print CPTs attached to all nodes in a given BN structure (for example bn_dag_Laur) using : `bn_dag_Laur`
+# But the list of CPTs might be too long
+
+# print just the CPT of Lung Cancer with respect to Smoking History
 coef(bn_dag_Laur$L) # or simply run : bn_dag_Laur$L
-# Represent this CPT with barchart.
+# you can also represent a CPT with barchart.
 bn.fit.barchart(bn_dag_Laur$L)
 ```
 
-$$\frac{\Pr(L|S = \text{yes})}{\Pr(L|S = \text{no})} =\frac{0.11769384}{0.01368209} = 8.6020348$$ 
+- Calculate how much smoking causes lung cancer :
+
+$$\frac{\Pr(L = yes \,|\,S = \text{yes})}{\Pr(L = yes \,|\,S = \text{no})} =\frac{0.11769384}{0.01368209} = 8.6020348$$ 
 
 <p align="center">
   <img width="153" height="100" src="http://howhut.com/wp-content/uploads/2013/07/Quit-Smoking-300x268.jpg">
@@ -588,12 +608,12 @@ $$\frac{\Pr(L|S = \text{yes})}{\Pr(L|S = \text{no})} =\frac{0.11769384}{0.013682
 
 Specifying all the local distributions can be problematic in a large network. In most cases it can be more convenient to create a `bn.fit` object from (possibly dummy) data using `bn.fit()`, and then to modify just the local distributions of the nodes of interest.
 
-### Exercise 4.2 { - }
+### Demonstration 4.2 { - }
 
 - Creating custom fitted Bayesian networks using both data and expert knowledge.
     - For discrete Bayesian networks we can extract the conditional probability table stored in the `bn.fit` object with `coef()`, modify it, and re-save it.
 
-#### Solution { - }
+#### `R` Code { - }
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#HybridApproach"> Show/Hide </button>  
 <div id="HybridApproach" class="collapse">  
@@ -620,7 +640,7 @@ fitted
 
 The inference engine of `bnlearn` is limited, but it can be used to test the networks and to perform basic operations with the models.
 
-By using `cpquery()` we can ask for the probability of an `event` given a set of `evidence`. We may ask for a particular combination of configurations in the BN and a set of observed statuses for the variables in the evidence. For example we could ask, what is the posibility of a positive cancer diagnosis for a person that smokes?, in the `asia` network.
+By using `cpquery()` we can ask for the probability of an `event` given a set of `evidence`. We may ask for a particular combination of configurations in the BN and a set of observed statuses for the variables in the evidence. For example, we could ask, what is the posibility of a positive cancer diagnosis for a person that smokes?, in the `asia` network.
 
 Reference : http://jarias.es/bayesnetRtutorial/#inference_and_probability_queries
 
@@ -628,11 +648,10 @@ Reference : http://jarias.es/bayesnetRtutorial/#inference_and_probability_querie
 
 - Interested in the marginal posterior probability distribution of variables given evidence on other variables
 - Most likely outcome (a.k.a. maximum a posteriori)
-- Interested in finding the configuration of the variables that have the highest posterior probability (discre
+- Interested in finding the configuration of the variables that have the highest posterior probability (discrete)
 
-
-`cpquery()` estimates the conditional probability of event given evidence using the method specified in the method argument.
-`cpdist()` generates random observations conditional on the evidence using the method specified in the method argument.
+- `cpquery()` estimates the conditional probability of event given evidence.
+- `cpdist()` generates random observations conditional on the evidence.
 
 **Remark** 
 
@@ -659,6 +678,11 @@ run2 <- replicate(100,
 # hist(run1, xlim = range(run1))
 # hist(run2, xlim = range(run1))
 # par(mfrow = c(1,1))
+```
+
+```{r eval = F, include=F, echo = F}
+library(bnlearn)
+?cpquery
 ```
 
 
@@ -737,7 +761,7 @@ prop.table(
     - $\Pr (L = yes\,|\,S = yes)$ : Probability of an individual having lung cancer 
     - $\Pr (L = yes\,|\,S = no)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
     - $\Pr (L = yes)$
-- Estime following probabilties using `cpquery()` 
+- Estimate following probabilties using `cpquery()` 
     - $\hat{\Pr} (L = yes)$ : Probability of an individual having lung cancer 
     - $\hat{\Pr} (L = yes\,|\,S = yes)$ : Probability of an individual having lung cancer given that he/she has smoking history 
     - $\hat{\Pr} (L = yes\,|\,S = no)$ : Probability of an individual having lung cancer given that he/she has **NO** smoking history.
@@ -766,7 +790,7 @@ coef(bn_dag_Laur$S)
 ```
 
 
-- Estime following probabilties using `cpquery()`
+- Estimate following probabilties using `cpquery()`
 
 ```{r}
 set.seed(20180308)
@@ -797,7 +821,7 @@ L_ratio
 
 ### Exercise 5.2 { - }
 
-- Estime following probabilties using `cpquery()` 
+- Estimate following probabilties using `cpquery()` 
     - $\hat{\Pr} (S)$ : Probability of an individual having smoking history 
     - $\hat{\Pr} (S = yes\,|\,L = yes)$ : Probability of an individual having smoking history given that he/she has lung cancer  
     - $\hat{\Pr} (S = yes\,|\,L = no)$ : Probability of an individual having smoking history given that he/she does **NOT** have lung cancer.
