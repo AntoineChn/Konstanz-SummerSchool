@@ -108,7 +108,7 @@ if(require(bnlearn, quietly = TRUE) && require(Rgraphviz, quietly = TRUE)){
 }
 ```
 
-### Method 2 : console prompt `>` { - }
+### Method 2 : Console Prompt `>` { - }
 
 - copy and past following code (click on the `code` button to show the code) to console prompt: after `>`, then press "enter"
     - if you see [1] `"Congratulations, the package bnlearn is correctly installed."` then the package `bnlearn` is correctly installed.
