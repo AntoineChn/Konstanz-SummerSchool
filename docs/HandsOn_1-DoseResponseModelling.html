@@ -1885,8 +1885,7 @@ Show parameters
 <li>Plot the function you found.</li>
 </ul>
 <p><span class="math display">\[y = A + B \times \frac{x^n}{x^n+ {EC_{50}}^n} \]</span></p>
-<p><span class="math display">\[x =\; ?\]</span></p>
-<p>Define a function</p>
+<p><span class="math display">\[x =\; \sqrt[n]{  \frac{{EC_{50}}^n} {\frac{B}{y-1} -1} }\]</span></p>
 <pre class="r"><code>inv.hill = function(y, EC50, A, B, n){
    YOUR CODE HERE
   }</code></pre>
