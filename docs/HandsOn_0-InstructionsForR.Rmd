@@ -370,7 +370,8 @@ Writing functions is simple. Paste the following code into your console
 
 ```{r}
 sum.of.squares = function(x,y) {
-  x^2 + y^2
+  res = x^2 + y^2
+  return(res)
 }
 ```
 

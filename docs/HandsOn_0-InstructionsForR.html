@@ -1808,7 +1808,8 @@ x</code></pre>
 <h2><span class="header-section-number">3.6</span> Writing functions</h2>
 <p>Writing functions is simple. Paste the following code into your console</p>
 <pre class="r"><code>sum.of.squares = function(x,y) {
-  x^2 + y^2
+  res = x^2 + y^2
+  return(res)
 }</code></pre>
 <p>You have now created a function called <code>sum.of.squares</code> which requires two <em>arguments</em> and returns the <em>sum of the squares</em> of these arguments. Since you ran the code through the console, the function is now available, like any of the other built-in functions within <code>R</code>. Running <code>sum.of.squares(3,4)</code> will give you the answer <code>25</code>.</p>
 <pre class="r"><code>sum.of.squares(3,4)</code></pre>
