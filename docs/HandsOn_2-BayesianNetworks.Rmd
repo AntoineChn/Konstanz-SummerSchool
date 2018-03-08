@@ -43,7 +43,7 @@ The `bnlearn` package is one of the most complete and popular package for Bayesi
 
 First we should install and load the package.
 
-**Please make sure that you either download or compile at least `bnelarn 4.2.x` as previous versions might have some bugs.**
+**Please make sure that you either download or compile at least `bnelarn 4.2.x` as previous versions might have some bugs. check the version of `bnlearn` pakcage by typing `packageVersion("bnlearn")` in `R` console.** 
 
 You should check out the documentation that is available online [[Link]](http://bnlearn.com/). It contains nice examples and additional use cases beyond this tutorial, if you are interested in this topic there are a couple of related books written by the author of the package, you can find the references in the mentioned website.
 
