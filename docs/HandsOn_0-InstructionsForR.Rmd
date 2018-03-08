@@ -378,7 +378,8 @@ sum.of.squares = function(x,y) {
 You have now created a function called `sum.of.squares` which requires two *arguments* and returns the *sum of the squares* of these arguments. Since you ran the code through the console, the function is now available, like any of the other built-in functions within `R`. Running `sum.of.squares(3,4)` will give you the answer `25`.
 
 ```{r}
-sum.of.squares(3,4)
+sum.of.squares(x = 3, y = 4)
+# or just RUN : sum.of.squares(3, 4)
 ```
 
 
