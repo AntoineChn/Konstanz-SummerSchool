@@ -422,13 +422,17 @@ invs.hill = function(y, EC50, A, B, n){
 
 ----
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#PainfulCalculation"> Solution </button> 
+<div id="PainfulCalculation" class="collapse">  
+<div class="boxed">
+
 Some calculations
 
 $$x =\; \sqrt[n]{  \frac{{EC_{50}}^n} {\frac{B}{y-A} -1} }$$
 
 R function
 
-```{r}
+```{r eval = T}
 invs.hill = function(y, EC50, A, B, n){
     res = (EC50 ^n /(B/(y-A)  - 1 ) )^(1/n)
     return(res)
@@ -437,7 +441,7 @@ invs.hill = function(y, EC50, A, B, n){
 
 <!-- a```{r echo = T, include = T, fig.show='hold'} -->
 
-```{r}
+```{r eval = T}
 # A = 100
 # B = -100
 # EC50 = 0.5
@@ -454,6 +458,10 @@ plot(x = Hi, y = KBr, type = 'l',
      main = "Invers Hill function plot")
 
 ```
+
+</div>
+</div>
+</div>
 
 
 ## Notes
