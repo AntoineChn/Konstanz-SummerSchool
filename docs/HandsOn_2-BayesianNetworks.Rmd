@@ -503,7 +503,7 @@ graphviz.compare(dag_Laur, dag_mydag)
 We can compute the network score of a particular graph for a particular data set with the `score()` function (manual).
 <!-- if the score function is not specified, the BIC score is returned for both continuous and discrete data. -->
 
-**Remark** In case the `score()` function is defined differently in several packages, you should specify from which package we what to call the function. That is, there is any error we you use `score()` function, replace `score()` by `bnlearn::score()` so that r knows you want to use score function from the `bnlearn` package.
+**Remark** In case the `score()` function is defined in different ways in other r packages, you should specify from which package we what to call this function. That is, if there is an error when you call `score()` function, try to replace `score()` by `bnlearn::score()` (may solve the problem) so that `R` knows you want to use the `score()` function from the `bnlearn` package.
 
 **Remarks:**
 
@@ -511,15 +511,15 @@ We can compute the network score of a particular graph for a particular data set
 - The names of the variables must match as well.
 
 ```{r eval = F, include=TRUE}
-score(dag_mydag, asia) 
-score(dag_Laur , asia)
-score(dag_learn_hc, asia)
+score(x = dag_mydag,     data = asia)
+score(x = dag_Laur,      data = asia)
+score(x = dag_learn_hc,  data = asia)
 
 # if it does not work, try bnlearn::score()
 
-# bnlearn::score(dag_mydag, asia) 
-# bnlearn::score(dag_Laur , asia)
-# bnlearn::score(dag_learn_hc, asia)
+# bnlearn::score(x = dag_mydag,      data = asia)
+# bnlearn::score(x = dag_Laur,       data = asia)
+# bnlearn::score(x = dag_learn_hc,   data = asia)
 ```
 
 **Remark: ** The scores of `dag_Laur` and `dag_learn_hc` are almost the same.
@@ -530,7 +530,7 @@ score(dag_learn_hc, asia)
 
 In general, there are three ways of creating a `bn.fit` object representing a Bayesian network:
 
-1. a data-driven approach, learning it from a data set using bn.fit() and a network structure (in a bn object) as illustrated here;
+1. a data-driven approach, learning it from a data set using `bn.fit()` and a network structure (in a bn object) as illustrated here;
 1. an expert-driven approach, in which both the network structure and the parameters are specified by the user;
 1. a hybrid approach combining the above.
 
@@ -543,8 +543,10 @@ Once the structure of a DAG has been determined, the parameters can be determine
 - **maximum likelihood estimation (MLE)** and 
 - **Bayesian estimation**. 
 
-Parameter estimates are based only on the subset of data spanning the considered variable and its parents. 
+Parameter estimations are only based on the subset of data spanning the considered variable and its parents.
+
 <!-- The `bn.fit` function from `bnlearn` will automatically determine the type of data and fit parameters. -->
+
 When using `bnlearn`, parameter learning is performed by the `bn.fit` function, which takes the network structure and the data as *arguments*.
 
 ----
@@ -700,7 +702,7 @@ library(bnlearn)
 ```{r}
 # cpquery(fitted, event, evidence, cluster = NULL, method = "ls", ..., debug = FALSE)
 set.seed(20180308)
-# Prior distribution of Lung cancer
+# Prior distribution of Dyspnoea
 cpquery(fitted = bn_dag_Laur, 
         event = (D == "yes"), 
         evidence = TRUE, # evidence being true means that we have no prior evidence.
@@ -710,7 +712,7 @@ cpquery(fitted = bn_dag_Laur,
 - Posterior probability of `Dyspnea = yes` given Lung cancer being `no`
 
 ```{r}
-# Posterior distribution of Lung cancer given Smoking history being "no"
+# Posterior distribution of Dyspnoea given Lung cancer being "no"
 cpquery(fitted = bn_dag_Laur, 
         event = (D == "yes"), 
         evidence = (L == "no"),
@@ -721,7 +723,7 @@ cpquery(fitted = bn_dag_Laur,
 -  Posterior probability of `Dyspnea = yes` given Lung cancer being `yes`
 
 ```{r}
-# Posterior distribution of Lung cancer given Smoking history being "yes"
+# Posterior distribution of Dyspnoea given Lung cancer being "yes"
 cpquery(fitted = bn_dag_Laur, 
         event = (D == "yes"), 
         evidence = (L == "yes"),
@@ -784,7 +786,7 @@ prop.table(
     - $\Pr (L = yes\,|\,S = no) = 0.01368209$ (read from `coef(bn_dag_Laur$L)`)
     -  $\Pr (L = yes) = 0.11769384 \times 0.503 + 0.01368209 \times 0.497 = 0.066$
 
-**Recall**
+**Recall** : Law of total probability
 
 $$\Pr(L = yes) = {\huge[} \Pr(L = yes\,|\,S = yes) \times \Pr(S = yes){\huge+}\Pr(L = yes\,|\,S = no)\times\Pr(S = no){\huge]} $$
 
