@@ -412,7 +412,7 @@ plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 
 $$y = A + B \times \frac{x^n}{x^n+ {EC_{50}}^n} $$
 
-Define a function 
+$$x =\; ?$$
 
 ```{r eval = F}
 inv.hill = function(y, EC50, A, B, n){
