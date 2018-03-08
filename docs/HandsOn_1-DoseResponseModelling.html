@@ -1886,17 +1886,32 @@ Show parameters
 </ul>
 <p><span class="math display">\[y = A + B \times \frac{x^n}{x^n+ {EC_{50}}^n} \]</span></p>
 <p><span class="math display">\[x = \;?\]</span></p>
-<pre class="r"><code>inv.hill = function(y, EC50, A, B, n){
+<pre class="r"><code>invs.hill = function(y, EC50, A, B, n){
    YOUR CODE HERE
   }</code></pre>
 <hr />
-<p>Some hand calculations</p>
+<p>Some calculations</p>
 <p><span class="math display">\[x =\; \sqrt[n]{  \frac{{EC_{50}}^n} {\frac{B}{y-A} -1} }\]</span></p>
 <p>R function</p>
-<pre class="r"><code>inv.hill = function(y, EC50, A, B, n){
+<pre class="r"><code>invs.hill = function(y, EC50, A, B, n){
     res = (EC50 ^n /(B/(y-A)  - 1 ) )^(1/n)
     return(res)
   }</code></pre>
+<!-- a```{r echo = T, include = T, fig.show='hold'} -->
+<pre class="r"><code># A = 100
+# B = -100
+# EC50 = 0.5
+# n = 1.8
+
+Hi = seq(0.1, 100, by = 0.1)
+KBr = invs.hill(y = Hi, 
+                EC50 = 0.5, 
+                A = 100,
+                B = -100,
+                n = 1.8)
+
+plot(x = Hi, y = KBr, type = 'l',
+     main = &quot;Invers Hill function plot&quot;)</code></pre>
 </div>
 <div id="notes" class="section level2">
 <h2><span class="header-section-number">3.4</span> Notes</h2>

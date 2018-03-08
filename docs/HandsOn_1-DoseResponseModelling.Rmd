@@ -415,24 +415,44 @@ $$y = A + B \times \frac{x^n}{x^n+ {EC_{50}}^n} $$
 $$x = \;?$$
 
 ```{r eval = F}
-inv.hill = function(y, EC50, A, B, n){
+invs.hill = function(y, EC50, A, B, n){
    YOUR CODE HERE
   }
 ```
 
 ----
 
-Some hand calculations
+Some calculations
 
 $$x =\; \sqrt[n]{  \frac{{EC_{50}}^n} {\frac{B}{y-A} -1} }$$
 
 R function
 
 ```{r}
-inv.hill = function(y, EC50, A, B, n){
+invs.hill = function(y, EC50, A, B, n){
     res = (EC50 ^n /(B/(y-A)  - 1 ) )^(1/n)
     return(res)
   }
+```
+
+<!-- a```{r echo = T, include = T, fig.show='hold'} -->
+
+```{r}
+# A = 100
+# B = -100
+# EC50 = 0.5
+# n = 1.8
+
+Hi = seq(0.1, 100, by = 0.1)
+KBr = invs.hill(y = Hi, 
+                EC50 = 0.5, 
+                A = 100,
+                B = -100,
+                n = 1.8)
+
+plot(x = Hi, y = KBr, type = 'l',
+     main = "Invers Hill function plot")
+
 ```
 
 
