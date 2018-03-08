@@ -410,6 +410,18 @@ plot(x, y, type="l", xlim=xlims, ylim=ylims, xlab="", ylab="") # turn off labels
 - Can you code a function inverting the Hill dose-response model?
 - Plot the function you found.
 
+$$y = A + B \times \frac{x^n}{x^n+ {EC_{50}}^n} $$
+
+Define a function 
+
+```{r eval = F}
+inv.hill = function(y, EC50, A, B, n){
+   YOUR CODE HERE
+  }
+
+```
+
+
 ## Notes
 
 There are many tools in R that can be used to fit automatically your model one of them is PROAST (from the RIVM) but we can also access PROAST online (more fun)
