@@ -45,7 +45,7 @@ First we should install and load the package.
 
 **Please make sure that you either download or compile at least `bnelarn 4.2.x` as previous versions might have some bugs. check the version of `bnlearn` pakcage by typing `packageVersion("bnlearn")` in `R` console.** 
 
-You should check out the documentation that is available online [[Link]](http://bnlearn.com/). It contains nice examples and additional use cases beyond this tutorial, if you are interested in this topic there are a couple of related books written by the author of the package, you can find the references in the mentioned website.
+You should check out the documentation that is available online [[Link]](http://bnlearn.com/). It contains nice examples and additional use cases beyond this tutorial. If you are interested in this topic, there are a couple of related books written by the author of the package, you can find the references in the mentioned website.
 
 ## Install R package `bnlearn`
 
@@ -185,7 +185,7 @@ The asia data set contains the following variables:
 
 **Usage**
 
-- Investigate the characteristics of `asia` using some basic `R` operations :
+- Let's investigate the characteristics of `asia` using some basic `R` operations :
 <!-- (These are basic `R` operations that are not crucial for us, unroll the `Code` box) and execute them in R. -->
     - Print the data set on screen;
     - Verify the format of data : variable names and values (levels) ;
@@ -411,13 +411,13 @@ graphviz.plot(dag_mydag, sub = "My DAG")
 
 ----
 
-## Data-driven approach
+## Data-Driven Approach
 
 ### Exercise 3.3 : Score-based methods { - }
 
 #### Questions { - }
 
-- Learn a BN structure base on `asia` data set. `hc(asia)` can allow you to do this (this time, Hill-Climbing algorithm, which is a Score-based method, is applied)
+- Learn a BN structure base on `asia` data set. `hc(asia)` can allow you to do this (the Hill-Climbing algorithm, which is a Score-based method, is applied)
 - Plot the BN structure (output of `hc(asia)`)
 - What do you observe ? Is this a DAG ?
 
@@ -430,6 +430,11 @@ graphviz.plot(dag_mydag, sub = "My DAG")
 ```{r}
 dag_learn_hc = hc(asia)
 dag_learn_hc
+```
+
+**Remark** the generation algorithm is NOT empty this time !!
+
+```{r}
 graphviz.plot(dag_learn_hc)
 ```
 
