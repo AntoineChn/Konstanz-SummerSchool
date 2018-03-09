@@ -1812,8 +1812,9 @@ x</code></pre>
   return(res)
 }</code></pre>
 <p>You have now created a function called <code>sum.of.squares</code> which requires two <em>arguments</em> and returns the <em>sum of the squares</em> of these arguments. Since you ran the code through the console, the function is now available, like any of the other built-in functions within <code>R</code>. Running <code>sum.of.squares(3,4)</code> will give you the answer <code>25</code>.</p>
-<pre class="r"><code>sum.of.squares(3,4)</code></pre>
+<pre class="r"><code>sum.of.squares(x = 3, y = 4)</code></pre>
 <pre><code>#&gt; [1] 25</code></pre>
+<pre class="r"><code># or just RUN : sum.of.squares(3, 4)</code></pre>
 <p>The procedure for writing any other functions is similar, involving three key steps:</p>
 <ul>
 <li>Define the function in R script</li>
@@ -1833,7 +1834,7 @@ x</code></pre>
 </ul>
 <div id="creating-data-frames" class="section level3 unnumbered">
 <h3>Creating data frames</h3>
-<pre class="r"><code>dat &lt;- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
+<pre class="r"><code>dat = data.frame(id = letters[1:10], x = 1:10, y = 11:20)
 dat</code></pre>
 <pre><code>#&gt;    id  x  y
 #&gt; 1   a  1 11
@@ -1895,6 +1896,14 @@ if (condition is true) {
 } else {  # that is, if the condition is false,
   perform alternative action
 }</code></pre>
+<p>Example</p>
+<pre class="r"><code>if(1 == 1){
+  x = 2
+}else{
+  x = 3
+}
+print(x)</code></pre>
+<pre><code>#&gt; [1] 2</code></pre>
 </div>
 <div id="get-new-functions-packages" class="section level2">
 <h2><span class="header-section-number">3.9</span> Get new functions: Packages</h2>
