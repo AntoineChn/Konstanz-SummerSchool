@@ -2052,8 +2052,8 @@ score(x = dag_learn_hc,  data = asia)
 <!-- The `bn.fit` function from `bnlearn` will automatically determine the type of data and fit parameters. -->
 <p>When using <code>bnlearn</code>, parameter learning is performed by the <code>bn.fit</code> function, which takes the network structure and the data as <em>arguments</em>.</p>
 <hr />
-<div id="exercise-4.1-demonstration" class="section level3 unnumbered">
-<h3>Exercise 4.1 (Demonstration)</h3>
+<div id="exercise-demonstration-4.1" class="section level3 unnumbered">
+<h3>Exercise (Demonstration) 4.1</h3>
 <div id="questions-3" class="section level4 unnumbered">
 <h4>Questions</h4>
 <ul>
@@ -2120,8 +2120,8 @@ bn.fit.barchart(bn_dag_Laur$L)</code></pre>
 <div id="hybrid-approach" class="section level2">
 <h2><span class="header-section-number">4.2</span> Hybrid approach</h2>
 <p>Specifying all the local distributions can be problematic in a large network. In most cases it can be more convenient to create a <code>bn.fit</code> object from (possibly dummy) data using <code>bn.fit()</code>, and then to modify just the local distributions of the nodes of interest.</p>
-<div id="demonstration-4.2" class="section level3 unnumbered">
-<h3>Demonstration 4.2</h3>
+<div id="exercise-demonstration-4.2" class="section level3 unnumbered">
+<h3>Exercise (Demonstration) 4.2</h3>
 <ul>
 <li>Creating custom fitted Bayesian networks using both data and expert knowledge.
 <ul>
@@ -2397,8 +2397,8 @@ L_ratio</code></pre>
 </div>
 </div>
 </div>
-<div id="exercise-5.2" class="section level3 unnumbered">
-<h3>Exercise 5.2</h3>
+<div id="exercise-5.2-homework" class="section level3 unnumbered">
+<h3>Exercise 5.2 (Homework !!)</h3>
 <ul>
 <li>Estimate following probabilties using <code>cpquery()</code>
 <ul>
@@ -2408,7 +2408,7 @@ L_ratio</code></pre>
 <li><span class="math inline">\(\hat{\Pr} (S = yes\,|\,L = no)\)</span> : Probability of an individual having smoking history given that he/she does <strong>NOT</strong> have lung cancer.</li>
 </ul></li>
 <li>Calculate the ratio between <span class="math inline">\(\hat{\Pr}(S = yes \,|\,L = yes)\)</span> and <span class="math inline">\(\hat{\Pr}(S = yes\,|\,L = no)\)</span></li>
-<li>Calculate (by hand) the ratio between <span class="math inline">\(\Pr(S = yes \,|\,L = yes)\)</span> and <span class="math inline">\(\Pr(S = yes \,|\,L = no)\)</span> (homework!!)</li>
+<li>Calculate (by hand) the ratio between <span class="math inline">\(\Pr(S = yes \,|\,L = yes)\)</span> and <span class="math inline">\(\Pr(S = yes \,|\,L = no)\)</span></li>
 </ul>
 <!-- **Recall** Bayes Rule: -->
 <!-- $$\Pr(B|A) = \frac{\Pr(A|B) \times \Pr(B)}{\Pr(A)}$$ -->

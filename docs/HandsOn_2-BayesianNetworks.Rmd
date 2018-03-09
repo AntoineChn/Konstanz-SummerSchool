@@ -551,7 +551,7 @@ When using `bnlearn`, parameter learning is performed by the `bn.fit` function, 
 
 ----
 
-### Exercise 4.1 (Demonstration) { - }
+### Exercise (Demonstration) 4.1 { - }
 
 #### Questions { - }
 - Use `asia` data set to learn three sets of parameters based on: (`bn.fit(x = one_of_BN_Structures_of_your_choice, data = asia, method = "mle")`)
@@ -615,7 +615,7 @@ $$\frac{\Pr(L = yes \,|\,S = \text{yes})}{\Pr(L = yes \,|\,S = \text{no})} =\fra
 
 Specifying all the local distributions can be problematic in a large network. In most cases it can be more convenient to create a `bn.fit` object from (possibly dummy) data using `bn.fit()`, and then to modify just the local distributions of the nodes of interest.
 
-### Demonstration 4.2 { - }
+### Exercise (Demonstration) 4.2 { - }
 
 - Creating custom fitted Bayesian networks using both data and expert knowledge.
     - For discrete Bayesian networks we can extract the conditional probability table stored in the `bn.fit` object with `coef()`, modify it, and re-save it.
@@ -826,14 +826,14 @@ L_ratio
 </div>
 </div>
 
-### Exercise 5.2 { - }
+### Exercise 5.2 (Homework !!) { - }
 
 - Estimate following probabilties using `cpquery()` 
     - $\hat{\Pr} (S)$ : Probability of an individual having smoking history 
     - $\hat{\Pr} (S = yes\,|\,L = yes)$ : Probability of an individual having smoking history given that he/she has lung cancer  
     - $\hat{\Pr} (S = yes\,|\,L = no)$ : Probability of an individual having smoking history given that he/she does **NOT** have lung cancer.
 - Calculate the ratio between $\hat{\Pr}(S = yes \,|\,L = yes)$ and $\hat{\Pr}(S = yes\,|\,L = no)$
-- Calculate (by hand) the ratio between $\Pr(S = yes \,|\,L = yes)$ and $\Pr(S = yes \,|\,L = no)$ (homework!!)
+- Calculate (by hand) the ratio between $\Pr(S = yes \,|\,L = yes)$ and $\Pr(S = yes \,|\,L = no)$ 
 
 <!-- **Recall** Bayes Rule: -->
 <!-- $$\Pr(B|A) = \frac{\Pr(A|B) \times \Pr(B)}{\Pr(A)}$$ -->
