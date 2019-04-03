@@ -510,4 +510,4 @@ plot(C0, y, type="b", main = "KBrO3 = (-C0*exp(-k * 60)/k + C0*exp(0)/k) / (60 -
 
 ----
 
-[Back to home](https://goo.gl/j9PYg4)
+[Back to home](index.html)
